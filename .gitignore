@@ -1,5 +1,6 @@
 vim74/
 vim73/
+plugins/
 .cache/
 .netrwhist
 _vimrc
