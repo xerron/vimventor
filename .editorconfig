@@ -1,0 +1,34 @@
+root = true
+
+
+3
+    indent_style
+    indent_size
+    tab_width
+    end_of_line
+    charset
+    insert_final_newline (PreserveNoEOL is required for this property)
+    trim_trailing_whitespace
+    max_line_length
+    root (only used by EditorConfig core)
+
+
+
+[*]
+end_of_line = LF
+charset = utf-8
+[*.vim]
+indent_style = space
+indent_size = 4
+insert_final_newline = true
+trim_trailing_whitespace = true
+max_line_length = 80
+[*.rb]
+indent_style = space
+indent_size = 2
+insert_final_newline = true
+trim_trailing_whitespace = true
+max_line_length = 120
+[*.yml]
+indent_style = space
+indent_size = 2

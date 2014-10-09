@@ -1,0 +1,69 @@
+{
+"variables": {
+    "lang": "es",
+    "locale": "es-ES",
+    "charset": "UTF-8",
+    "indentation": "\t",
+    "newline": "\n"
+},
+
+"css": {
+    "filters": "html",
+    "snippets": {
+
+    }
+},
+
+"html": {
+    "filters": "html",
+    "profile": "html",
+    "snippets": {
+"cerbero": "mimi me ama, mimi te extraño"
+    },
+
+    "abbreviations": {
+    }
+},
+
+"xml": {
+    "extends": "html",
+    "profile": "xml",
+    "filters": "html"
+},
+
+"xsl": {
+    "extends": "html",
+    "profile": "xml",
+    "filters": "html, xsl",
+    "abbreviations": {
+    },
+    "snippets": {
+    }
+},
+
+"haml": {
+"filters": "haml",
+"extends": "html",
+"profile": "xml"
+},
+
+"scss": {
+"extends": "css"
+},
+
+"sass": {
+"extends": "css"
+},
+
+"less": {
+"extends": "css"
+},
+
+"stylus": {
+"extends": "css"
+},
+
+"styl": {
+"extends": "stylus"
+}
+}

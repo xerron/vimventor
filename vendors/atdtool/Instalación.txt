@@ -1,0 +1,1 @@
+Colocar el archivo atdtool en c:/Python2.7/Scripts

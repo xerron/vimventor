@@ -1,0 +1,2 @@
+gvimfullscreen.dll  -> $VIMRUNTIME/
+vimproc_win32.dll   -> $VIMRUNTIME/autoload/

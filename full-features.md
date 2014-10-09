@@ -1,0 +1,45 @@
+- [ ] Audible keyboard
+- [ ] Keyboard sound
+- [ ] Typing sound effects.
+- [ ] Ambient sound
+- [ ] Note taking
+- [ ] AutoSave
+- [ ] Session management
+- [ ] Embedded Notes
+- [ ] Clipboard Viewer, Editor and Manager
+- [ ] Instant HTML Preview
+- [ ] Easy Markdown formatting with keyboard shortcuts
+- [ ] Custom Stylesheets
+- [ ] reStructuredText 
+- [ ] Insert images to your documents. 
+- [ ] symbolos
+- [ ] symbolos latex
+- [ ] timers - alarma con progreso
+- [ ] Break Timer
+- [ ] live word count
+- [ ] live clock on statusbar
+- [ ] [daliy progress](http://gottcode.org/focuswriter/screenshots/dailyprogress.png)
+- [ ] graphical calendar
+- [ ] version history
+- [ ] inserts date and time inside the text
+- [ ] Color preview
+- [ ] Color picker
+- [ ] Images preview
+- [ ] Inserting of image tag
+- [ ] Inserting of date/time stamp
+- [ ] Portable bookmarks
+- [ ] Column markers
+- [ ] Live text statistics.
+- [ ] Programmable page count formula.
+- [ ] Easy to use timer alarm.
+- [ ] Tree structure view for source code
+- [x] File explorer
+- [] Project management
+- [ ] FTP/SFTP client
+- [ ] Document map
+- [ ] Clipboard history
+- [ ] External tools output
+- [ ] Search results
+- [ ] Text clips
+- [ ] Tabs list
+
