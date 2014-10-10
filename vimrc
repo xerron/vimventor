@@ -873,8 +873,13 @@ if count(s:settings.plugin_groups, 'unite') "{{{
     NeoBundle 'Shougo/vimfiler.vim'
     " {{{
         let g:vimfiler_as_default_explorer = 1
+        if s:is_windows
+            let g:vimfiler_data_directory=$VIM.'/.cache/vimfiler'
+        else
+            let g:vimfiler_data_directory='~/.vim/.cache/vimfiler'
+        endif
         ":VimFiler
-        nnoremap <F2> :VimFilerExplorer<CR>
+        nnoremap <F2> :VimFilerExplorer -find<CR>
     " }}}
     " unite.vim session source
     NeoBundleLazy 'Shougo/unite-session', {'autoload':{'unite_sources': 'session'}}

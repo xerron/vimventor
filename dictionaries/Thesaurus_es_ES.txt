@@ -7,7 +7,7 @@
 # the Free Software Foundation, either version 2 of the License, or (at
 # your option) any later version.
 Biblia,Sagrada Escritura,Antiguo Testamento,Nuevo Testamento
-CD-ROM,CD,disco compactoThesaurus_es_ES.txt
+CD-ROM,CD,disco compacto
 Creador,constructor,demiurgo,artista,Hacedor,Edificador,artífice
 Dios,Todopoderoso,Jehová,Altísimo,Alá
 Jesucristo,Dios,Jesús,Cristo,Nazareno,Redentor,Mesías,Salvador,Señor
