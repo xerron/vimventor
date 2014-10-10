@@ -878,8 +878,25 @@ if count(s:settings.plugin_groups, 'unite') "{{{
         else
             let g:vimfiler_data_directory='~/.vim/.cache/vimfiler'
         endif
+        if s:is_windows
+            let g:vimfiler_quick_look_command = 'maComfort.exe -ql'
+        elseif s:is_macvim
+            let g:vimfiler_quick_look_command = 'qlmanage -p'
+        else
+            let g:vimfiler_quick_look_command = 'gloobus-preview'
+        endif
+
+        " Like Textmate icons.
+        let g:vimfiler_tree_leaf_icon = ' '
+        let g:vimfiler_tree_opened_icon = '▾'
+        let g:vimfiler_tree_closed_icon = '▸'
+        let g:vimfiler_file_icon = '-'
+        let g:vimfiler_marked_file_icon = '*'
+
         ":VimFiler
-        nnoremap <F2> :VimFilerExplorer -find<CR>
+        nnoremap <F2> :VimFilerExplorer -toggle<CR>
+        autocmd FileType vimfiler
+            \ nmap <buffer> w <Plug>(vimfiler_quick_look)
     " }}}
     " unite.vim session source
     NeoBundleLazy 'Shougo/unite-session', {'autoload':{'unite_sources': 'session'}}
