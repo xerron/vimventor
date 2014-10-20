@@ -22,7 +22,7 @@
 "
 " Init {
     let s:settings = {}
-    let s:settings.colorscheme = 'desert'
+    let s:settings.colorscheme = 'hybrid'
 
     " ---------------------------------------------------------
     " Comenta/descomenta el grupo de plugins que vas a utilizar
@@ -42,7 +42,7 @@
     call add(s:settings.plugin_groups, 'scm')
     call add(s:settings.plugin_groups, 'markdown')
     "call add(s:settings.plugin_groups, 'latex')
-    "call add(s:settings.plugin_groups, 'restructuretex')
+    call add(s:settings.plugin_groups, 'restructuretex')
     "call add(s:settings.plugin_groups, 'web')
     "call add(s:settings.plugin_groups, 'javascript')
     "call add(s:settings.plugin_groups, 'python')
@@ -50,6 +50,7 @@
     "call add(s:settings.plugin_groups, 'csv')
     "call add(s:settings.plugin_groups, 'scala')
     "call add(s:settings.plugin_groups, 'go')
+    "call add(s:settings.plugin_groups, 'vim')
     if s:is_windows
        " call add(s:settings.plugin_groups, 'windows')
     endif
@@ -73,6 +74,7 @@
         call neobundle#rc(expand('$VIM/plugins/'))
     else
         set rtp+=~/.vim/plugins/neobundle.vim
+        set rtp+=~/.vim/vimfiles
         call neobundle#rc(expand('~/.vim/plugins/'))
     endif
     NeoBundleFetch 'Shougo/neobundle.vim'
@@ -102,14 +104,14 @@
 
     " never bdelete a nerd tree
         if matchstr(expand("%"), 'NERD') == 'NERD'
-        wincmd c
-        return
+            wincmd c
+            return
         endif
 
         if number_of_windows_to_this_buffer > 1
-        wincmd c
+            wincmd c
         else
-        bdelete
+            bdelete
         endif
     endfunction "}}}
 " }
@@ -256,7 +258,7 @@
             set guifont=Inconsolata_for_Powerline:h10
         endif
         if has('gui_gtk')
-            set gfn=inconsolata\ for\ Powerline\ 10
+            set gfn=Inconsolata\ for\ Powerline\ 10
         endif
     else
         if $COLORTERM == 'gnome-terminal'
@@ -350,23 +352,22 @@
     "NeoBundle 'tomasr/molokai'
 "{{{
     let g:molokai_original = 1
-    let g:rehash256 = 1
+   " let g:rehash256 = 1
 "}}}
     "NeoBundle 'chriskempson/vim-tomorrow-theme'
     "NeoBundle 'chriskempson/base16-vim'
     "NeoBundle 'w0ng/vim-hybrid'
-    "NeoBundle 'sjl/badwolf'
     "NeoBundle 'Pychimp/vim-luna'
-    "NeoBundle 'mitsuhiko/fruity-vim-colorscheme'
-    NeoBundle 'reedes/vim-colors-pencil'
+    "NeoBundle 'reedes/vim-colors-pencil'
 "{{{
     let g:pencil_higher_contrast_ui = 0   " 0=low (def), 1=high
     let g:pencil_neutral_headings = 1   " 0=blue (def), 1=normal
 "}}}
     "NeoBundle 'zeis/vim-kolor'
-"{{{
-    let g:kolor_underlined=1
-"}}}
+        " let g:kolor_italic=1                    " Enable italic. Default: 1
+        " let g:kolor_bold=1                      " Enable bold. Default: 1
+        " let g:kolor_underlined=1                " Enable underline. Default: 0
+        " let g:kolor_alternative_matchparen=0    " Gray 'MatchParen' color. Default: 0
   exec 'colorscheme '.s:settings.colorscheme
 "}}}
 "
@@ -420,10 +421,28 @@ if count(s:settings.plugin_groups, 'core') "{{{
     " :help ayuda
     NeoBundle 'xerron/vim-doc-es'
     " /szw/vim-ctrlspace
+    " Add a buffer close to vim that doesn't close the window
+    NeoBundle 'rgarver/Kwbd.vim'
+    """ Configuración Kwbd {{{
+        nmap <C-W>! <Plug>Kwbd
+    """}}}
+    " Zoom in/out of windows (toggle between one window and multi-window)
+    NeoBundle 'regedarek/ZoomWin'
+    " Configuración ZoomWin {{{
+        map <leader>zw :ZoomWin<CR>
+    " }}}
 endif "}}}
 if count(s:settings.plugin_groups, 'markdown') "{{{
     NeoBundleLazy 'tpope/vim-markdown', {'autoload':{'filetypes':['markdown']}}
     au BufNewFile,BufRead *.markdown,*.mdown,*.mkd,*.mkdn,*.md  setf markdown
+endif "}}}
+if count(s:settings.plugin_groups, 'restructuretex') "{{{
+    NeoBundleLazy 'Rykka/riv.vim', {'autoload':{'filetypes':['rst']}}
+    " Configuracion riv.vim {{{
+        let proj1 = { 'path': '~/Dropbox/Notas',}
+        let g:riv_projects = [proj1]
+    " }}}
+    "au BufNewFile,BufRead *.markdown,*.mdown,*.mkd,*.mkdn,*.md  setf markdown
 endif "}}}
 if count(s:settings.plugin_groups, 'csv') "{{{
     NeoBundleLazy 'chrisbra/csv.vim', {'autoload':{'filetypes':['csv']}}
@@ -540,11 +559,11 @@ if count(s:settings.plugin_groups, 'scm') "{{{
     " Soporte para Git
     NeoBundle 'tpope/vim-fugitive'
     " Configuración de vim-fugitive j{{{
+        nnoremap <silent> <leader>gb :Gblame<CR>
         nnoremap <silent> <leader>gs :Gstatus<CR>
         nnoremap <silent> <leader>gd :Gdiff<CR>
-        nnoremap <silent> <leader>gc :Gcommit<CR>
-        nnoremap <silent> <leader>gb :Gblame<CR>
         nnoremap <silent> <leader>gl :Glog<CR>
+        nnoremap <silent> <leader>gc :Gcommit<CR>
         nnoremap <silent> <leader>gp :Git push<CR>
         nnoremap <silent> <leader>gw :Gwrite<CR>
         nnoremap <silent> <leader>gr :Gremove<CR>
@@ -572,6 +591,10 @@ if count(s:settings.plugin_groups, 'syntax') "{{{
     " Syntax checking
     NeoBundle 'scrooloose/syntastic'
     " Configuración de syntastic {{{
+        " let g:syntastic_enable_signs=1
+        " let g:syntastic_quiet_warnings=0
+        " let g:syntastic_auto_loc_list=2
+        " Simbolos
         let g:syntastic_error_symbol = '✗'
         let g:syntastic_style_error_symbol = '✠'
         let g:syntastic_warning_symbol = '∆'
@@ -733,6 +756,7 @@ if count(s:settings.plugin_groups, 'navigation') "{{{
         if executable('ag')
             let g:ackprg = "ag --nogroup --column --smart-case --follow"
         endif
+        map <leader>f :Ack<space>
     "}}}
     " Muestra el historial de deshacer en un gráfico. | Note: Mas simple que Gundo
     NeoBundleLazy 'mbbill/undotree', {'autoload':{'commands':'UndotreeToggle'}}
@@ -767,9 +791,15 @@ if count(s:settings.plugin_groups, 'navigation') "{{{
     NeoBundleLazy 'majutsushi/tagbar', {'autoload':{'commands':'TagbarToggle'}}
     "{{{
         nnoremap <silent> <F9> :TagbarToggle<CR>
+        map <leader>rt :TagbarToggle<CR>
     "}}}
     " Movimientos faciles | Nota: Personalmente no lo uso.
     " NeoBundle 'Lokaltog/vim-easymotion'
+    " Vim plugin to list, select and switch between buffers.
+    " NeoBundle 'jeetsukumaran/vim-buffergator'
+    " Configuración {{{
+
+    " }}}
 endif "}}}
 if count(s:settings.plugin_groups, 'unite') "{{{
     " Unir y crear interfaces de usuario
@@ -807,6 +837,11 @@ if count(s:settings.plugin_groups, 'unite') "{{{
             nmap <buffer> Q <plug>(unite_exit)
             nmap <buffer> <esc> <plug>(unite_exit)
             imap <buffer> <esc> <plug>(unite_exit)
+            imap <buffer> <C-j> <Plug>(unite_select_next_line)
+            imap <buffer> <C-k> <Plug>(unite_select_previous_line)
+            imap <silent><buffer><expr> <C-h> unite#do_action('split')
+            imap <silent><buffer><expr> <C-v> unite#do_action('vsplit')
+            imap <silent><buffer><expr> <C-t> unite#do_action('tabopen')
         endfunction
         autocmd FileType unite call s:unite_settings()
 
@@ -939,7 +974,7 @@ if count(s:settings.plugin_groups, 'textobj') "{{{
     " Text objects for indented blocks of lines
     NeoBundle 'kana/vim-textobj-indent'
     " Configuración vim-textobj-indent {{{
-    " 
+    " michaeljsmith/vim-indent-object 
     " }}}
     " Text objects for entire buffer
     NeoBundle 'kana/vim-textobj-entire'
@@ -986,6 +1021,7 @@ if count(s:settings.plugin_groups, 'distraction-free-mode') "{{{
             setlocal linespace=5
             ""setlocal guifont=Cousine:h12
             colorscheme pencil
+
             setlocal guifont= Inconsolata/ for/ Powerline/ 12
         endfunction
     " }
@@ -1113,17 +1149,15 @@ if count(s:settings.plugin_groups, 'vim') "{{{
     " All 256 xterm colors with their RGB equivalents
     NeoBundleLazy 'guns/xterm-color-table.vim', {'autoload':{'commands':'XtermColorTable'}}
     " The Vim FAQ from http://vimdoc.sourceforge.net/ http://vimdoc.sourceforge.net/
-    NeoBundle 'chrisbra/vim_faq'
+    """NeoBundle 'chrisbra/vim_faq'
 endif "}}}
 if count(s:settings.plugin_groups, 'timeboxing') "{{{
 
 endif "}}}
 if count(s:settings.plugin_groups, 'utilities') "{{{
-    " Borrar el buffer sin cerrar la ventana o el split 
-    NeoBundle 'bufkill.vim'
-endif "}}}
-if count(s:settings.plugin_groups, 'autocorrection') "{{{
-    
+    " Limpiar espacios en blanco finales
+    " bronson/vim-trailing-whitespace
+    "
 endif "}}}
 if count(s:settings.plugin_groups, 'autocorrection') "{{{
     
