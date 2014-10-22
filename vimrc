@@ -71,11 +71,11 @@
         set rtp+=$VIM/plugins/neobundle.vim
         set rtp+=$VIM/vimfiles
         set rtp+=$VIM
-        call neobundle#rc(expand('$VIM/plugins/'))
+        call neobundle#begin(expand('$VIM/plugins/'))
     else
         set rtp+=~/.vim/plugins/neobundle.vim
         set rtp+=~/.vim/vimfiles
-        call neobundle#rc(expand('~/.vim/plugins/'))
+        call neobundle#begin(expand('~/.vim/plugins/'))
     endif
     NeoBundleFetch 'Shougo/neobundle.vim'
 " }
@@ -127,7 +127,6 @@
 " Codificación {
     set encoding=utf-8           " Usado internamente por vim
     scriptencoding utf-8
-    setglobal fileencoding=utf-8 " Codificación de archivo
     set fileencoding=utf-8       " Codificación de archivo
     set fileencodings=ucs-bom,utf-8,utf-16le,cp1252,iso-8859-15
     if s:is_windows
@@ -247,7 +246,7 @@
     set laststatus=2
     "Resaltado de espacios en blanco problematicos
     " set list
-    " set listchars=trail:·,precedes:«,extends:»,eol:↲,tab:▸\
+    set listchars=trail:·,precedes:«,extends:»,eol:↲,tab:▸\
     " set listchars=""
     " set listchars=tab:\ \
     " set listchars+=trail:•
@@ -1471,6 +1470,8 @@ endif "}}}
       exec 'NeoBundleDisable '.plugin
     endfor
   endif
+
+call neobundle#end()
 
   filetype plugin indent on
   syntax enable
