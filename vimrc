@@ -239,6 +239,12 @@
     set wildmenu                    " Mostrar lista en lugar de simplemente completar
     set wildmode=list:longest,full  " Command <Tab> completion, list matches, then longest common part, then all.
     set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.idea/*,*/.DS_Store
+    set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem
+    set wildignore+=*.zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz
+    set wildignore+=*/vendor/gems/*,*/vendor/cache/*,*/.bundle/*,*/.sass-cache/*
+    set wildignore+=*/tmp/librarian/*,*/.vagrant/*,*/.kitchen/*,*/vendor/cookbooks/*
+    set wildignore+=*/tmp/cache/assets/*/sprockets/*,*/tmp/cache/assets/*/sass/*
+    set wildignore+=*.swp,*~,._*
     set scrolljump=5                " Lines to scroll when cursor leaves screen
     set scrolloff=3                 " Minimum lines to keep above and below cursor
     ""set splitright                  " Puts new vsplit windows to the right of the current
@@ -321,7 +327,7 @@
     endif
 " }
 " Misc {
-    " Fullscreen, es necesario na libreria. ver la carpeta /vendors
+    " Fullscreen, es necesario la libreria. Ver la carpeta /vendors
     if has('gui_running') && has('gui_win32') && has('libcall')
         let g:MyVimLib = 'gvimfullscreen.dll'
         function! ToggleFullScreen()
@@ -342,32 +348,7 @@
     let mapleader = ','        " Configuación Escencial
 " }
 " Color scheme {{{
-    "NeoBundle 'altercation/vim-colors-solarized'
-"{{{
-    let g:solarized_termcolors=256
-    let g:solarized_termtrans=1
-"}}}
-    "NeoBundle 'nanotech/jellybeans.vim'
-    "NeoBundle 'tomasr/molokai'
-"{{{
-    let g:molokai_original = 1
-   " let g:rehash256 = 1
-"}}}
-    "NeoBundle 'chriskempson/vim-tomorrow-theme'
-    "NeoBundle 'chriskempson/base16-vim'
-    "NeoBundle 'w0ng/vim-hybrid'
-    "NeoBundle 'Pychimp/vim-luna'
-    "NeoBundle 'reedes/vim-colors-pencil'
-"{{{
-    let g:pencil_higher_contrast_ui = 0   " 0=low (def), 1=high
-    let g:pencil_neutral_headings = 1   " 0=blue (def), 1=normal
-"}}}
-    "NeoBundle 'zeis/vim-kolor'
-        " let g:kolor_italic=1                    " Enable italic. Default: 1
-        " let g:kolor_bold=1                      " Enable bold. Default: 1
-        " let g:kolor_underlined=1                " Enable underline. Default: 0
-        " let g:kolor_alternative_matchparen=0    " Gray 'MatchParen' color. Default: 0
-  exec 'colorscheme '.s:settings.colorscheme
+    exec 'colorscheme '.s:settings.colorscheme
 "}}}
 "
 " Configuración de Plugins
@@ -905,7 +886,7 @@ if count(s:settings.plugin_groups, 'unite') "{{{
     "}}}
     " Powerful file explorer
     NeoBundle 'Shougo/vimfiler.vim'
-    " {{{
+    " Configuracion Vimfiler {{{
         let g:vimfiler_as_default_explorer = 1
         if s:is_windows
             let g:vimfiler_data_directory=$VIM.'/.cache/vimfiler'
@@ -928,7 +909,7 @@ if count(s:settings.plugin_groups, 'unite') "{{{
         let g:vimfiler_marked_file_icon = '*'
 
         ":VimFiler
-        nnoremap <F2> :VimFilerExplorer -toggle<CR>
+        nnoremap <M-1> :VimFilerExplorer -toggle<CR>
         autocmd FileType vimfiler
             \ nmap <buffer> w <Plug>(vimfiler_quick_look)
     " }}}
@@ -1192,29 +1173,12 @@ if count(s:settings.plugin_groups, 'windows') "{{{
     "}}}
     NeoBundleLazy 'nosami/Omnisharp', {'autoload':{'filetypes':['cs']}}
 endif "}}}
-
 "
-" Configuraciones según tipo de archivo
+" Asignaciones (Mappings)
 "
-" HelpFile {
-    au FileType helpfile set nonumber                   " no line numbers when viewing help
-    au FileType helpfile nnoremap <buffer><cr> <c-]>    " Enter selects subject
-    au FileType helpfile nnoremap <buffer><bs> <c-T>    " Backspace to go back
-" }
-
-"
-" ShortCuts
-"
-" Basicos {
-    " Find
-    map <C-f> /
-    " Use ,/ to clear the highlighting of :set hlsearch.
-    nmap <silent> ,/ :nohlsearch<CR>
-    " indend / deindent after selecting the text with (⇧ v), (.) to repeat.
-    vnoremap <Tab> >
-    vnoremap <S-Tab> <
+" Edición {
     " comment / decomment & normal comment behavior
-    vmap <C-m> gc
+    vmap <C-/> gc
     " Disable tComment to escape some entities
     let g:tcomment#replacements_xml={}
     " Text wrap simpler, then type the open tag or ',"
@@ -1259,18 +1223,27 @@ endif "}}}
     " Para salir rapidamente del modo inserción
     inoremap jk <esc>
     inoremap kj <esc>
-    " change cursor position in insert mode
-    inoremap <C-h> <left>
-    inoremap <C-l> <right>
-
     inoremap <C-u> <C-g>u<C-u>
 
     if mapcheck('<space>/') == ''
         nnoremap <space>/ :vimgrep //gj **/*<left><left><left><left><left><left><left><left>
     endif
 " }
+" Busqueda {
+    map <C-f> /
+    " Use ,/ to clear the highlighting of :set hlsearch.
+    nmap <silent> ,/ :nohlsearch<CR>
+    " sane regex
+    nnoremap / /\v
+    vnoremap / /\v
+    nnoremap ? ?\v
+    vnoremap ? ?\v
+    nnoremap :s/ :s/\v
+" }
 " Identación {
-
+    " indend / deindent after selecting the text with (⇧ v), (.) to repeat.
+    vnoremap <Tab> >
+    vnoremap <S-Tab> <
 " }
 " Navegación {
     " <c-^>         Alternar de buffer
@@ -1280,6 +1253,10 @@ endif "}}}
     imap <M-left> <Esc>:bprevious<CR>
     nnoremap <M-up> :tabnext<CR>
     nnoremap <M-down> :tabprev<CR>
+    " change cursor position in insert mode
+    inoremap <C-h> <left>
+    inoremap <C-l> <right>
+
 " }
 " Windows {
     " Divisiones
@@ -1342,13 +1319,6 @@ endif "}}}
 " }
 " smash escape {
 " }
-
-" sane regex
-    nnoremap / /\v
-    vnoremap / /\v
-    nnoremap ? ?\v
-    vnoremap ? ?\v
-    nnoremap :s/ :s/\v
 
 " command-line window
     nnoremap q: q:i
@@ -1437,6 +1407,16 @@ endif "}}}
   command! -bang QA qa<bang>
   command! -bang Qa qa<bang>
 "}
+"
+" Configuraciones según tipo de archivo
+"
+" HelpFile {
+    au FileType helpfile set nonumber                   " no line numbers when viewing help
+    au FileType helpfile nnoremap <buffer><cr> <c-]>    " Enter selects subject
+    au FileType helpfile nnoremap <buffer><bs> <c-T>    " Backspace to go back
+" }
+
+
 " autocmd {{{
 " go back to previous position of cursor if any
   autocmd BufReadPost *
