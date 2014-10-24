@@ -640,6 +640,9 @@ if count(s:settings.plugin_groups, 'editing') "{{{
     NeoBundle 'thinca/vim-visualstar'
     " An extensible & universal comment vim-plugin that also handles embedded filetypes
     NeoBundle 'tomtom/tcomment_vim'
+    " Configuracion tcomment {{{
+        vmap <C-/> gc
+    " }}}
     " visually select increasingly
     NeoBundle 'terryma/vim-expand-region'
     " Configuración de vim-expand-region {{{
@@ -687,8 +690,9 @@ if count(s:settings.plugin_groups, 'editing') "{{{
     "}}}
     " insert or delete brackets, parens, quotes in pair
     NeoBundle 'jiangmiao/auto-pairs'
+    " TODO: buscar un mapping paraa vim-sneak
     " jumps to any location specified by two characters
-    NeoBundle 'justinmk/vim-sneak'
+    " NeoBundle 'justinmk/vim-sneak'
     " Configuracion de vim-sneak {{{
       let g:sneak#streak = 1
     "}}}
@@ -775,11 +779,6 @@ if count(s:settings.plugin_groups, 'navigation') "{{{
     "}}}
     " Movimientos faciles | Nota: Personalmente no lo uso.
     " NeoBundle 'Lokaltog/vim-easymotion'
-    " Vim plugin to list, select and switch between buffers.
-    " NeoBundle 'jeetsukumaran/vim-buffergator'
-    " Configuración {{{
-
-    " }}}
 endif "}}}
 if count(s:settings.plugin_groups, 'unite') "{{{
     " Unir y crear interfaces de usuario
@@ -819,9 +818,9 @@ if count(s:settings.plugin_groups, 'unite') "{{{
             imap <buffer> <esc> <plug>(unite_exit)
             imap <buffer> <C-j> <Plug>(unite_select_next_line)
             imap <buffer> <C-k> <Plug>(unite_select_previous_line)
-            imap <silent><buffer><expr> <C-h> unite#do_action('split')
-            imap <silent><buffer><expr> <C-v> unite#do_action('vsplit')
-            imap <silent><buffer><expr> <C-t> unite#do_action('tabopen')
+            inoremap <silent><buffer><expr> <C-s> unite#do_action('split')
+            inoremap <silent><buffer><expr> <C-v> unite#do_action('vsplit')
+            inoremap <silent><buffer><expr> <C-t> unite#do_action('tabopen')
         endfunction
         autocmd FileType unite call s:unite_settings()
 
@@ -834,7 +833,7 @@ if count(s:settings.plugin_groups, 'unite') "{{{
         else
             nnoremap <silent> [unite]<space> :<C-u>Unite -toggle -auto-resize -buffer-name=mixed file_rec/async:! buffer file_mru bookmark<cr>
             nnoremap <silent> [unite]f :<C-u>Unite -toggle -auto-resize -buffer-name=files file_rec/async:!<cr>
-        endi
+        endif
 
         nnoremap <silent> [unite]e :<C-u>Unite -buffer-name=recent file_mru<cr>
         nnoremap <silent> [unite]y :<C-u>Unite -buffer-name=yanks history/yank<cr>
@@ -1177,12 +1176,8 @@ endif "}}}
 " Asignaciones (Mappings)
 "
 " Edición {
-    " comment / decomment & normal comment behavior
-    vmap <C-/> gc
-    " Disable tComment to escape some entities
-    let g:tcomment#replacements_xml={}
-    " Text wrap simpler, then type the open tag or ',"
-    vmap <C-w> S
+    " salir del modo insercion rapidamene
+    inoremap jk <esc>
     " Cut, Paste, Copy
     vmap <C-x> d
     vmap <C-v> p
@@ -1192,46 +1187,21 @@ endif "}}}
     inoremap <C-z> <Esc>:undo<CR>
     nnoremap <C-y> :redo<CR>
     inoremap <C-y> <Esc>:redo<CR>
-    " Tabs
-    "nnoremap <C-b> :tabprevious<CR>
-    """inoremap <C-b> <Esc>:tabprevious<CR>i
-    ""nnoremap <C-n> :tabnext<CR>
-    ""inoremap <C-n> <Esc>:tabnext<CR>i
-    ""nnoremap <C-t> :tabnew<CR>
-    ""inoremap <C-t> <Esc>:tabnew<CR>i
-    """nnoremap <C-k> :tabclose<CR>
-    ""inoremap <C-k> <Esc>:tabclose<CR>i
-
-    inoremap <C-U> <C-G>u<C-U>
-    " lazy ':'
-    """map \ :
-    nnoremap ; :
-
-    nnoremap <Leader>p :set paste<CR>
-    nnoremap <Leader>o :set nopaste<CR>
-    noremap <Leader>g :GitGutterToggle<CR>
-        " FIXME: (broken) ctrl s to save
-    noremap <C-S> :update<CR>
-    vnoremap <C-S> <C-C>:update<CR>
-    inoremap <C-S> <Esc>:update<CR>
-    " Don't use Ex mode, use Q for formatting
-    map Q gq
-    " Usabilidad
-    " Para programar
-    nmap <silent> <leader>ev :e $MYVIMRC<CR>
-    nmap <silent> <leader>sv :so $MYVIMRC<CR>
-    " Para salir rapidamente del modo inserción
-    inoremap jk <esc>
-    inoremap kj <esc>
-    inoremap <C-u> <C-g>u<C-u>
-
+    " Toggle paste mode
+    nmap <silent> <F4> :set invpaste<CR>:set paste?<CR>
+    imap <silent> <F4> <ESC>:set invpaste<CR>:set paste?<CR>
+    " Guardar todos los archivos
+    map <Esc><Esc> :w<CR>
+    noremap <C-s> :update<CR>
+    vnoremap <C-s> <C-c>:update<CR>
+    inoremap <C-s> <Esc>:update<CR>
+    " Buscar
     if mapcheck('<space>/') == ''
         nnoremap <space>/ :vimgrep //gj **/*<left><left><left><left><left><left><left><left>
     endif
 " }
 " Busqueda {
-    map <C-f> /
-    " Use ,/ to clear the highlighting of :set hlsearch.
+    " Limpiar el resultado de busqueda
     nmap <silent> ,/ :nohlsearch<CR>
     " sane regex
     nnoremap / /\v
@@ -1241,37 +1211,34 @@ endif "}}}
     nnoremap :s/ :s/\v
 " }
 " Identación {
-    " indend / deindent after selecting the text with (⇧ v), (.) to repeat.
+    " En visual-mode
     vnoremap <Tab> >
     vnoremap <S-Tab> <
+    " reselect visual block after indent
+    vnoremap < <gv
+    vnoremap > >gv
 " }
 " Navegación {
-    " <c-^>         Alternar de buffer
+    " buffers
     nnoremap <M-right> :bnext<CR>
     imap <M-right> <Esc>:bnext<CR>
     nnoremap <M-left> :bprevious<CR>
     imap <M-left> <Esc>:bprevious<CR>
+    " tabs
     nnoremap <M-up> :tabnext<CR>
+    imap <M-up> <Esc>:tabnext<CR>
     nnoremap <M-down> :tabprev<CR>
-    " change cursor position in insert mode
+    imap <M-down> <Esc>:tabprev<CR>
+    " cambiar la posicion del cursor en insert-mode
     inoremap <C-h> <left>
     inoremap <C-l> <right>
-
-" }
-" Windows {
     " Divisiones
     " <c-w> s               dividir horizontal
     " <c-w> v               dividir vertical
-    "map <C-h> <C-w>h
-    "map <C-j> <C-w>j
-    "map <C-k> <C-w>k
-    "map <C-l> <C-w>l
-" }
-" Tabs {
+    " Tabs
     " gt                    Mover al tab siguiente
     " gT                    Mover al tab previo
     " #gt                   Moverse al tab #
-    "
     " Navegación por Tabs
     ""map <C-S-]> gt
     ""map <C-S-[> gT
@@ -1285,57 +1252,26 @@ endif "}}}
     ""map <C-8> 8gt
     ""map <C-9> 9gt
     ""map <C-0> :tablast<CR>
-" }
-" Listas de Cambio y saltos {
+    " Listas de Cambio y saltos 
     " g;                    Moverse atras a travez de la lista de cambios
-    " g,                    Moverse delante a travez de la lista de mis papas me quieren mucho cambios
+    " g,                    Moverse delante a travez de la lista de cambios
     " :changes              Lista de cambios
     " <c-O>                 Saltar hacia atraz a travez de la lista de saltos
-    " <c-I>                 Slatar hacia delante a travez de la lista de saltos
+    " <c-I>                 Saltar hacia delante a travez de la lista de saltos
     " :jumps                Lista de Saltos
     " <c-]>                 Seguir el enlace bajo el cursor
-" }
-" Abrir archivo {
+    " Abrir archivo 
     ""cnoremap %% <C-R>=fnameescape(expand('%:h')).'/'<cr>
     ""map <leader>ew :e %%
     ""map <leader>es :sp %%
     ""map <leader>ev :vsp %%
     ""map <leader>et :tabe %%
-"}
-" formatting shortcuts {
-" formatear
-  nmap <leader>fef :call Preserve("normal gg=G")<CR>
-  " borrar espacios en blanco del final d la linea
-  nmap <leader>f$ :call StripTrailingWhitespace()<CR>
-  " borrar lineas en blanco.
-  nmap <leader>fd :call Preserve(":g/^$/d")<CR>
-  " ordenar lineas albaticamente/numeralmente
-  vmap <leader>s :sort<cr>
-
-  nnoremap <leader>w :w<cr>
-" }
-" toggle paste {
-  map <F6> :set invpaste<CR>:set paste?<CR>
-" }
-" smash escape {
-" }
-
-" command-line window
-    nnoremap q: q:i
-    nnoremap q/ q/i
-    nnoremap q? q?i
-
-" folds
-    nnoremap zr zr:echo &foldlevel<cr>
-    nnoremap zm zm:echo &foldlevel<cr>
-    nnoremap zR zR:echo &foldlevel<cr>
-    nnoremap zM zM:echo &foldlevel<cr>
-
-" screen line scroll
-  nnoremap <silent> j gj
-  nnoremap <silent> k gk
-
-" auto center
+    " Movovimiento no fisicos entre lineas
+    nnoremap <silent> j gj
+    nnoremap <silent> k gk
+    " noremap  <buffer> <silent> 0 g0
+    " noremap  <buffer> <silent> $ g$
+    " auto center
     nnoremap <silent> n nzz
     nnoremap <silent> N Nzz
     nnoremap <silent> * *zz
@@ -1344,12 +1280,32 @@ endif "}}}
     nnoremap <silent> g# g#zz
     nnoremap <silent> <C-o> <C-o>zz
     nnoremap <silent> <C-i> <C-i>zz
+"}
+" Formateo {
+    " formatear todo el documento
+    nmap <leader>fef :call Preseve("normal gg=G")<CR>
+    " borrar espacios en blanco del final d la linea
+    nmap <leader>f$ :call StripTrailingWhitespace()<CR>
+    " borrar lineas en blanco.
+    nmap <leader>fd :call Preserve(":g/^$/d")<CR>
+    " ordenar lineas albaticamente/numeralmente
+    vmap <leader>s :sort<cr>
 
-" reselect visual block after indent
-  vnoremap < <gv
-  vnoremap > >gv
-
-" reselect last paste
+" }
+" command-line window {
+    nnoremap ; :
+    nnoremap q: q:i
+    nnoremap q/ q/i
+    nnoremap q? q?i
+" }
+" Replegado {
+    nnoremap zr zr:echo &foldlevel<cr>
+    nnoremap zm zm:echo &foldlevel<cr>
+    nnoremap zR zR:echo &foldlevel<cr>
+    nnoremap zM zM:echo &foldlevel<cr>
+" }
+    
+  " reselect last paste
   nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 
 " find current word in quickfix
@@ -1411,9 +1367,9 @@ endif "}}}
 " Configuraciones según tipo de archivo
 "
 " HelpFile {
-    au FileType helpfile set nonumber                   " no line numbers when viewing help
-    au FileType helpfile nnoremap <buffer><cr> <c-]>    " Enter selects subject
-    au FileType helpfile nnoremap <buffer><bs> <c-T>    " Backspace to go back
+    au FileType helpfile set nonumber               
+    au FileType helpfile nnoremap <buffer><cr> <c-]>  
+    au FileType helpfile nnoremap <buffer><bs> <c-T>    
 " }
 
 
