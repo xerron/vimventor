@@ -23,6 +23,9 @@
 " Init {
     let s:settings = {}
     let s:settings.colorscheme = 'hybrid'
+    let s:settings.guifont = 'Inconsolata'
+    let s:settings.guifontsize = '10'
+    let s:settings.guifontsize_goyo = '13'
 
     " ---------------------------------------------------------
     " Comenta/descomenta el grupo de plugins que vas a utilizar
@@ -217,11 +220,11 @@
 " }
 " Vim UI {
     set background=dark
-    ""colorscheme luna
+    " Colorsheme
+    exec 'colorscheme '.s:settings.colorscheme
     if has('gui_running')
         set cursorline                  " Resaltar linea actual
     endif
-
     " highlight clear SignColumn      " SignColumn con el mismo fondo
     " highlight clear LineNr          " Mismo color de fondo para la actual en relative mode
     " highlight clear CursorLineNr    " Quitar el resaltado de numero de linea.
@@ -230,7 +233,6 @@
     if has('syntax')
       syntax enable
     endif
-
     ""set showmode                  " Muetra -INSERT- y similares en la parte de abajo no activo para airline
     set shiftround
     set ruler
@@ -256,14 +258,15 @@
     " set listchars=""
     " set listchars=tab:\ \
     " set listchars+=trail:•
-    " set listchars+=extends:>
-    " set listchars+=precedes:<
+     " set listchars+=extends:>
+     " set listchars+=precedes:<
     if has('gui_running')
         if s:is_windows
-            set guifont=Inconsolata_for_Powerline:h10
-        endif
-        if has('gui_gtk')
-            set gfn=Inconsolata\ for\ Powerline\ 10
+            " set guifont=Inconsolata_for_Powerline:h10
+            exec 'set guifont='.s:settings.guifont.'_for_Powerline:h'.s:settings.guifontsize 
+        else
+            " set guifont=Inconsolata\ for\ Powerline\ 10
+            exec 'set guifont='.s:settings.guifont.'\ for\ Powerline\ '.s:settings.guifontsize 
         endif
     else
         if $COLORTERM == 'gnome-terminal'
@@ -347,9 +350,6 @@
 " Mapping {
     let mapleader = ','        " Configuación Escencial
 " }
-" Color scheme {{{
-    exec 'colorscheme '.s:settings.colorscheme
-"}}}
 "
 " Configuración de Plugins
 "
@@ -365,6 +365,7 @@ if count(s:settings.plugin_groups, 'core') "{{{
         let g:airline#extensions#tabline#left_alt_sep='¦'
         "let g:airline_symbols.space = "\ua0"
         let g:airline_powerline_fonts = 1
+        let g:airline_detect_whitespace=0
         "Declarado arriba -> set guifont=Inconsolata_for_Powerline:h10
         " Themes disponibles 'badwolf', 'bubblegum', 'base16', 'murmur', 'tomorrow',
         " 'sol', 'ubaryd', 'laederon', 'jellybeans', 'molokai', 'luna', 'solarized',
@@ -382,11 +383,6 @@ if count(s:settings.plugin_groups, 'core') "{{{
     " Provee varios pares de mapas de soporte [q ]q
     NeoBundle 'tpope/vim-unimpaired'
     " Configuración de vim-unimpaired {{{
-        " mover linea una posicion hacia arriba o abajo
-        nmap <c-up> [e
-        nmap <c-down> ]e
-        vmap <c-up> [egv
-        vmap <c-down> ]egv
     "}}}
     " Interactive command execution
     NeoBundle 'Shougo/vimproc.vim'
@@ -516,7 +512,7 @@ if count(s:settings.plugin_groups, 'latex') "{{{
         ""set shellslash
         ""set grepprg=grep\ -nH\ $*
     "}}}
-    
+
 endif "}}}
 if count(s:settings.plugin_groups, 'scala') "{{{
     NeoBundle 'derekwyatt/vim-scala'
@@ -560,7 +556,7 @@ if count(s:settings.plugin_groups, 'scm') "{{{
     " NeoBundle 'git://repo.or.cz/vcscommand'
 endif "}}}
 if count(s:settings.plugin_groups, 'gist') "{{{
-    " Plugin para crear Gist 
+    " Plugin para crear Gist
      NeoBundleLazy 'mattn/gist-vim', { 'depends': 'mattn/webapi-vim', 'autoload': { 'commands': 'Gist' } }
      "{{{
       let g:gist_post_private=1
@@ -604,7 +600,7 @@ if count(s:settings.plugin_groups, 'autocomplete') "{{{
         if !exists('g:neocomplete#keyword_patterns')
             let g:neocomplete#keyword_patterns = {}
         endif
-        " completar palabras en español por default 
+        " completar palabras en español por default
         let g:neocomplete#keyword_patterns._ = '[A-Za-zá-úÁ-ÚüñÑ_][0-9A-Za-zá-úÁ-ÚüñÑ_]*'
     "}}}
     " The ultimate snippet solution for Vim
@@ -657,7 +653,7 @@ if count(s:settings.plugin_groups, 'editing') "{{{
     " NeoBundle 'terryma/vim-multiple-cursors'
     " Edita una region seleccionada en otro buffer
     NeoBundle 'chrisbra/NrrwRgn'
-    " Vim script for text filtering and alignment 
+    " Vim script for text filtering and alignment
     NeoBundleLazy 'godlygeek/tabular', {'autoload':{'commands':'Tabularize'}}
     " Configuración de tabular{{{
         nmap <Leader>a& :Tabularize /&<CR>
@@ -757,7 +753,7 @@ if count(s:settings.plugin_groups, 'navigation') "{{{
         let g:EasyGrepCommand=1
         nnoremap <leader>vo :GrepOptions<cr>
     "}}}
-    " Nota: Personalmente uso vimfiler 
+    " Nota: Personalmente uso vimfiler
     " Explorador en Arbol (tree)
     "NeoBundleLazy 'scrooloose/nerdtree', {'autoload':{'commands':['NERDTreeToggle','NERDTreeFind']}}
     " Configuracion de nerdtree {{{
@@ -919,7 +915,7 @@ if count(s:settings.plugin_groups, 'unite') "{{{
     " }}}
 endif "}}}
 if count(s:settings.plugin_groups, 'indents') "{{{
-    NeoBundle 'nathanaelkane/vim-indent-guides' 
+    NeoBundle 'nathanaelkane/vim-indent-guides'
     " Configuración vim-indent-guides {{{
         let g:indent_guides_start_level=1
         let g:indent_guides_guide_size=1
@@ -953,17 +949,17 @@ if count(s:settings.plugin_groups, 'textobj') "{{{
     " Text objects for indented blocks of lines
     NeoBundle 'kana/vim-textobj-indent'
     " Configuración vim-textobj-indent {{{
-    " michaeljsmith/vim-indent-object 
+    " michaeljsmith/vim-indent-object
     " }}}
     " Text objects for entire buffer
     NeoBundle 'kana/vim-textobj-entire'
     " Configuracion vim-textobj-entire {{{
-    
+
     " }}}
     " Underscore text-object for Vim
     NeoBundle 'lucapette/vim-textobj-underscore'
     " Configuracion de vim-textobj-underscore {{{
-    " 
+    "
     " }}}
     " HAY UN MONTON DE TEXT OBJECTS en el github de kana
 endif "}}}
@@ -984,30 +980,32 @@ if count(s:settings.plugin_groups, 'distraction-free-mode') "{{{
     " Distraction free mode
     NeoBundle 'junegunn/goyo.vim'
     " Configuración de goyo.vim {{{
-     " General {
-        let s:save_background = ""
-        if exists("&background")
-            let s:save_background = &background
-        endif
-        let s:save_guifont = ""
-        if exists("&guifont")
-            let s:save_guifont = &guifont
-        endif
-    " }
-    " Markdown Goyo {
-        function! s:markdown_room()
-            setlocal background=light
-            setlocal linespace=5
-            ""setlocal guifont=Cousine:h12
-            colorscheme pencil
-
-            setlocal guifont= Inconsolata/ for/ Powerline/ 12
-        endfunction
-    " }
-
+        " General {
+            let s:save_background = ""
+            if exists("&background")
+                let s:save_background = &background
+            endif
+            let s:save_guifont = ""
+            if exists("&guifont")
+                let s:save_guifont = &guifont
+            endif
+        " }
+        " Markdown Goyo {
+            function! s:markdown_room()
+                set background=light
+                set linespace=5
+                if has('gui_running')
+                    if s:is_windows
+                        exec 'set guifont='.s:settings.guifont.'_for_Powerline:h'.s:settings.guifontsize_goyo 
+                    else
+                        exec 'set guifont='.s:settings.guifont.'\ for\ Powerline\ '.s:settings.guifontsize_goyo 
+                    endif
+                endif
+                colorscheme pencil
+            endfunction
+        " }
         function! s:goyo_enter()
             "set fullscreen
-            set background=dark
             set linespace=5
             set guioptions-=m  "remove menu bar
             set guioptions-=T  "remove toolbar
@@ -1024,21 +1022,19 @@ if count(s:settings.plugin_groups, 'distraction-free-mode') "{{{
                 endif
             " }
             " Asegurar salir con :q {
-            let b:quitting = 0
-            autocmd QuitPre <buffer> let b:quitting = 1
-            " }
-            " Fullscren {
+                let b:quitting = 0
+                autocmd QuitPre <buffer> let b:quitting = 1
             " }
         endfunction
         function! s:goyo_leave()
+            Limelight!
             set background=dark
-            colorscheme desert
+            exec 'colorscheme '.s:settings.colorscheme
             set linespace=0
             set guioptions+=m  "add menu bar
             set guioptions+=T  "add toolbar
             set guioptions+=r  "add right-hand scroll bar
             set guioptions+=L  "add left-hand scroll bar
-            Limelight!
             " Markdown {
                 if !has("gui_running")
                     return
@@ -1084,7 +1080,7 @@ if count(s:settings.plugin_groups, 'distraction-free-mode') "{{{
 
 endif "}}}
 if count(s:settings.plugin_groups, 'autocorrection') "{{{
-    
+
 endif "}}}
 if count(s:settings.plugin_groups, 'grammar-checker') "{{{
     " Corrector Ortografico y gramatical - Grammar checker
@@ -1093,14 +1089,14 @@ if count(s:settings.plugin_groups, 'grammar-checker') "{{{
     " Neobundle 'vim-scripts/vim-online-thesaurus''
 endif "}}}
 if count(s:settings.plugin_groups, 'language-tools') "{{{
-    
+
 endif "}}}
 if count(s:settings.plugin_groups, 'taskwarrior') "{{{
     " Administrador de tareas
     NeoBlunde 'farseer90718/vim-taskwarrior'
 endif "}}}
 if count(s:settings.plugin_groups, 'shell') "{{{
-    " Shell interactiva para vim 
+    " Shell interactiva para vim
     NeoBundleLazy 'Shougo/vimshell.vim', {'autoload':{'commands':[ 'VimShell', 'VimShellInteractive' ]}}
     "{{{
       if s:is_macvim
@@ -1139,10 +1135,10 @@ if count(s:settings.plugin_groups, 'utilities') "{{{
     "
 endif "}}}
 if count(s:settings.plugin_groups, 'autocorrection') "{{{
-    
+
 endif "}}}
 if count(s:settings.plugin_groups, 'autocorrection') "{{{
-    
+
 endif "}}}
 if count(s:settings.plugin_groups, 'misc') "{{{
     if exists('$TMUX')
@@ -1175,13 +1171,15 @@ endif "}}}
 "
 " Asignaciones (Mappings)
 "
-" Edición {
+" Edición {{
     " salir del modo insercion rapidamene
     inoremap jk <esc>
     " Cut, Paste, Copy
     vmap <C-x> d
     vmap <C-v> p
     vmap <C-c> y
+    " hacer Y consistente con C and D. See :help Y.
+    nnoremap Y y$
     " Undo, Redo (broken)
     nnoremap <C-z> :undo<CR>
     inoremap <C-z> <Esc>:undo<CR>
@@ -1199,7 +1197,41 @@ endif "}}}
     if mapcheck('<space>/') == ''
         nnoremap <space>/ :vimgrep //gj **/*<left><left><left><left><left><left><left><left>
     endif
-" }
+    " mostrar/ocultar caracteres especiales
+    nmap <leader>l :set list! list?<cr>
+    " reselect last paste
+    nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
+    " Swap two words
+    nmap <silent> gw :s/\(\%#\w\+\)\(\_W\+\)\(\w\+\)/\3\2\1/<CR>`'
+    " Underline the current line with '='
+    nmap <silent> <leader>ul :t.<CR>Vr=
+    " set text wrapping toggles
+    nmap <silent> <leader>tw :set invwrap<CR>:set wrap?<CR>
+    " mover linea una posicion hacia arriba o abajo
+    nmap <c-up> [e
+    nmap <c-down> ]e
+    nmap <C-k> [e
+    nmap <C-j> ]e
+    vmap <c-up> [egv
+    vmap <c-down> ]egv
+    vmap <C-k> [egv
+    vmap <C-j> ]egv
+    " formatear todo el documento
+    nmap <leader>fef :call Preseve("normal gg=G")<CR>
+    " nnoremap <leader>fef :normal! gg=G``<CR>
+    " borrar espacios en blanco del final d la linea
+    nmap <leader>f$ :call StripTrailingWhitespace()<CR>
+    " borrar lineas en blanco.
+    nmap <leader>fd :call Preserve(":g/^$/d")<CR>
+    " ordenar lineas albaticamente/numeralmente
+    vmap <leader>s :sort<cr>
+    " upper/lower word
+    nmap <leader>u mQviwU`Q
+    nmap <leader>l mQviwu`Q
+    " upper/lower first char of word
+    nmap <leader>U mQgewvU`Q
+    nmap <leader>L mQgewvu`Q
+" }}
 " Busqueda {
     " Limpiar el resultado de busqueda
     nmap <silent> ,/ :nohlsearch<CR>
@@ -1209,14 +1241,27 @@ endif "}}}
     nnoremap ? ?\v
     vnoremap ? ?\v
     nnoremap :s/ :s/\v
+    " mostrar/ocultar resaltado de busqueda
+    nnoremap <BS> :set hlsearch! hlsearch?<cr>
+    " find current word in quickfix
+    nnoremap <leader>fw :execute "vimgrep ".expand("<cword>")." %"<cr>:copen<cr>
+    " find last search in quickfix
+    nnoremap <leader>ff :execute 'vimgrep /'.@/.'/g %'<cr>:copen<cr>
+
 " }
 " Identación {
-    " En visual-mode
-    vnoremap <Tab> >
-    vnoremap <S-Tab> <
     " reselect visual block after indent
     vnoremap < <gv
     vnoremap > >gv
+    " identar con command-[]
+    vmap <A-]> >gv
+    vmap <A-[> <gv
+    nmap <A-]> >>
+    nmap <A-[> <<
+    omap <A-]> >>
+    omap <A-[> <<
+    imap <A-]> <Esc>>>i
+    imap <A-[> <Esc><<i
 " }
 " Navegación {
     " buffers
@@ -1224,6 +1269,8 @@ endif "}}}
     imap <M-right> <Esc>:bnext<CR>
     nnoremap <M-left> :bprevious<CR>
     imap <M-left> <Esc>:bprevious<CR>
+    " cerrar buffer
+    nnoremap <silent> Q :call CloseWindowOrKillBuffer()<cr>
     " tabs
     nnoremap <M-up> :tabnext<CR>
     imap <M-up> <Esc>:tabnext<CR>
@@ -1252,7 +1299,7 @@ endif "}}}
     ""map <C-8> 8gt
     ""map <C-9> 9gt
     ""map <C-0> :tablast<CR>
-    " Listas de Cambio y saltos 
+    " Listas de Cambio y saltos
     " g;                    Moverse atras a travez de la lista de cambios
     " g,                    Moverse delante a travez de la lista de cambios
     " :changes              Lista de cambios
@@ -1260,7 +1307,7 @@ endif "}}}
     " <c-I>                 Saltar hacia delante a travez de la lista de saltos
     " :jumps                Lista de Saltos
     " <c-]>                 Seguir el enlace bajo el cursor
-    " Abrir archivo 
+    " Abrir archivo
     ""cnoremap %% <C-R>=fnameescape(expand('%:h')).'/'<cr>
     ""map <leader>ew :e %%
     ""map <leader>es :sp %%
@@ -1280,23 +1327,29 @@ endif "}}}
     nnoremap <silent> g# g#zz
     nnoremap <silent> <C-o> <C-o>zz
     nnoremap <silent> <C-i> <C-i>zz
+    " movimiento entre ventanas
+    nnoremap <leader>v <C-w>v<C-w>l
+    nnoremap <leader>s <C-w>s
+    nnoremap <C-h> <C-w>h
+    nnoremap <C-j> <C-w>j
+    nnoremap <C-k> <C-w>k
+    nnoremap <C-l> <C-w>l
+    " Abrir rapidamente un buffer
+    nnoremap gb :ls<cr>:e #
+    " Some helpers to edit mode
+    " http://vimcasts.org/e/14
+    nmap <leader>ew :e <C-R>=expand('%:h').'/'<cr>
+    nmap <leader>es :sp <C-R>=expand('%:h').'/'<cr>
+    nmap <leader>ev :vsp <C-R>=expand('%:h').'/'<cr>
+    nmap <leader>et :tabe <C-R>=expand('%:h').'/'<cr>
 "}
-" Formateo {
-    " formatear todo el documento
-    nmap <leader>fef :call Preseve("normal gg=G")<CR>
-    " borrar espacios en blanco del final d la linea
-    nmap <leader>f$ :call StripTrailingWhitespace()<CR>
-    " borrar lineas en blanco.
-    nmap <leader>fd :call Preserve(":g/^$/d")<CR>
-    " ordenar lineas albaticamente/numeralmente
-    vmap <leader>s :sort<cr>
-
-" }
 " command-line window {
     nnoremap ; :
     nnoremap q: q:i
     nnoremap q/ q/i
     nnoremap q? q?i
+    " After whitespace, insert the current directory into a command-line path
+    cnoremap <expr> <C-P> getcmdline()[getcmdpos()-2] ==# ' ' ? expand('%:p:h') : "\<C-P>"
 " }
 " Replegado {
     nnoremap zr zr:echo &foldlevel<cr>
@@ -1304,86 +1357,42 @@ endif "}}}
     nnoremap zR zR:echo &foldlevel<cr>
     nnoremap zM zM:echo &foldlevel<cr>
 " }
-    
-  " reselect last paste
-  nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
-
-" find current word in quickfix
-  nnoremap <leader>fw :execute "vimgrep ".expand("<cword>")." %"<cr>:copen<cr>
-" find last search in quickfix
-  nnoremap <leader>ff :execute 'vimgrep /'.@/.'/g %'<cr>:copen<cr>
-
-" shortcuts for windows
-    nnoremap <leader>v <C-w>v<C-w>l
-    nnoremap <leader>s <C-w>s
-    nnoremap <leader>vsa :vert sba<cr>
-    nnoremap <C-h> <C-w>h
-    nnoremap <C-j> <C-w>j
-    nnoremap <C-k> <C-w>k
-    nnoremap <C-l> <C-w>l
-
-" tab shortcuts
-  map <leader>tn :tabnew<CR>
-  map <leader>tc :tabclose<CR>
-
-" make Y consistent with C and D. See :help Y.
-  nnoremap Y y$
-
-" hide annoying quit message
-  nnoremap <C-c> <C-c>:echo<cr>
-
-" window killer
-  nnoremap <silent> Q :call CloseWindowOrKillBuffer()<cr>
-
-" quick buffer open
-  nnoremap gb :ls<cr>:e #
-
-  if neobundle#is_sourced('vim-dispatch')
-    nnoremap <leader>tag :Dispatch ctags -R<cr>
-  endif
-
-" general
-  nmap <leader>l :set list! list?<cr>
-  nnoremap <BS> :set hlsearch! hlsearch?<cr>
-
-  map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+" Misc {
+    " TODO: Investigar como se usa.
+    if neobundle#is_sourced('vim-dispatch')
+        nnoremap <leader>tag :Dispatch ctags -R<cr>
+    endif
+    " Mostrar informacion sobre la palabra actual
+    map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
         \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
         \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+" cd to the directory containing the file in the buffer
+nmap <silent> <leader>cd :lcd %:h<CR>
+" Create the directory containing the file in the buffer
+nmap <silent> <leader>md :!mkdir -p %:p:h<CR>
+" Adjust viewports to the same size
+map <Leader>= <C-w>=
 
-" helpers for profiling
-    nnoremap <silent> <leader>DD :exe ":profile start profile.log"<cr>:exe ":profile func *"<cr>:exe ":profile file *"<cr>
-    nnoremap <silent> <leader>DP :exe ":profile pause"<cr>
-    nnoremap <silent> <leader>DC :exe ":profile continue"<cr>
-    nnoremap <silent> <leader>DQ :exe ":profile pause"<cr>:noautocmd qall!<cr>
+" }
 "
-" Commands
-"
-" commands {
-  command! -bang Q q<bang>
-  command! -bang QA qa<bang>
-  command! -bang Qa qa<bang>
-"}
-"
-" Configuraciones según tipo de archivo
+" Autocomandos
 "
 " HelpFile {
-    au FileType helpfile set nonumber               
-    au FileType helpfile nnoremap <buffer><cr> <c-]>  
-    au FileType helpfile nnoremap <buffer><bs> <c-T>    
+    au FileType helpfile set nonumber
 " }
-
-
-" autocmd {{{
+" Misc {
 " go back to previous position of cursor if any
+  au FileType make setlocal noexpandtab
   autocmd BufReadPost *
     \ if line("'\"") > 0 && line("'\"") <= line("$") |
     \ exe 'normal! g`"zvzz' |
     \ endif
-
+  "
+  au BufNewFile,BufRead *.json set ft=javascript
   autocmd FileType js,scss,css autocmd BufWritePre <buffer> call StripTrailingWhitespace()
   autocmd FileType css,scss setlocal foldmethod=marker foldmarker={,}
   autocmd FileType css,scss nnoremap <silent> <leader>S vi{:sort<CR>
-  autocmd FileType python setlocal foldmethod=indent
+  autocmd FileType python setlocal foldmethod=indent tabstop=4 shiftwidth=4
   autocmd FileType markdown setlocal nolist
   autocmd FileType vim setlocal fdm=indent keywordprg=:help
 
@@ -1398,9 +1407,9 @@ endif "}}}
 
   " Treat .rss files as XML
   " autocmd BufNewFile,BufRead *.rss setfiletype xml
-"}}}}
+" }}
 
-  " Terminar de cargar, desabilitar plugins {
+" Terminar de cargar, desabilitar plugins {
   if exists('s:settings.disabled_plugins')
     for plugin in s:settings.disabled_plugins
       exec 'NeoBundleDisable '.plugin
