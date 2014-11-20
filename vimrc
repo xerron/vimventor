@@ -23,9 +23,12 @@
 " Init {
     let s:settings = {}
     let s:settings.colorscheme = 'hybrid'
-    let s:settings.guifont = 'Inconsolata'
-    let s:settings.guifontsize = '10'
-    let s:settings.guifontsize_goyo = '13'
+    let s:settings.guifont_win = 'Source_Code_Pro_for_Powerline_Regular:h10'
+    let s:settings.guifont_linux = 'Source\ Code\ Pro\ for\ Powerline\ Medium\ 10'
+    let s:settings.guifont_mac = 'Source_Code_Pro_for_Powerline_Regular:h10'
+    let s:settings.guifont_win_goyo = 'Cousine:h13'
+    let s:settings.guifont_linux_goyo = 'Cousine\ 13'
+    let s:settings.guifont_mac_goyo = 'Cousine:h13'
 
     " ---------------------------------------------------------
     " Comenta/descomenta el grupo de plugins que vas a utilizar
@@ -262,11 +265,11 @@
      " set listchars+=precedes:<
     if has('gui_running')
         if s:is_windows
-            " set guifont=Inconsolata_for_Powerline:h10
-            exec 'set guifont='.s:settings.guifont.'_for_Powerline:h'.s:settings.guifontsize 
+            exec 'set guifont='.s:settings.guifont_win 
+        elseif s:is_macvim
+            exec 'set guifont='.s:settings.guifont_mac 
         else
-            " set guifont=Inconsolata\ for\ Powerline\ 10
-            exec 'set guifont='.s:settings.guifont.'\ for\ Powerline\ '.s:settings.guifontsize 
+            exec 'set guifont='.s:settings.guifont_linux 
         endif
     else
         if $COLORTERM == 'gnome-terminal'
@@ -980,28 +983,20 @@ if count(s:settings.plugin_groups, 'distraction-free-mode') "{{{
     " Distraction free mode
     NeoBundle 'junegunn/goyo.vim'
     " Configuración de goyo.vim {{{
-        " General {
-            let s:save_background = ""
-            if exists("&background")
-                let s:save_background = &background
-            endif
-            let s:save_guifont = ""
-            if exists("&guifont")
-                let s:save_guifont = &guifont
-            endif
-        " }
         " Markdown Goyo {
             function! s:markdown_room()
-                set background=light
+                "set background=light
                 set linespace=5
                 if has('gui_running')
                     if s:is_windows
-                        exec 'set guifont='.s:settings.guifont.'_for_Powerline:h'.s:settings.guifontsize_goyo 
+                        exec 'set guifont='.s:settings.guifont_win_goyo 
+                    elseif s:is_macvim
+                        exec 'set guifont='.s:settings.guifont_mac_goyo 
                     else
-                        exec 'set guifont='.s:settings.guifont.'\ for\ Powerline\ '.s:settings.guifontsize_goyo 
+                        exec 'set guifont='.s:settings.guifont_linux_goyo 
                     endif
                 endif
-                colorscheme pencil
+                "colorscheme pencil
             endfunction
         " }
         function! s:goyo_enter()
@@ -1035,19 +1030,18 @@ if count(s:settings.plugin_groups, 'distraction-free-mode') "{{{
             set guioptions+=T  "add toolbar
             set guioptions+=r  "add right-hand scroll bar
             set guioptions+=L  "add left-hand scroll bar
-            " Markdown {
-                if !has("gui_running")
-                    return
+            if !has("gui_running")
+                return
+            endif
+            if has('gui_running')
+                if s:is_windows
+                    exec 'set guifont='.s:settings.guifont_win 
+                elseif s:is_macvim
+                    exec 'set guifont='.s:settings.guifont_mac 
+                else
+                    exec 'set guifont='.s:settings.guifont_linux 
                 endif
-                let is_mark_or_rst = &filetype == "markdown" || &filetype == "rst" || &filetype == "text" || &filetype == "mkd" || &filetype == "md"
-                if is_mark_or_rst
-                    set linespace=0
-                    if s:save_background != ""
-                        exec( "set background=" . s:save_background )
-                        exec( "set guifont=" . s:save_guifont )
-                    endif
-                endif
-            " }
+            endif
             " Asegura salir con :q
             if b:quitting && len(filter(range(1, bufnr('$')), 'buflisted(v:val)')) == 1
                 qa
