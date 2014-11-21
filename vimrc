@@ -23,9 +23,10 @@
 " Init {
     let s:settings = {}
     let s:settings.colorscheme = 'hybrid'
-    let s:settings.guifont_win = 'Source_Code_Pro_for_Powerline_Regular:h10'
+    " let s:settings.guifont_win = 'Inconsolata-g_for_Powerline:h10'
+    let s:settings.guifont_win = 'Sauce_Code_Powerline:h11'
     let s:settings.guifont_linux = 'Source\ Code\ Pro\ for\ Powerline\ Medium\ 10'
-    let s:settings.guifont_mac = 'Source_Code_Pro_for_Powerline_Regular:h10'
+    let s:settings.guifont_mac = 'Source_Code_Pro_for_Powerline:h10'
     let s:settings.guifont_win_goyo = 'Cousine:h13'
     let s:settings.guifont_linux_goyo = 'Cousine\ 13'
     let s:settings.guifont_mac_goyo = 'Cousine:h13'
@@ -47,7 +48,7 @@
     "call add(s:settings.plugin_groups, 'syntax')
     call add(s:settings.plugin_groups, 'scm')
     call add(s:settings.plugin_groups, 'markdown')
-    "call add(s:settings.plugin_groups, 'latex')
+    call add(s:settings.plugin_groups, 'latex')
     call add(s:settings.plugin_groups, 'restructuretex')
     "call add(s:settings.plugin_groups, 'web')
     "call add(s:settings.plugin_groups, 'javascript')
@@ -497,9 +498,15 @@ if count(s:settings.plugin_groups, 'python') "{{{
 "}}}
 endif "}}}
 if count(s:settings.plugin_groups, 'latex') "{{{
+    " A simple and lightweight vim-plugin for editing LaTeX files.
+    NeoBundle 'lervag/vim-latex'
+    " Configuración vim-latex{{{
+
+    " }}} 
     "NeoBundle 'git://git.code.sf.net/p/vim-latex/vim-latex'
-    NeoBundle 'xerron/vim-latex'
-    "{{{
+    "NeoBundle 'xerron/vim-latex'
+    " Configuración vim-latex {{{
+    if s:is_windows
         " poner en el sumatra
         " "C:\Program Files\Vim\vim73\gvim.exe" --remote-silent +%l "%f"
         let g:tex_flavor='latex'
@@ -508,6 +515,9 @@ if count(s:settings.plugin_groups, 'latex') "{{{
         ""let g:Tex_ViewRule_pdf='SumatraPDF -reuse-instance -inverse-search "gvim -c \":RemoteOpen +\%l \%f\""'
         let g:Tex_ViewRule_pdf='SumatraPDF -reuse-instance -inverse-search "gvim --remote-silent +\%l \"\%f\""'
         let g:Tex_MultipleCompileFormats='pdf'
+    else
+        
+    endif
         " escribir esto en: ~/.vim/ftplugin/tex.vim file:
         "set sw=2
         "set iskeyword+=:
