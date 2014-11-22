@@ -501,7 +501,10 @@ if count(s:settings.plugin_groups, 'latex') "{{{
     " A simple and lightweight vim-plugin for editing LaTeX files.
     NeoBundle 'lervag/vim-latex'
     " Configuración vim-latex{{{
-
+        let g:latex_fold_enabled = 1
+        let g:latex_latexmk_output = 'pdf'
+        " Configuracion Sumatra:  C:\Temp\Vim\vim74\gvim.exe" --remote-silent +%l "%f"
+        let g:latex_viewer = 'SumatraPDF'
     " }}} 
     "NeoBundle 'git://git.code.sf.net/p/vim-latex/vim-latex'
     "NeoBundle 'xerron/vim-latex'
@@ -525,7 +528,6 @@ if count(s:settings.plugin_groups, 'latex') "{{{
         ""set shellslash
         ""set grepprg=grep\ -nH\ $*
     "}}}
-
 endif "}}}
 if count(s:settings.plugin_groups, 'scala') "{{{
     NeoBundle 'derekwyatt/vim-scala'
@@ -1202,7 +1204,7 @@ endif "}}}
         nnoremap <space>/ :vimgrep //gj **/*<left><left><left><left><left><left><left><left>
     endif
     " mostrar/ocultar caracteres especiales
-    nmap <leader>l :set list! list?<cr>
+    "nmap <leader>l :set list! list?<cr>
     " reselect last paste
     nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
     " Swap two words
@@ -1230,11 +1232,11 @@ endif "}}}
     " ordenar lineas albaticamente/numeralmente
     vmap <leader>s :sort<cr>
     " upper/lower word
-    nmap <leader>u mQviwU`Q
-    nmap <leader>l mQviwu`Q
+    " nmap <leader>u mQviwU`Q
+    " nmap <leader>l mQviwu`Q
     " upper/lower first char of word
-    nmap <leader>U mQgewvU`Q
-    nmap <leader>L mQgewvu`Q
+    " nmap <leader>U mQgewvU`Q
+    " nmap <leader>L mQgewvu`Q
 " }}
 " Busqueda {
     " Limpiar el resultado de busqueda
