@@ -502,9 +502,33 @@ if count(s:settings.plugin_groups, 'latex') "{{{
     NeoBundle 'lervag/vim-latex'
     " Configuración vim-latex{{{
         let g:latex_fold_enabled = 1
+        let g:tex_flavor = "latex"
         let g:latex_latexmk_output = 'pdf'
-        " Configuracion Sumatra:  C:\Temp\Vim\vim74\gvim.exe" --remote-silent +%l "%f"
-        let g:latex_viewer = 'SumatraPDF'
+        " let g:latex_complete_close_braces = 0
+        let g:latex_quickfix_mode = 2
+        " let g:latex_latexmk_autojump = 0
+        let g:latex_toc_enabled = 1
+        if s:is_windows
+            " Configuracion Sumatra:  C:\Temp\Vim\vim74\gvim.exe" --remote-silent +%l "%f"
+            " let g:latex_viewer = 'SumatraPDF'
+            " let g:latex_viewer='SumatraPDF -reuse-instance -inverse-search "gvim --remote-silent +\%l \"\%f\""'
+            let g:latex_viewer='SumatraPDF -reuse-instance -inverse-search '.
+                \ '"gvim --servername '.v:servername.' --remote-send \"^<C-\^>^<C-n^>'.
+                \ ':drop \%f^<CR^>:\%l^<CR^>:normal\! zzzv^<CR^>'.
+                \ ':call remote_foreground('''.v:servername.''')^<CR^>\""'
+            nnoremap <expr><buffer><silent> <F10> ':VimLatexView -forward-search '
+                \ . shellescape(expand('%:p')) . ' '
+                \ . line(".") . ' '
+                \ . shellescape(g:latex#data[b:latex.id].out()) . '<CR>'
+        else
+            let g:latex_viewer = 'evince'
+            function! SyncTexForward()
+                call latex#view('--unique '
+                \ . g:latex#data[b:latex.id].out()
+                \ . '\#src:' . line(".") . expand('%:p'))
+            endfunction
+            nmap <leader>ls :call SyncTexForward()<cr>
+        endif
     " }}} 
     "NeoBundle 'git://git.code.sf.net/p/vim-latex/vim-latex'
     "NeoBundle 'xerron/vim-latex'
