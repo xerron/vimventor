@@ -509,17 +509,17 @@ if count(s:settings.plugin_groups, 'latex') "{{{
         " let g:latex_latexmk_autojump = 0
         let g:latex_toc_enabled = 1
         if s:is_windows
-            " Configuracion Sumatra:  C:\Temp\Vim\vim74\gvim.exe" --remote-silent +%l "%f"
-            " let g:latex_viewer = 'SumatraPDF'
-            " let g:latex_viewer='SumatraPDF -reuse-instance -inverse-search "gvim --remote-silent +\%l \"\%f\""'
+            " Configuracion Sumatra:  gvim --remote-silent +%l "%f"
+            " let g:latex_viewer='SumatraPDF'
             let g:latex_viewer='SumatraPDF -reuse-instance -inverse-search '.
-                \ '"gvim --servername '.v:servername.' --remote-send \"^<C-\^>^<C-n^>'.
-                \ ':drop \%f^<CR^>:\%l^<CR^>:normal\! zzzv^<CR^>'.
-                \ ':call remote_foreground('''.v:servername.''')^<CR^>\""'
-            nnoremap <expr><buffer><silent> <F10> ':VimLatexView -forward-search '
+            \ '"gvim --servername '.v:servername.' --remote-send \"^<C-\^>^<C-n^>'.
+            \ ':execute ''drop ''.fnameescape(''\%f'')^<CR^>:\%l^<CR^>:normal\! zzzv^<CR^>'.
+            \ ':call remote_foreground('''.v:servername.''')^<CR^>\""'
+            nnoremap <expr><silent> gb ':VimLatexView -forward-search '
                 \ . shellescape(expand('%:p')) . ' '
                 \ . line(".") . ' '
                 \ . shellescape(g:latex#data[b:latex.id].out()) . '<CR>'
+            " nnoremap <expr><silent> gb  ':wall<bar>VimLatexView '.'-forward-search "'.shellescape(expand('%:p')).'" '.line(".").' '.shellescape(g:latex#data[b:latex.id].out()).'<CR>'
         else
             let g:latex_viewer = 'evince'
             function! SyncTexForward()
@@ -530,28 +530,6 @@ if count(s:settings.plugin_groups, 'latex') "{{{
             nmap <leader>ls :call SyncTexForward()<cr>
         endif
     " }}} 
-    "NeoBundle 'git://git.code.sf.net/p/vim-latex/vim-latex'
-    "NeoBundle 'xerron/vim-latex'
-    " Configuración vim-latex {{{
-    if s:is_windows
-        " poner en el sumatra
-        " "C:\Program Files\Vim\vim73\gvim.exe" --remote-silent +%l "%f"
-        let g:tex_flavor='latex'
-        let g:Tex_DefaultTargetFormat = 'pdf'
-        let g:Tex_CompileRule_pdf = 'pdflatex --synctex=1 -interaction=nonstopmode $*'
-        ""let g:Tex_ViewRule_pdf='SumatraPDF -reuse-instance -inverse-search "gvim -c \":RemoteOpen +\%l \%f\""'
-        let g:Tex_ViewRule_pdf='SumatraPDF -reuse-instance -inverse-search "gvim --remote-silent +\%l \"\%f\""'
-        let g:Tex_MultipleCompileFormats='pdf'
-    else
-        
-    endif
-        " escribir esto en: ~/.vim/ftplugin/tex.vim file:
-        "set sw=2
-        "set iskeyword+=:
-
-        ""set shellslash
-        ""set grepprg=grep\ -nH\ $*
-    "}}}
 endif "}}}
 if count(s:settings.plugin_groups, 'scala') "{{{
     NeoBundle 'derekwyatt/vim-scala'
@@ -1365,7 +1343,7 @@ endif "}}}
     nnoremap <C-k> <C-w>k
     nnoremap <C-l> <C-w>l
     " Abrir rapidamente un buffer
-    nnoremap gb :ls<cr>:e #
+    " nnoremap gb :ls<cr>:e #
     " Some helpers to edit mode
     " http://vimcasts.org/e/14
     nmap <leader>ew :e <C-R>=expand('%:h').'/'<cr>
