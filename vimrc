@@ -515,11 +515,15 @@ if count(s:settings.plugin_groups, 'latex') "{{{
             \ '"gvim --servername '.v:servername.' --remote-send \"^<C-\^>^<C-n^>'.
             \ ':execute ''drop ''.fnameescape(''\%f'')^<CR^>:\%l^<CR^>:normal\! zzzv^<CR^>'.
             \ ':call remote_foreground('''.v:servername.''')^<CR^>\""'
-            nnoremap <expr><silent> gb ':VimLatexView -forward-search '
+            nnoremap <expr><silent> gt ':VimLatexView -forward-search '
                 \ . shellescape(expand('%:p')) . ' '
                 \ . line(".") . ' '
                 \ . shellescape(g:latex#data[b:latex.id].out()) . '<CR>'
-            " nnoremap <expr><silent> gb  ':wall<bar>VimLatexView '.'-forward-search "'.shellescape(expand('%:p')).'" '.line(".").' '.shellescape(g:latex#data[b:latex.id].out()).'<CR>'
+            nnoremap <expr><silent> gb ':Start! SumatraPDF -forward-search '
+                \ . shellescape(expand('%:p')) . ' '
+                \ . line(".") . ' '
+                \ . shellescape(g:latex#data[b:latex.id].out()) . '<CR><CR>'
+            " nnoremap <expr><silent> gt  ':wall<bar>VimLatexView '.'-forward-search "'.shellescape(expand('%:p')).'" '.line(".").' '.shellescape(g:latex#data[b:latex.id].out()).'<CR>'
         else
             let g:latex_viewer = 'evince'
             function! SyncTexForward()
