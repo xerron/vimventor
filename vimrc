@@ -511,10 +511,13 @@ if count(s:settings.plugin_groups, 'latex') "{{{
         if s:is_windows
             " Configuracion Sumatra:  gvim --remote-silent +%l "%f"
             " let g:latex_viewer='SumatraPDF'
-            let g:latex_viewer='SumatraPDF -reuse-instance -inverse-search '.
-            \ '"gvim --servername '.v:servername.' --remote-send \"^<C-\^>^<C-n^>'.
-            \ ':execute ''drop ''.fnameescape(''\%f'')^<CR^>:\%l^<CR^>:normal\! zzzv^<CR^>'.
-            \ ':call remote_foreground('''.v:servername.''')^<CR^>\""'
+            " general , sumatrapdf, mupdf
+            let g:latex_view_method = 'general'
+            let g:latex_view_general_viewer = 'SumatraPDF'
+            let g:latex_view_genreal_options = '-reuse-instance -inverse-search '.
+                \ '"gvim --servername '.v:servername.' --remote-send \"^<C-\^>^<C-n^>'.
+                \ ':execute ''drop ''.fnameescape(''\%f'')^<CR^>:\%l^<CR^>:normal\! zzzv^<CR^>'.
+                \ ':call remote_foreground('''.v:servername.''')^<CR^>\""'
             nnoremap <expr><silent> gt ':VimLatexView -forward-search '
                 \ . shellescape(expand('%:p')) . ' '
                 \ . line(".") . ' '
@@ -531,7 +534,7 @@ if count(s:settings.plugin_groups, 'latex') "{{{
                 \ . g:latex#data[b:latex.id].out()
                 \ . '\#src:' . line(".") . expand('%:p'))
             endfunction
-            nmap <leader>ls :call SyncTexForward()<cr>
+            nmap gb :call SyncTexForward()<cr>
         endif
     " }}} 
 endif "}}}
@@ -1003,7 +1006,7 @@ if count(s:settings.plugin_groups, 'distraction-free-mode') "{{{
     " Configuración de goyo.vim {{{
         " Markdown Goyo {
             function! s:markdown_room()
-                "set background=light
+                " set background=light
                 set linespace=5
                 if has('gui_running')
                     if s:is_windows
@@ -1014,7 +1017,7 @@ if count(s:settings.plugin_groups, 'distraction-free-mode') "{{{
                         exec 'set guifont='.s:settings.guifont_linux_goyo 
                     endif
                 endif
-                "colorscheme pencil
+                colorscheme hybrid-light
             endfunction
         " }
         function! s:goyo_enter()
@@ -1089,7 +1092,6 @@ if count(s:settings.plugin_groups, 'distraction-free-mode') "{{{
         " r quita el scrollbar
         ""b:shell_fullscreen_items
     "}}}
-
 endif "}}}
 if count(s:settings.plugin_groups, 'autocorrection') "{{{
 
@@ -1136,7 +1138,7 @@ if count(s:settings.plugin_groups, 'vim') "{{{
     " All 256 xterm colors with their RGB equivalents
     NeoBundleLazy 'guns/xterm-color-table.vim', {'autoload':{'commands':'XtermColorTable'}}
     " The Vim FAQ from http://vimdoc.sourceforge.net/ http://vimdoc.sourceforge.net/
-    """NeoBundle 'chrisbra/vim_faq'
+    "NeoBundle 'chrisbra/vim_faq'
 endif "}}}
 if count(s:settings.plugin_groups, 'timeboxing') "{{{
 
