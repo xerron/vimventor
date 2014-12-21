@@ -409,10 +409,12 @@ if count(s:settings.plugin_groups, 'core') "{{{
         nmap <C-W>! <Plug>Kwbd
     """}}}
     " Zoom in/out of windows (toggle between one window and multi-window)
-    NeoBundle 'regedarek/ZoomWin'
+   NeoBundle 'regedarek/ZoomWin'
     " Configuración ZoomWin {{{
         map <leader>zw :ZoomWin<CR>
     " }}}
+    " vim interface to Web API
+    NeoBundle 'mattn/webapi-vim'
 endif "}}}
 if count(s:settings.plugin_groups, 'markdown') "{{{
     NeoBundleLazy 'tpope/vim-markdown', {'autoload':{'filetypes':['markdown']}}
@@ -444,9 +446,9 @@ if count(s:settings.plugin_groups, 'web') "{{{
     " Vendors Prefixes 
     " :highlight VendorPrefix guifg=#00ffff gui=bold
     " :match VendorPrefix /-\(moz\|webkit\|o\|ms\)-[a-zA-Z-]\+/
-    " 
+    " Highlight colors in css files
     NeoBundleLazy 'ap/vim-css-color', {'autoload':{'filetypes':['css','scss','sass','less','styl']}}
-    " 
+    " HTML5 omnicomplete and syntax whit SVG inline
     NeoBundleLazy 'othree/html5.vim', {'autoload':{'filetypes':['html']}}
     " Configuracion de html5.vim {
         "let g:html5_event_handler_attributes_complete = 0
@@ -454,17 +456,11 @@ if count(s:settings.plugin_groups, 'web') "{{{
         "let g:html5_microdata_attributes_complete = 0
         "let g:html5_aria_attributes_complete = 0
     " }
-    "
+    " Syntax Highlighting for Stylus
     "NeoBundleLazy 'wavded/vim-stylus', {'autoload':{'filetypes':['styl']}}
-    "
-    "NeoBundleLazy 'digitaltoad/vim-jade', {'autoload':{'filetypes':['jade']}}
-    "
-    "NeoBundleLazy 'juvenn/mustache.vim', {'autoload':{'filetypes':['mustache']}}
-    "
+    " Vim's MatchParen for HTML tags
     NeoBundleLazy 'gregsexton/MatchTag', {'autoload':{'filetypes':['html','xml']}}
-    " 
-    NeoBundle 'mattn/webapi-vim'
-    " 
+    " emmet for vim
     NeoBundleLazy 'mattn/emmet-vim', {'autoload':{'filetypes':['html','xml','xsl','xslt','xsd','css','sass','scss','less','mustache']}} "{{{
       function! s:zen_html_tab()
         let line = getline('.')
