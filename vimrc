@@ -39,7 +39,9 @@
     call add(s:settings.plugin_groups, 'distraction-free-mode')
     call add(s:settings.plugin_groups, 'autocomplete')
     call add(s:settings.plugin_groups, 'unite')
-    "call add(s:settings.plugin_groups, 'ctrlp')
+    "call add(s:settings.plugin_groups, 'grammar-checker')
+    "call add(s:settings.plugin_groups, 'language-tools')
+    "call add(s:settings.plugin_groups, 'timeboxing')
     call add(s:settings.plugin_groups, 'navigation')
     call add(s:settings.plugin_groups, 'editing')
     "call add(s:settings.plugin_groups, 'indents')
@@ -50,7 +52,7 @@
     call add(s:settings.plugin_groups, 'markdown')
     call add(s:settings.plugin_groups, 'latex')
     call add(s:settings.plugin_groups, 'restructuretex')
-    "call add(s:settings.plugin_groups, 'web')
+    call add(s:settings.plugin_groups, 'web')
     "call add(s:settings.plugin_groups, 'javascript')
     "call add(s:settings.plugin_groups, 'python')
     "call add(s:settings.plugin_groups, 'ruby')
@@ -429,22 +431,40 @@ if count(s:settings.plugin_groups, 'csv') "{{{
     au BufNewFile,BufRead *.csv,*.xls setf csv
 endif "}}}
 if count(s:settings.plugin_groups, 'web') "{{{
+    " vim syntax for LESS (dynamic CSS) 
     "NeoBundleLazy 'groenewege/vim-less', {'autoload':{'filetypes':['less']}}
+    " Configuracion para vim-less {
+        "nnoremap <Leader>setlocal iskeyword+=-m :w <BAR> !lessc % > %:t:r.css<CR><space>
+    " }
+    " Vim syntax file for scss (Sassy CSS) 
     NeoBundleLazy 'cakebaker/scss-syntax.vim', {'autoload':{'filetypes':['scss','sass']}}
+        " autocmd FileType scss set iskeyword+=-
+    " Add CSS3 syntax support to vim's built-in `syntax/css.vim`.
     NeoBundleLazy 'hail2u/vim-css3-syntax', {'autoload':{'filetypes':['css','scss','sass']}}
+    " Vendors Prefixes 
+    " :highlight VendorPrefix guifg=#00ffff gui=bold
+    " :match VendorPrefix /-\(moz\|webkit\|o\|ms\)-[a-zA-Z-]\+/
+    " 
     NeoBundleLazy 'ap/vim-css-color', {'autoload':{'filetypes':['css','scss','sass','less','styl']}}
+    " 
     NeoBundleLazy 'othree/html5.vim', {'autoload':{'filetypes':['html']}}
-    " {
+    " Configuracion de html5.vim {
         "let g:html5_event_handler_attributes_complete = 0
         "let g:html5_rdfa_attributes_complete = 0
         "let g:html5_microdata_attributes_complete = 0
         "let g:html5_aria_attributes_complete = 0
     " }
+    "
     "NeoBundleLazy 'wavded/vim-stylus', {'autoload':{'filetypes':['styl']}}
+    "
     "NeoBundleLazy 'digitaltoad/vim-jade', {'autoload':{'filetypes':['jade']}}
+    "
     "NeoBundleLazy 'juvenn/mustache.vim', {'autoload':{'filetypes':['mustache']}}
+    "
     NeoBundleLazy 'gregsexton/MatchTag', {'autoload':{'filetypes':['html','xml']}}
+    " 
     NeoBundle 'mattn/webapi-vim'
+    " 
     NeoBundleLazy 'mattn/emmet-vim', {'autoload':{'filetypes':['html','xml','xsl','xslt','xsd','css','sass','scss','less','mustache']}} "{{{
       function! s:zen_html_tab()
         let line = getline('.')
@@ -463,6 +483,7 @@ if count(s:settings.plugin_groups, 'web') "{{{
       autocmd FileType xml,xsl,xslt,xsd,css,sass,scss,less,mustache imap <buffer><tab> <c-y>,
       autocmd FileType html imap <buffer><expr><tab> <sid>zen_html_tab()
 "}}}
+    " Emmet LiveStyle for Vim http://mattn.kaoriya.net/
     NeoBundleLazy 'mattn/livestyle-vim', {'autoload':{'commands':'LiveStyle'}}
 endif "}}}
 if count(s:settings.plugin_groups, 'javascript') "{{{
@@ -867,7 +888,8 @@ if count(s:settings.plugin_groups, 'unite') "{{{
         nnoremap <leader>nbu :Unite neobundle/update -vertical -no-start-insert<cr>
     "}}}
     " Busqueda en archivos recientes, como :browse old
-    NeoBundleLazy 'Shougo/neomru.vim', {'autoload':{'unite_sources':'file_mru'}}
+    " NeoBundleLazy 'Shougo/neomru.vim', {'autoload':{'unite_sources':'file_mru'}}
+    NeoBundle 'Shougo/neomru.vim'
     " Cambiar de vim-airline theme.
     NeoBundleLazy 'osyo-manga/unite-airline_themes', {'autoload':{'unite_sources':'airline_themes'}}
     " Configuración de unite-airline_themes {{{
@@ -1093,21 +1115,33 @@ if count(s:settings.plugin_groups, 'distraction-free-mode') "{{{
         ""b:shell_fullscreen_items
     "}}}
 endif "}}}
-if count(s:settings.plugin_groups, 'autocorrection') "{{{
-
-endif "}}}
 if count(s:settings.plugin_groups, 'grammar-checker') "{{{
     " Corrector Ortografico y gramatical - Grammar checker
     NeoBundle 'vim-scripts/LanguageTool'
-    " Sinonimos y Antnimos. Online - Thesauru online
-    " Neobundle 'vim-scripts/vim-online-thesaurus''
+    " Corrector ortografico, tiene un plugin para vim.
+    " http://www.afterthedeadline.com/
+    " vim integracion.
+    " https://github.com/lpenz/atdtool
+    " Online, falta hacer algun plugin
+    " http://www.mystilus.com/Interactive_check
 endif "}}}
 if count(s:settings.plugin_groups, 'language-tools') "{{{
-
+    " Sinonimos y Antnimos. Online - Thesauru online
+    " Neobundle 'vim-scripts/vim-online-thesaurus''
+    "idbrii/vim-online-thesaurus
+    "'beloglazov/vim-online-thesaurus'
+    " NeoBundle 'szw/vim-dict'
+    " Habre un diccionario bajo el cursor
+    "vim-scripts/cursoroverdictionary
+    " documentacion
+    " powerman/vim-plugin-viewdoc
+    "http://vim.wikia.com/wiki/Online_documentation_for_word_under_cursor
 endif "}}}
-if count(s:settings.plugin_groups, 'taskwarrior') "{{{
+if count(s:settings.plugin_groups, 'task-management') "{{{
     " Administrador de tareas
-    NeoBlunde 'farseer90718/vim-taskwarrior'
+    " NeoBlunde 'farseer90718/vim-taskwarrior'
+    " Task manager
+    NeoBundle 'freitass/todo.txt-vim'
 endif "}}}
 if count(s:settings.plugin_groups, 'shell') "{{{
     " Shell interactiva para vim
@@ -1140,19 +1174,10 @@ if count(s:settings.plugin_groups, 'vim') "{{{
     " The Vim FAQ from http://vimdoc.sourceforge.net/ http://vimdoc.sourceforge.net/
     "NeoBundle 'chrisbra/vim_faq'
 endif "}}}
-if count(s:settings.plugin_groups, 'timeboxing') "{{{
-
-endif "}}}
 if count(s:settings.plugin_groups, 'utilities') "{{{
     " Limpiar espacios en blanco finales
     " bronson/vim-trailing-whitespace
     "
-endif "}}}
-if count(s:settings.plugin_groups, 'autocorrection') "{{{
-
-endif "}}}
-if count(s:settings.plugin_groups, 'autocorrection') "{{{
-
 endif "}}}
 if count(s:settings.plugin_groups, 'misc') "{{{
     if exists('$TMUX')
