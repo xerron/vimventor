@@ -179,9 +179,8 @@
 " }
 " General {
     " tiempo de respuesta
-    "set timeoutlen=300           " mapping timeout
     set ttimeout                 " keycode timeout
-    set ttimeoutlen=50           " keycode timeout
+    set timeout timeoutlen=1000 ttimeoutlen=50
     " raton
     if has('mouse')
          set mouse=a                " Habilitar el uso del ratón automáticamente.
@@ -440,7 +439,7 @@ if count(s:settings.plugin_groups, 'web') "{{{
     " }
     " Vim syntax file for scss (Sassy CSS) 
     NeoBundleLazy 'cakebaker/scss-syntax.vim', {'autoload':{'filetypes':['scss','sass']}}
-        " autocmd FileType scss set iskeyword+=-
+    " autocmd FileType scss set iskeyword+=-
     " Add CSS3 syntax support to vim's built-in `syntax/css.vim`.
     NeoBundleLazy 'hail2u/vim-css3-syntax', {'autoload':{'filetypes':['css','scss','sass']}}
     " Vendors Prefixes 
@@ -461,26 +460,25 @@ if count(s:settings.plugin_groups, 'web') "{{{
     " Vim's MatchParen for HTML tags
     NeoBundleLazy 'gregsexton/MatchTag', {'autoload':{'filetypes':['html','xml']}}
     " emmet for vim
-    NeoBundleLazy 'mattn/emmet-vim', {'autoload':{'filetypes':['html','xml','xsl','xslt','xsd','css','sass','scss','less','mustache']}} "{{{
-      function! s:zen_html_tab()
-        let line = getline('.')
-        if match(line, '<.*>') < 0
-          return "\<c-y>,"
-        endif
-        return "\<c-y>n"
-      endfunction
-      " redefinir
-      " let g:user_emmet_leader_key='<C-Z>'
-      if s:is_windows
-          let g:user_emmet_settings = webapi#json#decode(join(readfile(expand('$VIM/snippets/emmet-snippets.json')), "\n"))
-      else
-          let g:user_emmet_settings = webapi#json#decode(join(readfile(expand('~/.vim/snippets/emmet-snippets.json')), "\n"))
-      endif
+    NeoBundleLazy 'mattn/emmet-vim', {'autoload':{'filetypes':['html','xml','xsl','xslt','xsd','css','sass','scss','less','mustache']}} 
+    " Configuracion e emmet-vim {
+        function! s:zen_html_tab()
+            let line = getline('.')
+            if match(line, '<.*>') < 0
+            return "\<c-y>,"
+            endif
+            return "\<c-y>n"
+        endfunction
+        " redefinir
+        " let g:user_emmet_leader_key='<C-Z>'
+        let g:use_emmet_complete_tag = 1
       autocmd FileType xml,xsl,xslt,xsd,css,sass,scss,less,mustache imap <buffer><tab> <c-y>,
       autocmd FileType html imap <buffer><expr><tab> <sid>zen_html_tab()
-"}}}
+    " }
+    " Este plugin es interesante, pero no es necesario. Usa Firefox > Style Editor
     " Emmet LiveStyle for Vim http://mattn.kaoriya.net/
-    NeoBundleLazy 'mattn/livestyle-vim', {'autoload':{'commands':'LiveStyle'}}
+    " NeoBundleLazy 'mattn/livestyle-vim', {'autoload':{'commands':'LiveStyle'}}
+    " }
 endif "}}}
 if count(s:settings.plugin_groups, 'javascript') "{{{
     NeoBundleLazy 'marijnh/tern_for_vim', {
@@ -727,17 +725,13 @@ if count(s:settings.plugin_groups, 'editing') "{{{
     "}}}
     " insert or delete brackets, parens, quotes in pair
     NeoBundle 'jiangmiao/auto-pairs'
-    " TODO: buscar un mapping paraa vim-sneak
-    " jumps to any location specified by two characters
-    " NeoBundle 'justinmk/vim-sneak'
-    " Configuracion de vim-sneak {{{
-      let g:sneak#streak = 1
-    "}}}
-    "tpope/vim-abolish
+    " Heuristically set buffer options 'shiftwidth' and 'expandtab'
+    " NeoBundle 'tpope/vim-sleuth'
+    " tpope/vim-abolish
     " tommcdo/vim-exchange
-    "reedes/vim-wordy
+    " reedes/vim-wordy
     " reedes/vim-litecorrect
-    " /reedes/vim-lexical
+    " reedes/vim-lexical
 endif "}}}
 if count(s:settings.plugin_groups, 'ctrlp') "{{{
     " Fuzzy file, buffer, mru, tag, etc finder.
@@ -816,6 +810,12 @@ if count(s:settings.plugin_groups, 'navigation') "{{{
     "}}}
     " Movimientos faciles | Nota: Personalmente no lo uso.
     " NeoBundle 'Lokaltog/vim-easymotion'
+    " TODO: buscar un mapping paraa vim-sneak
+    " jumps to any location specified by two characters
+    NeoBundle 'justinmk/vim-sneak'
+    " Configuracion de vim-sneak {{{
+      let g:sneak#streak = 1
+    "}}}
 endif "}}}
 if count(s:settings.plugin_groups, 'unite') "{{{
     " Unir y crear interfaces de usuario
@@ -884,8 +884,7 @@ if count(s:settings.plugin_groups, 'unite') "{{{
         nnoremap <leader>nbu :Unite neobundle/update -vertical -no-start-insert<cr>
     "}}}
     " Busqueda en archivos recientes, como :browse old
-    " NeoBundleLazy 'Shougo/neomru.vim', {'autoload':{'unite_sources':'file_mru'}}
-    NeoBundle 'Shougo/neomru.vim'
+    NeoBundleLazy 'Shougo/neomru.vim', {'autoload':{'unite_sources':'file_mru'}}
     " Cambiar de vim-airline theme.
     NeoBundleLazy 'osyo-manga/unite-airline_themes', {'autoload':{'unite_sources':'airline_themes'}}
     " Configuración de unite-airline_themes {{{
@@ -1209,6 +1208,8 @@ endif "}}}
 " Edición {{
     " salir del modo insercion rapidamene
     inoremap jk <esc>
+    inoremap <S-CR> <Esc>
+    inoremap <Leader>i <Esc>
     " Cut, Paste, Copy
     vmap <C-x> d
     vmap <C-v> p
@@ -1275,7 +1276,6 @@ endif "}}}
     vnoremap / /\v
     nnoremap ? ?\v
     vnoremap ? ?\v
-    nnoremap :s/ :s/\v
     " mostrar/ocultar resaltado de busqueda
     nnoremap <BS> :set hlsearch! hlsearch?<cr>
     " find current word in quickfix
@@ -1379,7 +1379,6 @@ endif "}}}
     nmap <leader>et :tabe <C-R>=expand('%:h').'/'<cr>
 "}
 " command-line window {
-    nnoremap ; :
     nnoremap q: q:i
     nnoremap q/ q/i
     nnoremap q? q?i
