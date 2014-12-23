@@ -32,10 +32,10 @@ Libre de distracciones realice:
 - (g)Vim 7.4  
 - Git
 - Fuentes de [powerline](https://github.com/Lokaltog/powerline-fonts).
-- Lua 5.2.x
+- LuaJit 
 - Python 2.7.x
 
-**Opcionales**
+**Recomendado**
 
 - [Ag](https://github.com/ggreer/the_silver_searcher)
 - [Exuberant-ctags](http://ctags.sourceforge.net/)

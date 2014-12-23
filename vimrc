@@ -840,8 +840,10 @@ if count(s:settings.plugin_groups, 'unite') "{{{
         let g:unite_prompt='» '
 
         if executable('ag')
+            " let g:unite_source_rec_async_command='ag --nocolor --nogroup --skip-vcs-ignores --ignore ".cache" --ignore ".hg" --ignore ".svn" --ignore ".git" --ignore ".bzr" --hidden -g ""'
+            let g:unite_source_rec_async_command= 'ag --nocolor --nogroup --hidden -g ""'
             let g:unite_source_grep_command='ag'
-            let g:unite_source_grep_default_opts='--nocolor --nogroup -S -C4'
+            let g:unite_source_grep_default_opts='--nogroup --skip-vcs-ignores --nocolor --column'
             let g:unite_source_grep_recursive_opt=''
         elseif executable('ack')
             let g:unite_source_grep_command='ack'
@@ -865,8 +867,8 @@ if count(s:settings.plugin_groups, 'unite') "{{{
         nnoremap [unite] <nop>
 
         if s:is_windows
-            nnoremap <silent> [unite]<space> :<C-u>Unite -toggle -auto-resize -buffer-name=mixed file_rec:! buffer file_mru bookmark<cr>
-            nnoremap <silent> [unite]f :<C-u>Unite -toggle -auto-resize -buffer-name=files file_rec:!<cr>
+            nnoremap <silent> [unite]<space> :<C-u>Unite -toggle -auto-resize -buffer-name=mixed file_rec/async:! buffer file_mru bookmark<cr>
+            nnoremap <silent> [unite]f :<C-u>Unite -toggle -auto-resize -buffer-name=files file_rec/async:!<cr>
         else
             nnoremap <silent> [unite]<space> :<C-u>Unite -toggle -auto-resize -buffer-name=mixed file_rec/async:! buffer file_mru bookmark<cr>
             nnoremap <silent> [unite]f :<C-u>Unite -toggle -auto-resize -buffer-name=files file_rec/async:!<cr>
@@ -880,7 +882,6 @@ if count(s:settings.plugin_groups, 'unite') "{{{
         nnoremap <silent> [unite]/ :<C-u>Unite -no-quit -buffer-name=search grep:.<cr>
         nnoremap <silent> [unite]m :<C-u>Unite -auto-resize -buffer-name=mappings mapping<cr>
         nnoremap <silent> [unite]s :<C-u>Unite -quick-match buffer<cr>
-
         nnoremap <leader>nbu :Unite neobundle/update -vertical -no-start-insert<cr>
     "}}}
     " Busqueda en archivos recientes, como :browse old
@@ -938,14 +939,26 @@ if count(s:settings.plugin_groups, 'unite') "{{{
         endif
 
         " Like Textmate icons.
-        let g:vimfiler_tree_leaf_icon = ' '
-        let g:vimfiler_tree_opened_icon = '▾'
-        let g:vimfiler_tree_closed_icon = '▸'
-        let g:vimfiler_file_icon = '-'
-        let g:vimfiler_marked_file_icon = '*'
-
+        if s:is_windows
+            let g:vimfiler_tee_leaf_icon = '|'
+            let g:vimfiler_tree_opened_icon = '▼'
+            let g:vimfiler_tree_closed_icon = '▷'
+            let g:vimfiler_file_icon = ' '
+            let g:vimfiler_marked_file_icon = '*'
+            let g:vimfiler_readonly_file_icon = '✗'
+        else
+            let g:vimfiler_tree_leaf_icon = ' '
+            let g:vimfiler_tree_opened_icon = '▾'
+            let g:vimfiler_tree_closed_icon = '▸'
+            let g:vimfiler_file_icon = '-'
+            let g:vimfiler_marked_file_icon = '*'
+        endif
         ":VimFiler
+
+        " let g:vimfiler_time_format = '%d-%m-%Y %H:%M:%S'
+
         nnoremap <M-1> :VimFilerExplorer -toggle<CR>
+        nnoremap <silent> [unite]p :VimFiler -buffer-name=proyecto -split -simple -winwidth=35 -toggle -project -quit<cr>
         autocmd FileType vimfiler
             \ nmap <buffer> w <Plug>(vimfiler_quick_look)
     " }}}
