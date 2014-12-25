@@ -462,18 +462,18 @@ if count(s:settings.plugin_groups, 'web') "{{{
     " emmet for vim
     NeoBundleLazy 'mattn/emmet-vim', {'autoload':{'filetypes':['html','xml','xsl','xslt','xsd','css','sass','scss','less','mustache']}} 
     " Configuracion e emmet-vim {
-        function! s:zen_html_tab()
+        function! s:zen_html()
             let line = getline('.')
             if match(line, '<.*>') < 0
-            return "\<c-y>,"
+                return "\<c-y>,"
             endif
-            return "\<c-y>n"
+                return "\<c-y>n"
         endfunction
         " redefinir
         " let g:user_emmet_leader_key='<C-Z>'
-        let g:use_emmet_complete_tag = 1
-      autocmd FileType xml,xsl,xslt,xsd,css,sass,scss,less,mustache imap <buffer><tab> <c-y>,
-      autocmd FileType html imap <buffer><expr><tab> <sid>zen_html_tab()
+        " let g:use_emmet_complete_tag = 1
+      autocmd FileType xml,xsl,xslt,xsd,css,sass,scss,less,mustache imap <buffer><c-j> <c-y>,
+      autocmd FileType html imap <buffer><expr><c-j> <sid>zen_html()
     " }
     " Este plugin es interesante, pero no es necesario. Usa Firefox > Style Editor
     " Emmet LiveStyle for Vim http://mattn.kaoriya.net/
@@ -617,9 +617,6 @@ if count(s:settings.plugin_groups, 'syntax') "{{{
     "}}}
 endif "}}}
 if count(s:settings.plugin_groups, 'autocomplete') "{{{
-    " snipMate & UltiSnip Snippets
-    " Nota: mis snippets el la carpeta ~/.vim/UltiSnips
-    NeoBundle 'honza/vim-snippets'
     " Next generation completion framework after neocomplcache
     NeoBundleLazy 'Shougo/neocomplete.vim', {'autoload':{'insert':1}, 'vim_version':'7.3.885'}
     " Configuración de neocomplete {{{
@@ -630,17 +627,22 @@ if count(s:settings.plugin_groups, 'autocomplete') "{{{
             let g:neocomplete#data_directory='~/.vim/.cache/neocomplete'
         endif
         let g:neocomplete#enable_auto_select=0
+        let g:neocomplete#sources#syntax#min_keyword_length = 3
         "let g:neocomplete#sources#dictionary#dictionaries = {
          "   \ 'default' : '',
           "  \ 'vimshell' : $HOME.'/.vimshell_hist',
            " \ 'scheme' : $HOME.'/.gosh_completions'
             "\ }
         " Define keyword.
-        if !exists('g:neocomplete#keyword_patterns')
-            let g:neocomplete#keyword_patterns = {}
-        endif
+        " if !exists('g:neocomplete#keyword_patterns')
+            " let g:neocomplete#keyword_patterns = {}
+        " endif
         " completar palabras en español por default
-        let g:neocomplete#keyword_patterns._ = '[A-Za-zá-úÁ-ÚüñÑ_][0-9A-Za-zá-úÁ-ÚüñÑ_]*'
+        " let g:neocomplete#keyword_patterns._ = '[A-Za-zá-úÁ-ÚüñÑ_][0-9A-Za-zá-úÁ-ÚüñÑ_]*'
+        " tab
+        inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+        " imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+        "     \ "\<Plug>(neosnippet_expand_or_jump)" : pumvisible ? "\<C-n>" : "\<TAB>"
     "}}}
     " The ultimate snippet solution for Vim
     NeoBundle 'SirVer/ultisnips'
@@ -649,15 +651,17 @@ if count(s:settings.plugin_groups, 'autocomplete') "{{{
         let g:UltiSnipsExpandTrigger="<tab>"
         let g:UltiSnipsJumpForwardTrigger="<tab>"  "<c-b>
         let g:UltiSnipsJumpBackwardTrigger="<s-tab>" "<c-z>
-        if s:is_windows
+        " if s:is_windows
             " Es necesario añadir el rtp+='$VIM'
-            let g:UltiSnipsSnippetsDir=$VIM.'/ultisnips'
-        else
-            let g:UltiSnipsSnippetsDir='~/.vim/ultisnips'
-        endif
-        let g:UltiSnipsSnippetDirectories=["ultisnips", "UltiSnips"]
-        let g:UltiSnipsEditSplit="vertical"
+            " let g:UltiSnipsSnippetsDir=$VIM.'/ultisnips'
+        " else
+            " let g:UltiSnipsSnippetsDir='~/.vim/ultisnips'
+        " endif
+        " let g:UltiSnipsSnippetDirectories=["ultisnips", "UltiSnips"]
+        " let g:UltiSnipsEditSplit="vertical"
     "}}}
+    " snipMate & UltiSnip Snippets
+    NeoBundle 'honza/vim-snippets'
     " rbonvall/snipmate-snippets-bib
     " The standard snippets repository for neosnippet
     " NeoBundle 'Shougo/neosnippet-snippets'
@@ -812,9 +816,9 @@ if count(s:settings.plugin_groups, 'navigation') "{{{
     " NeoBundle 'Lokaltog/vim-easymotion'
     " TODO: buscar un mapping paraa vim-sneak
     " jumps to any location specified by two characters
-    NeoBundle 'justinmk/vim-sneak'
+    " NeoBundle 'justinmk/vim-sneak'
     " Configuracion de vim-sneak {{{
-      let g:sneak#streak = 1
+      " let g:sneak#streak = 1
     "}}}
 endif "}}}
 if count(s:settings.plugin_groups, 'unite') "{{{
@@ -937,7 +941,6 @@ if count(s:settings.plugin_groups, 'unite') "{{{
         else
             let g:vimfiler_quick_look_command = 'gloobus-preview'
         endif
-
         " Like Textmate icons.
         if s:is_windows
             let g:vimfiler_tee_leaf_icon = '|'
@@ -953,10 +956,7 @@ if count(s:settings.plugin_groups, 'unite') "{{{
             let g:vimfiler_file_icon = '-'
             let g:vimfiler_marked_file_icon = '*'
         endif
-        ":VimFiler
-
         " let g:vimfiler_time_format = '%d-%m-%Y %H:%M:%S'
-
         nnoremap <M-1> :VimFilerExplorer -toggle<CR>
         nnoremap <silent> [unite]p :VimFiler -buffer-name=proyecto -split -simple -winwidth=35 -toggle -project -quit<cr>
         autocmd FileType vimfiler
@@ -1367,14 +1367,14 @@ endif "}}}
     " noremap  <buffer> <silent> 0 g0
     " noremap  <buffer> <silent> $ g$
     " auto center
-    nnoremap <silent> n nzz
-    nnoremap <silent> N Nzz
-    nnoremap <silent> * *zz
-    nnoremap <silent> # #zz
-    nnoremap <silent> g* g*zz
-    nnoremap <silent> g# g#zz
-    nnoremap <silent> <C-o> <C-o>zz
-    nnoremap <silent> <C-i> <C-i>zz
+    " nnoremap <silent> n nzz
+    " nnoremap <silent> N Nzz
+    " nnoremap <silent> * *zz
+    " nnoremap <silent> # #zz
+    " nnoremap <silent> g* g*zz
+    " nnoremap <silent> g# g#zz
+    " nnoremap <silent> <C-o> <C-o>zz
+    " nnoremap <silent> <C-i> <C-i>zz
     " movimiento entre ventanas
     nnoremap <leader>v <C-w>v<C-w>l
     nnoremap <leader>s <C-w>s
@@ -1404,6 +1404,8 @@ endif "}}}
     nnoremap zR zR:echo &foldlevel<cr>
     nnoremap zM zM:echo &foldlevel<cr>
 " }
+" 
+"
 " Misc {
     " TODO: Investigar como se usa.
     if neobundle#is_sourced('vim-dispatch')
@@ -1413,19 +1415,19 @@ endif "}}}
     map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
         \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
         \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
-" cd to the directory containing the file in the buffer
-nmap <silent> <leader>cd :lcd %:h<CR>
-" Create the directory containing the file in the buffer
-nmap <silent> <leader>md :!mkdir -p %:p:h<CR>
-" Adjust viewports to the same size
-map <Leader>= <C-w>=
+    " cd to the directory containing the file in the buffer
+    nmap <silent> <leader>cd :lcd %:h<CR>
+    " Create the directory containing the file in the buffer
+    nmap <silent> <leader>md :!mkdir -p %:p:h<CR>
+    " Adjust viewports to the same size
+    map <Leader>= <C-w>=
 
 " }
 "
 " Autocomandos
 "
 " HelpFile {
-    au FileType helpfile set nonumber
+  au FileType helpfile set nonumber
 " }
 " Misc {
 " go back to previous position of cursor if any

@@ -6,6 +6,7 @@ origdoc/
 patch/
 vim74/
 vim73/
+ag.exe
 _vimrc
 gvim.exe
 iconv.dll

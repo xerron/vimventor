@@ -13,16 +13,16 @@ Vimventor ofrece caracteristicas fantasticas para la creación de contenido (Mar
 
 Libre de distracciones realice:  
 
-- Corriga la ortográfia y la gramatica.
+- Corriga la ortográfia y la gramatica (LanguageTools)
 - Consulte diccionarios.
-- Cree y use plantillas (Snippets).
-- Escriba con la ayuda del autocompletado.
+- Cree y use plantillas (Ultisnips).
+- Escriba con la ayuda del autocompletado (Neocomplete)
 - Recupere sus notas rapidamente.
-- Versionalice su trabajo (Git, Mercurial. etc). 
+- Versionalice su trabajo (Git, Mercurial, etc). 
 - Edite codigo facilmente.
 - Navegue rapidamente entre archivos. (Unite)
 - Navegue a traves de la estructura del archivo. (Tagbar)
-- Explore su carpeta de trabajo (NerdTree)
+- Explore su carpeta de trabajo (VimFiler)
 - Invoque herramientas rapidamente y facilmente.
 
 ## Instalación 
@@ -71,7 +71,7 @@ Libre de distracciones realice:
 
 ### Windows
 
-Instalar [gVim](http://tuxproject.de/projects/vim/) especificando que el archivo de configuracion va estar dentro de la carpeta de instalación. ($VIM)
+Instalar [gVim](http://www.kaoriya.net/software/vim/) (32bits) especificando que el archivo de configuracion va estar dentro de la carpeta de instalación. ($VIM)
 
 1. clone este repositorio en el directorio donde se instalo Vim (**$VIM**) por defecto **"Archivos de programas/Vim"**
     
