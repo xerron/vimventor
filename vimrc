@@ -46,20 +46,22 @@
     call add(s:settings.plugin_groups, 'editing')
     "call add(s:settings.plugin_groups, 'indents')
     "call add(s:settings.plugin_groups, 'textobj')
-    "call add(s:settings.plugin_groups, 'misc')
     "call add(s:settings.plugin_groups, 'syntax')
     call add(s:settings.plugin_groups, 'scm')
     call add(s:settings.plugin_groups, 'markdown')
     call add(s:settings.plugin_groups, 'latex')
     call add(s:settings.plugin_groups, 'restructuretex')
     call add(s:settings.plugin_groups, 'web')
+    "call add(s:settings.plugin_groups, 'dev-tools')
     "call add(s:settings.plugin_groups, 'javascript')
     "call add(s:settings.plugin_groups, 'python')
+    "call add(s:settings.plugin_groups, 'php')
     "call add(s:settings.plugin_groups, 'ruby')
     "call add(s:settings.plugin_groups, 'csv')
     "call add(s:settings.plugin_groups, 'scala')
     "call add(s:settings.plugin_groups, 'go')
     "call add(s:settings.plugin_groups, 'vim')
+    "call add(s:settings.plugin_groups, 'misc')
     if s:is_windows
        " call add(s:settings.plugin_groups, 'windows')
     endif
@@ -501,8 +503,36 @@ if count(s:settings.plugin_groups, 'javascript') "{{{
     NeoBundleLazy 'othree/javascript-libraries-syntax.vim', {'autoload':{'filetypes':['javascript','coffee','ls','typescript']}}
 endif "}}}
 if count(s:settings.plugin_groups, 'ruby') "{{{
+    " 
     NeoBundle 'tpope/vim-rails'
+    "
     NeoBundle 'tpope/vim-bundler'
+endif "}}}
+if count(s:settings.plugin_groups, 'dev-tools') "{{{
+    " Run commands quickly.
+    NeoBundle 'thinca/vim-quickrun'
+    " Integrated reference viewer.  
+    NeoBundle 'thinca/vim-ref'
+    ":Ref phpmanual echo
+    " Shell interactiva para vim
+    NeoBundleLazy 'Shougo/vimshell.vim', {'autoload':{'commands':[ 'VimShell', 'VimShellInteractive' ]}}
+    "{{{
+      if s:is_macvim
+        let g:vimshell_editor_command='mvim'
+      else
+        let g:vimshell_editor_command='vim'
+      endif
+      let g:vimshell_right_prompt='getcwd()'
+      let g:vimshell_data_directory='~/.vim/.cache/vimshell'
+      let g:vimshell_vimshrc_path='~/.vim/vimshrc'
+
+      nnoremap <leader>c :VimShell -split<cr>
+      nnoremap <leader>cc :VimShell -split<cr>
+      nnoremap <leader>cn :VimShellInteractive node<cr>
+      nnoremap <leader>cl :VimShellInteractive lua<cr>
+      nnoremap <leader>cr :VimShellInteractive irb<cr>
+      nnoremap <leader>cp :VimShellInteractive python<cr>
+    "}}}
 endif "}}}
 if count(s:settings.plugin_groups, 'python') "{{{
     NeoBundleLazy 'klen/python-mode', {'autoload':{'filetypes':['python']}} "{{{
@@ -511,6 +541,12 @@ if count(s:settings.plugin_groups, 'python') "{{{
     NeoBundleLazy 'davidhalter/jedi-vim', {'autoload':{'filetypes':['python']}} "{{{
       let g:jedi#popup_on_dot=0
 "}}}
+endif "}}}
+if count(s:settings.plugin_groups, 'php') "{{{
+    " Autocompleccion mejorada para php
+    NeoBundle 'violetyk/neocomplete-php.vim'
+    " :PhpMakeDict ja
+    "
 endif "}}}
 if count(s:settings.plugin_groups, 'latex') "{{{
     " A simple and lightweight vim-plugin for editing LaTeX files.
@@ -573,7 +609,7 @@ if count(s:settings.plugin_groups, 'scm') "{{{
     endif
     " Soporte para Git
     NeoBundle 'tpope/vim-fugitive'
-    " Configuración de vim-fugitive j{{{
+    " Configuración de vim-fugitive {{{
         nnoremap <silent> <leader>gb :Gblame<CR>
         nnoremap <silent> <leader>gs :Gstatus<CR>
         nnoremap <silent> <leader>gd :Gdiff<CR>
@@ -640,9 +676,40 @@ if count(s:settings.plugin_groups, 'autocomplete') "{{{
         " completar palabras en español por default
         " let g:neocomplete#keyword_patterns._ = '[A-Za-zá-úÁ-ÚüñÑ_][0-9A-Za-zá-úÁ-ÚüñÑ_]*'
         " tab
-        inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+        " Plugin key-mappings.
+        inoremap <expr><C-g> neocomplete#undo_completion()
+        inoremap <expr><C-l> neocomplete#complete_common_string()
+        inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+        inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+        " Recommended key-mappings.
+        " <CR>: close popup and save indent.
+        inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+        function! s:my_cr_function()
+            return neocomplete#close_popup() . "\<CR>"
+            " For no inserting <CR> key.
+            "return pumvisible() ? neocomplete#close_popup() : "\<CR>"
+        endfunction
+        " inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
         " imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
         "     \ "\<Plug>(neosnippet_expand_or_jump)" : pumvisible ? "\<C-n>" : "\<TAB>"
+        " Enable omni completion.
+        autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+        autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+        autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+        autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+        autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+
+        " Enable heavy omni completion.
+        if !exists('g:neocomplete#sources#omni#input_patterns')
+            let g:neocomplete#sources#omni#input_patterns = {}
+        endif
+        "let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+        "let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+        "let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+
+        " For perlomni.vim setting.
+        " https://github.com/c9s/perlomni.vim
+        " let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
     "}}}
     " The ultimate snippet solution for Vim
     NeoBundle 'SirVer/ultisnips'
@@ -808,7 +875,10 @@ if count(s:settings.plugin_groups, 'navigation') "{{{
     "}}}
     " Muestra las etiquetas(tags) en una ventana, ordenada por ámbito(scope)
     NeoBundleLazy 'majutsushi/tagbar', {'autoload':{'commands':'TagbarToggle'}}
-    "{{{
+    " Configuracion de tagbar {{{
+        let g:tagbar_autofocus=1
+        let g:tagbar_autopreview = 1
+        let g:tagbar_iconchars = ['▶', '▼'] 
         nnoremap <silent> <F9> :TagbarToggle<CR>
         map <leader>rt :TagbarToggle<CR>
     "}}}
@@ -1151,27 +1221,6 @@ if count(s:settings.plugin_groups, 'task-management') "{{{
     " Task manager
     NeoBundle 'freitass/todo.txt-vim'
 endif "}}}
-if count(s:settings.plugin_groups, 'shell') "{{{
-    " Shell interactiva para vim
-    NeoBundleLazy 'Shougo/vimshell.vim', {'autoload':{'commands':[ 'VimShell', 'VimShellInteractive' ]}}
-    "{{{
-      if s:is_macvim
-        let g:vimshell_editor_command='mvim'
-      else
-        let g:vimshell_editor_command='vim'
-      endif
-      let g:vimshell_right_prompt='getcwd()'
-      let g:vimshell_data_directory='~/.vim/.cache/vimshell'
-      let g:vimshell_vimshrc_path='~/.vim/vimshrc'
-
-      nnoremap <leader>c :VimShell -split<cr>
-      nnoremap <leader>cc :VimShell -split<cr>
-      nnoremap <leader>cn :VimShellInteractive node<cr>
-      nnoremap <leader>cl :VimShellInteractive lua<cr>
-      nnoremap <leader>cr :VimShellInteractive irb<cr>
-      nnoremap <leader>cp :VimShellInteractive python<cr>
-    "}}}
-endif "}}}
 if count(s:settings.plugin_groups, 'vim') "{{{
     " Testing framework for Vim script
     NeoBundle 'kana/vim-vspec'
@@ -1325,8 +1374,8 @@ endif "}}}
     nnoremap <M-down> :tabprev<CR>
     imap <M-down> <Esc>:tabprev<CR>
     " cambiar la posicion del cursor en insert-mode
-    inoremap <C-h> <left>
-    inoremap <C-l> <right>
+    " inoremap <C-h> <left>
+    " inoremap <C-l> <right>
     " Divisiones
     " <c-w> s               dividir horizontal
     " <c-w> v               dividir vertical

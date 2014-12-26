@@ -14,6 +14,7 @@ intl.dll
 lua51.dll
 luajit.exe
 msvcr100.dll
+tag
 vim.exe
 vimrun.exe
 xxd.exe
