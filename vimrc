@@ -377,7 +377,7 @@ if count(s:settings.plugin_groups, 'core') "{{{
         " Themes disponibles 'badwolf', 'bubblegum', 'base16', 'murmur', 'tomorrow',
         " 'sol', 'ubaryd', 'laederon', 'jellybeans', 'molokai', 'luna', 'solarized',
         " 'powerlineish', 'dark', 'simple', 'light',
-        let g:airline_theme='pencil'
+        let g:airline_theme='base16'
     "}}}
     " Surround parentesis, llaves, comillas, xml tags, ...
     NeoBundle 'tpope/vim-surround'
@@ -1453,8 +1453,6 @@ endif "}}}
     nnoremap zR zR:echo &foldlevel<cr>
     nnoremap zM zM:echo &foldlevel<cr>
 " }
-" 
-"
 " Misc {
     " TODO: Investigar como se usa.
     if neobundle#is_sourced('vim-dispatch')
@@ -1470,7 +1468,6 @@ endif "}}}
     nmap <silent> <leader>md :!mkdir -p %:p:h<CR>
     " Adjust viewports to the same size
     map <Leader>= <C-w>=
-
 " }
 "
 " Autocomandos
