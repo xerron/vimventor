@@ -75,7 +75,6 @@
 "
 " No compatibilidad con Vi {
     set nocompatible                 " Debe ser la primera línea
-    "set all&                         "reset everything to their defaults
 " }
 " Neobundle {
     if s:is_windows
@@ -90,54 +89,17 @@
     endif
     NeoBundleFetch 'Shougo/neobundle.vim'
 " }
-" funciones {
-    function! Preserve(command) "{{{
-    " preparation: save last search, and cursor position.
-        let _s=@/
-        let l = line(".")
-        let c = col(".")
-    " do the business:
-        execute a:command
-    " clean up: restore previous search history, and cursor position
-        let @/=_s
-        call cursor(l, c)
-    endfunction "}}}
-    function! StripTrailingWhitespace() "{{{
-        call Preserve("%s/\\s\\+$//e")
-    endfunction "}}}
-    function! EnsureExists(path) "{{{
-        if !isdirectory(expand(a:path))
-        call mkdir(expand(a:path))
-        endif
-    endfunction "}}}
-    function! CloseWindowOrKillBuffer() "{{{
-        let number_of_windows_to_this_buffer = len(filter(range(1, winnr('$')), "winbufnr(v:val) == bufnr('%')"))
-
-    " never bdelete a nerd tree
-        if matchstr(expand("%"), 'NERD') == 'NERD'
-            wincmd c
-            return
-        endif
-
-        if number_of_windows_to_this_buffer > 1
-            wincmd c
-        else
-            bdelete
-        endif
-    endfunction "}}}
-" }
 " Pantalla de inicio {
-    set shortmess+=I                 " Quitar el Star Screen del inicio.
+    set shortmess+=I                 " Quitar el Start Screen
 " }
 " Consola Path {
     if s:is_windows && !s:is_cygwin
-        " ensure correct shell in gvim
         set shell=c:\windows\system32\cmd.exe
     endif
 " }
 " Codificación {
-    set encoding=utf-8           " Usado internamente por vim
     scriptencoding utf-8
+    set encoding=utf-8           " Usado internamente por vim
     set fileencoding=utf-8       " Codificación de archivo
     set fileencodings=ucs-bom,utf-8,utf-16le,cp1252,iso-8859-15
     if s:is_windows
@@ -153,13 +115,12 @@
 " }
 " Corrector Ortografico (Spelling) {
     set spelllang=es
-    "set spell      " Activar cuando sea necesario
+    "set spell                   " Activar cuando sea necesario
     if s:is_windows
         set spellfile+=$VIM/dictionaries/es.utf-8.add
     else
         set spellfile+=~/.vim/dictionaries/es.utf-8.add
     endif
-
 " }
 " Archivos de respaldo {
     set nobackup                 " No crear archivo de respaldo
@@ -195,15 +156,11 @@
             return 1
         endif
     endfunction
-
     augroup resCur
         autocmd!
         autocmd BufWinEnter * call ResCur()
     augroup END
     set hidden                      " Poder cambiar de bufer sin guardar
-    " Cambiar automaticamente al directorio actual
-    "autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
-    ""set shortmess+=filmnrxoOtT          " Abrev. de los mensajes (evita 'pulsa enter')
     set history=1000                    " Aumenta la historia (por defecto es 20)
     " Para no usar "+ para copy-paste, usar directamente para pegar gP y para copiar y
     if has('clipboard')
@@ -240,7 +197,7 @@
     if has('syntax')
       syntax enable
     endif
-    ""set showmode                  " Muetra -INSERT- y similares en la parte de abajo no activo para airline
+    " set showmode                  " Muetra -INSERT- y similares en la parte de abajo no activo para airline
     set shiftround
     set ruler
     " set rulerformat=%30(%=\:b%n%y%m%r%w\ %l,%c%V\ %P%) " A ruler on steroids
@@ -265,8 +222,8 @@
     " set listchars=""
     " set listchars=tab:\ \
     " set listchars+=trail:•
-     " set listchars+=extends:>
-     " set listchars+=precedes:<
+    " set listchars+=extends:>
+    " set listchars+=precedes:<
     if has('gui_running')
         if s:is_windows
             exec 'set guifont='.s:settings.guifont_win 
@@ -292,13 +249,13 @@
     endif
 " }
 " Formating {
-    set autoindent                    " identado Automático.
+    set autoindent                  " identado Automático.
     " Autocompletado
-    set pastetoggle=<F2>              " Cambia de modo de pegar, desactiva autoident
-    ""set nowrap                      " Do not wrap long lines
-    " set whichwrap=b,s,h,l,<,>,[,]   " Envolver automaticamente al terminar la linea, pasar a otra linea cuando finaliza.
-    "set tw=100                      " Maxima anchura de una linea
-    set wm=0                      " No cortar la linea despues de los tw=100 caracteres
+    set pastetoggle=<F2>            " Cambia de modo de pegar, desactiva autoident
+    ""set nowrap                    " Do not wrap long lines
+    " set whichwrap=b,s,h,l,<,>,[,] " Envolver automaticamente al terminar la linea, pasar a otra linea cuando finaliza.
+    "set tw=100                     " Maxima anchura de una linea
+    set wm=0                        " No cortar la linea despues de los tw=100 caracteres
     set backspace=indent,eol,start  " permite retroceso en todo, modo inserción
     set complete-=i
     set nrformats-=octal
@@ -355,7 +312,7 @@
     "let vimsyn_folding='af'
 " }
 " Mapping {
-    let mapleader = ','        " Configuación Escencial
+    let mapleader = ','        " Configuación Esencial
 " }
 "
 " Configuración de Plugins
@@ -1264,6 +1221,48 @@ if count(s:settings.plugin_groups, 'windows') "{{{
     "}}}
     NeoBundleLazy 'nosami/Omnisharp', {'autoload':{'filetypes':['cs']}}
 endif "}}}
+"
+" Funciones 
+"
+" {
+    function! Preserve(command) "{{{
+    " preparation: save last search, and cursor position.
+        let _s=@/
+        let l = line(".")
+        let c = col(".")
+    " do the business:
+        execute a:command
+    " clean up: restore previous search history, and cursor position
+        let @/=_s
+        call cursor(l, c)
+    endfunction "}}}
+    function! StripTrailingWhitespace() "{{{
+        call Preserve("%s/\\s\\+$//e")
+    endfunction "}}}
+    function! EnsureExists(path) "{{{
+        if !isdirectory(expand(a:path))
+        call mkdir(expand(a:path))
+        endif
+    endfunction "}}}
+    function! CloseWindowOrKillBuffer() "{{{
+        let number_of_windows_to_this_buffer = len(filter(range(1, winnr('$')), "winbufnr(v:val) == bufnr('%')"))
+
+    " never bdelete a nerd tree
+        if matchstr(expand("%"), 'NERD') == 'NERD'
+            wincmd c
+            return
+        endif
+
+        if number_of_windows_to_this_buffer > 1
+            wincmd c
+        else
+            bdelete
+        endif
+    endfunction "}}}
+    function! ChooseCurrentDirectory()
+         if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
+    endfunction
+" }
 "
 " Asignaciones (Mappings)
 "
