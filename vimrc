@@ -23,9 +23,8 @@
 " Init {
     let s:settings = {}
     let s:settings.colorscheme = 'hybrid'
-    " let s:settings.guifont_win = 'Inconsolata-g_for_Powerline:h10'
     let s:settings.guifont_win = 'Sauce_Code_Powerline:h11'
-    let s:settings.guifont_linux = 'Source\ Code\ Pro\ for\ Powerline\ Medium\ 10'
+    let s:settings.guifont_linux = 'Source\ Code\ Pro\ for\ Powerline\ Medium\ 11'
     let s:settings.guifont_mac = 'Source_Code_Pro_for_Powerline:h10'
     let s:settings.guifont_win_goyo = 'Cousine:h13'
     let s:settings.guifont_linux_goyo = 'Cousine\ 13'
@@ -110,7 +109,7 @@
 " }
 " Idioma {
     " Depende de la configuración del sistema
-    " set langmenu=es.UTF-8      " GUI gvim en español
+    set langmenu=es.UTF-8      " GUI gvim en español
     " language messages es       " Mensajes en español
 " }
 " Corrector Ortografico (Spelling) {
@@ -186,9 +185,7 @@
     set background=dark
     " Colorsheme
     exec 'colorscheme '.s:settings.colorscheme
-    if has('gui_running')
-        set cursorline                  " Resaltar linea actual
-    endif
+    set cursorline                    " Resaltar linea actual
     " highlight clear SignColumn      " SignColumn con el mismo fondo
     " highlight clear LineNr          " Mismo color de fondo para la actual en relative mode
     " highlight clear CursorLineNr    " Quitar el resaltado de numero de linea.
@@ -233,18 +230,24 @@
             exec 'set guifont='.s:settings.guifont_linux 
         endif
     else
-        if $COLORTERM == 'gnome-terminal'
-            set t_Co=256 "why you no tell me correct colors?!?!
+        set t_Co=256
+        " set t_AB=^[[48;5;%dm
+        " set t_AF=^[[38;5;%dm
+        if has("autocmd")
+        " xfce-terminal cursor xubuntu 14.4
+        " au InsertEnter * silent execute "!sed -i.bak -e 's/TERMINAL_CURSOR_SHAPE_BLOCK/TERMINAL_CURSOR_SHAPE_UNDERLINE/' ~/.config/xfce4/terminal/terminalrc"
+        " au InsertLeave * silent execute "!sed -i.bak -e 's/TERMINAL_CURSOR_SHAPE_UNDERLINE/TERMINAL_CURSOR_SHAPE_BLOCK/' ~/.config/xfce4/terminal/terminalrc"
+        " au VimLeave * silent execute "!sed -i.bak -e 's/TERMINAL_CURSOR_SHAPE_UNDERLINE/TERMINAL_CURSOR_SHAPE_BLOCK/' ~/.config/xfce4/terminal/terminalrc" 
         endif
-        if $TERM_PROGRAM == 'iTerm.app'
-        " different cursors for insert vs normal mode
-            if exists('$TMUX')
-                let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-                let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-            else
-                let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-                let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-            endif
+        if &term =~ "xterm\\|rxvt"
+            " use an orange cursor in insert mode
+            let &t_SI = "\<Esc>]12;orange\x7"
+            " use a red cursor otherwise
+            let &t_EI = "\<Esc>]12;red\x7"
+            " silent !echo -ne "\033]12;red\007"
+            " reset cursor when vim exits
+            " autocmd VimLeave * silent !echo -ne "\033]112\007"
+            " use \003]12;gray\007 for gnome-terminal
         endif
     endif
 " }
@@ -334,6 +337,7 @@ if count(s:settings.plugin_groups, 'core') "{{{
         " Themes disponibles 'badwolf', 'bubblegum', 'base16', 'murmur', 'tomorrow',
         " 'sol', 'ubaryd', 'laederon', 'jellybeans', 'molokai', 'luna', 'solarized',
         " 'powerlineish', 'dark', 'simple', 'light',
+
         let g:airline_theme='base16'
     "}}}
     " Surround parentesis, llaves, comillas, xml tags, ...
@@ -1259,9 +1263,10 @@ endif "}}}
             bdelete
         endif
     endfunction "}}}
-    function! ChooseCurrentDirectory()
+    function! ChangeCurrentDirectory() "{{{
          if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
     endfunction
+    " }}}
 " }
 "
 " Asignaciones (Mappings)
