@@ -195,6 +195,15 @@
       syntax enable
     endif
     " set showmode                  " Muetra -INSERT- y similares en la parte de abajo no activo para airline
+    set noshowmode                  " No mostrar --INSERT--
+    " No mostrar back to original cuando se autocompleta
+    try
+        set shortmess+=c
+    catch /^Vim\%((\a\+)\)\=:E539: Illegal character/
+        autocmd MyAutoCmd VimEnter *
+                    \ highlight ModeMsg guifg=bg guibg=bg |
+                    \ highlight Question guifg=bg guibg=bg
+    endtry
     set shiftround
     set ruler
     " set rulerformat=%30(%=\:b%n%y%m%r%w\ %l,%c%V\ %P%) " A ruler on steroids
@@ -231,14 +240,6 @@
         endif
     else
         set t_Co=256
-        " set t_AB=^[[48;5;%dm
-        " set t_AF=^[[38;5;%dm
-        if has("autocmd")
-        " xfce-terminal cursor xubuntu 14.4
-        " au InsertEnter * silent execute "!sed -i.bak -e 's/TERMINAL_CURSOR_SHAPE_BLOCK/TERMINAL_CURSOR_SHAPE_UNDERLINE/' ~/.config/xfce4/terminal/terminalrc"
-        " au InsertLeave * silent execute "!sed -i.bak -e 's/TERMINAL_CURSOR_SHAPE_UNDERLINE/TERMINAL_CURSOR_SHAPE_BLOCK/' ~/.config/xfce4/terminal/terminalrc"
-        " au VimLeave * silent execute "!sed -i.bak -e 's/TERMINAL_CURSOR_SHAPE_UNDERLINE/TERMINAL_CURSOR_SHAPE_BLOCK/' ~/.config/xfce4/terminal/terminalrc" 
-        endif
         if &term =~ "xterm\\|rxvt"
             " use an orange cursor in insert mode
             let &t_SI = "\<Esc>]12;orange\x7"
@@ -250,6 +251,9 @@
             " use \003]12;gray\007 for gnome-terminal
         endif
     endif
+    " Toggle Menu and Toolbar
+    " set guioptions-=m
+    " set guioptions-=T
 " }
 " Formating {
     set autoindent                  " identado Automático.
@@ -326,7 +330,6 @@ if count(s:settings.plugin_groups, 'core') "{{{
     " Mejora la apariencia, statusbar
     NeoBundle 'bling/vim-airline'
     " Configuración de vim-airline {{{
-        set noshowmode     " No mostrar --INSERT--
         let g:airline#extensions#tabline#enabled = 1
         let g:airline#extensions#tabline#left_sep=' '
         let g:airline#extensions#tabline#left_alt_sep='¦'
@@ -1472,6 +1475,14 @@ endif "}}}
     nmap <silent> <leader>md :!mkdir -p %:p:h<CR>
     " Adjust viewports to the same size
     map <Leader>= <C-w>=
+    " Togle hide tool and menu
+    nmap <silent> <C-F11> :if &guioptions =~# 'T' <Bar>
+                \set guioptions-=T <Bar>
+                \set guioptions-=m <bar>
+                \else <Bar>
+                \set guioptions+=T <Bar>
+                \set guioptions+=m <Bar>
+                \endif<CR>
 " }
 "
 " Autocomandos
