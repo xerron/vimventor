@@ -376,7 +376,7 @@ if count(s:settings.plugin_groups, 'core') "{{{
     " Zoom in/out of windows (toggle between one window and multi-window)
    NeoBundle 'regedarek/ZoomWin'
     " Configuración ZoomWin {{{
-        map <leader>zw :ZoomWin<CR>
+        nmap <leader>zw :ZoomWin<CR>
     " }}}
     " vim interface to Web API
     NeoBundle 'mattn/webapi-vim'
@@ -1231,46 +1231,44 @@ endif "}}}
 "
 " Funciones 
 "
-" {
-    function! Preserve(command) "{{{
+function! Preserve(command) "{{{
     " preparation: save last search, and cursor position.
-        let _s=@/
-        let l = line(".")
-        let c = col(".")
+    let _s=@/
+    let l = line(".")
+    let c = col(".")
     " do the business:
-        execute a:command
+    execute a:command
     " clean up: restore previous search history, and cursor position
-        let @/=_s
-        call cursor(l, c)
-    endfunction "}}}
-    function! StripTrailingWhitespace() "{{{
-        call Preserve("%s/\\s\\+$//e")
-    endfunction "}}}
-    function! EnsureExists(path) "{{{
-        if !isdirectory(expand(a:path))
+    let @/=_s
+    call cursor(l, c)
+endfunction "}}}
+function! StripTrailingWhitespace() "{{{
+    call Preserve("%s/\\s\\+$//e")
+endfunction "}}}
+function! EnsureExists(path) "{{{
+    if !isdirectory(expand(a:path))
         call mkdir(expand(a:path))
-        endif
-    endfunction "}}}
-    function! CloseWindowOrKillBuffer() "{{{
-        let number_of_windows_to_this_buffer = len(filter(range(1, winnr('$')), "winbufnr(v:val) == bufnr('%')"))
+    endif
+endfunction "}}}
+function! CloseWindowOrKillBuffer() "{{{
+    let number_of_windows_to_this_buffer = len(filter(range(1, winnr('$')), "winbufnr(v:val) == bufnr('%')"))
 
     " never bdelete a nerd tree
-        if matchstr(expand("%"), 'NERD') == 'NERD'
-            wincmd c
-            return
-        endif
+    if matchstr(expand("%"), 'NERD') == 'NERD'
+        wincmd c
+        return
+    endif
 
-        if number_of_windows_to_this_buffer > 1
-            wincmd c
-        else
-            bdelete
-        endif
-    endfunction "}}}
-    function! ChangeCurrentDirectory() "{{{
-         if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
-    endfunction
-    " }}}
-" }
+    if number_of_windows_to_this_buffer > 1
+        wincmd c
+    else
+        bdelete
+    endif
+endfunction "}}}
+function! ChangeCurrentDirectory() "{{{
+    if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
+endfunction
+" }}}
 "
 " Asignaciones (Mappings)
 "
@@ -1278,7 +1276,6 @@ endif "}}}
     " salir del modo insercion rapidamene
     inoremap jk <esc>
     inoremap <S-CR> <Esc>
-    inoremap <Leader>i <Esc>
     " Cut, Paste, Copy
     vmap <C-x> d
     vmap <C-v> p
@@ -1474,7 +1471,7 @@ endif "}}}
     " Create the directory containing the file in the buffer
     nmap <silent> <leader>md :!mkdir -p %:p:h<CR>
     " Adjust viewports to the same size
-    map <Leader>= <C-w>=
+    nmap <Leader>= <C-w>=
     " Togle hide tool and menu
     nmap <silent> <C-F11> :if &guioptions =~# 'T' <Bar>
                 \set guioptions-=T <Bar>
