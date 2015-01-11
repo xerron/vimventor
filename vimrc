@@ -38,9 +38,8 @@
     call add(s:settings.plugin_groups, 'distraction-free-mode')
     call add(s:settings.plugin_groups, 'autocomplete')
     call add(s:settings.plugin_groups, 'unite')
+    call add(s:settings.plugin_groups, 'language-tools')
     "call add(s:settings.plugin_groups, 'grammar-checker')
-    "call add(s:settings.plugin_groups, 'language-tools')
-    "call add(s:settings.plugin_groups, 'timeboxing')
     call add(s:settings.plugin_groups, 'navigation')
     call add(s:settings.plugin_groups, 'editing')
     "call add(s:settings.plugin_groups, 'indents')
@@ -116,9 +115,9 @@
     set spelllang=es
     "set spell                   " Activar cuando sea necesario
     if s:is_windows
-        set spellfile+=$VIM/dictionaries/es.utf-8.add
+        set spellfile+=$VIM/spell/es.utf-8.add
     else
-        set spellfile+=~/.vim/dictionaries/es.utf-8.add
+        set spellfile+=~/.vim/spell/es.utf-8.add
     endif
 " }
 " Archivos de respaldo {
@@ -380,6 +379,8 @@ if count(s:settings.plugin_groups, 'core') "{{{
     " }}}
     " vim interface to Web API
     NeoBundle 'mattn/webapi-vim'
+    " Web Browser lynx
+    NeoBundle 'mjbrownie/browser.vim'
 endif "}}}
 if count(s:settings.plugin_groups, 'markdown') "{{{
     NeoBundleLazy 'tpope/vim-markdown', {'autoload':{'filetypes':['markdown']}}
@@ -474,28 +475,31 @@ if count(s:settings.plugin_groups, 'ruby') "{{{
 endif "}}}
 if count(s:settings.plugin_groups, 'dev-tools') "{{{
     " Run commands quickly.
-    NeoBundle 'thinca/vim-quickrun'
+    " NeoBundle 'thinca/vim-quickrun'
     " Integrated reference viewer.  
     NeoBundle 'thinca/vim-ref'
-    ":Ref phpmanual echo
+    "       :Ref phpmanual echo
+    " documentacion
+    "NeoBundle 'powerman/vim-plugin-viewdoc'
+    "http://vim.wikia.com/wiki/Online_documentation_for_word_under_cursor
     " Shell interactiva para vim
-    NeoBundleLazy 'Shougo/vimshell.vim', {'autoload':{'commands':[ 'VimShell', 'VimShellInteractive' ]}}
+    "NeoBundleLazy 'Shougo/vimshell.vim', {'autoload':{'commands':[ 'VimShell', 'VimShellInteractive' ]}}
     "{{{
-      if s:is_macvim
-        let g:vimshell_editor_command='mvim'
-      else
-        let g:vimshell_editor_command='vim'
-      endif
-      let g:vimshell_right_prompt='getcwd()'
-      let g:vimshell_data_directory='~/.vim/.cache/vimshell'
-      let g:vimshell_vimshrc_path='~/.vim/vimshrc'
-
-      nnoremap <leader>c :VimShell -split<cr>
-      nnoremap <leader>cc :VimShell -split<cr>
-      nnoremap <leader>cn :VimShellInteractive node<cr>
-      nnoremap <leader>cl :VimShellInteractive lua<cr>
-      nnoremap <leader>cr :VimShellInteractive irb<cr>
-      nnoremap <leader>cp :VimShellInteractive python<cr>
+      " if s:is_macvim
+      "   let g:vimshell_editor_command='mvim'
+      " else
+      "   let g:vimshell_editor_command='vim'
+      " endif
+      " let g:vimshell_right_prompt='getcwd()'
+      " let g:vimshell_data_directory='~/.vim/.cache/vimshell'
+      " let g:vimshell_vimshrc_path='~/.vim/vimshrc'
+      "
+      " nnoremap <leader>c :VimShell -split<cr>
+      " nnoremap <leader>cc :VimShell -split<cr>
+      " nnoremap <leader>cn :VimShellInteractive node<cr>
+      " nnoremap <leader>cl :VimShellInteractive lua<cr>
+      " nnoremap <leader>cr :VimShellInteractive irb<cr>
+      " nnoremap <leader>cp :VimShellInteractive python<cr>
     "}}}
 endif "}}}
 if count(s:settings.plugin_groups, 'python') "{{{
@@ -649,9 +653,9 @@ if count(s:settings.plugin_groups, 'autocomplete') "{{{
         " <CR>: close popup and save indent.
         inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
         function! s:my_cr_function()
-            return neocomplete#close_popup() . "\<CR>"
+            " return neocomplete#close_popup() . "\<CR>"
             " For no inserting <CR> key.
-            "return pumvisible() ? neocomplete#close_popup() : "\<CR>"
+            return pumvisible() ? "\<C-n>" : "\<CR>"
         endfunction
         " inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
         " imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
@@ -992,7 +996,8 @@ if count(s:settings.plugin_groups, 'unite') "{{{
         endif
         " let g:vimfiler_time_format = '%d-%m-%Y %H:%M:%S'
         nnoremap <M-1> :VimFilerExplorer -toggle<CR>
-        nnoremap <silent> [unite]p :VimFiler -buffer-name=proyecto -split -simple -winwidth=35 -toggle -project -quit<cr>
+        nnoremap <silent> [unite]p :VimFilerExplorer -buffer-name=proyecto -toggle -project<cr>
+        " nnoremap <silent> [unite]p :VimFiler -buffer-name=proyecto -split -simple -winwidth=35 -toggle -project -quit<cr>
         autocmd FileType vimfiler
             \ nmap <buffer> w <Plug>(vimfiler_quick_look)
     " }}}
@@ -1168,16 +1173,23 @@ if count(s:settings.plugin_groups, 'grammar-checker') "{{{
     " http://www.mystilus.com/Interactive_check
 endif "}}}
 if count(s:settings.plugin_groups, 'language-tools') "{{{
-    " Sinonimos y Antnimos. Online - Thesauru online
-    " Neobundle 'vim-scripts/vim-online-thesaurus''
-    "idbrii/vim-online-thesaurus
-    "'beloglazov/vim-online-thesaurus'
+    " Sinonimos y Antonimos. Online - Thesauru online
+    " NeoBundle 'idbrii/vim-online-thesaurus'
+    " NeoBundle 'beloglazov/vim-online-thesaurus'
     " NeoBundle 'szw/vim-dict'
+    " Configuracion de vim-dict {
+    "
+    " }
+    " dependencia de cursoroverdictionary
+    NeoBundle 'kana/vim-operator-user'
     " Habre un diccionario bajo el cursor
-    "vim-scripts/cursoroverdictionary
-    " documentacion
-    " powerman/vim-plugin-viewdoc
-    "http://vim.wikia.com/wiki/Online_documentation_for_word_under_cursor
+    NeoBundle 'vim-scripts/cursoroverdictionary'
+    " Google Translator
+    NeoBundle 'maksimr/vim-translator'
+    " :Translate Hello Word
+    " Configuracion de vim-translator {
+        let g:goog_user_conf = {'langpair': 'en|es','cmd': 'ruby','v_key': 'T'}
+    " }
 endif "}}}
 if count(s:settings.plugin_groups, 'task-management') "{{{
     " Administrador de tareas

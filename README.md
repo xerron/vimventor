@@ -29,16 +29,16 @@ Libre de distracciones realice:
 
 **Dependencias**
 
-- (g)Vim 7.4  
 - Git
-- Fuentes de [powerline](https://github.com/Lokaltog/powerline-fonts).
 - LuaJit 
+- Fuentes de [powerline](https://github.com/Lokaltog/powerline-fonts).
+- [Ag](https://github.com/ggreer/the_silver_searcher)
 - Python 2.7.x
+- [Exuberant-ctags](http://ctags.sourceforge.net/)
 
 **Recomendado**
 
-- [Ag](https://github.com/ggreer/the_silver_searcher)
-- [Exuberant-ctags](http://ctags.sourceforge.net/)
+- Ruby
 
 ### GNU/Linux
 
