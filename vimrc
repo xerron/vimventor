@@ -39,7 +39,7 @@
     call add(s:settings.plugin_groups, 'autocomplete')
     call add(s:settings.plugin_groups, 'unite')
     call add(s:settings.plugin_groups, 'language-tools')
-    "call add(s:settings.plugin_groups, 'grammar-checker')
+    call add(s:settings.plugin_groups, 'grammar-checker')
     call add(s:settings.plugin_groups, 'navigation')
     call add(s:settings.plugin_groups, 'editing')
     "call add(s:settings.plugin_groups, 'indents')
@@ -379,8 +379,6 @@ if count(s:settings.plugin_groups, 'core') "{{{
     " }}}
     " vim interface to Web API
     NeoBundle 'mattn/webapi-vim'
-    " Web Browser lynx
-    NeoBundle 'mjbrownie/browser.vim'
 endif "}}}
 if count(s:settings.plugin_groups, 'markdown') "{{{
     NeoBundleLazy 'tpope/vim-markdown', {'autoload':{'filetypes':['markdown']}}
@@ -638,11 +636,11 @@ if count(s:settings.plugin_groups, 'autocomplete') "{{{
            " \ 'scheme' : $HOME.'/.gosh_completions'
             "\ }
         " Define keyword.
-        " if !exists('g:neocomplete#keyword_patterns')
-            " let g:neocomplete#keyword_patterns = {}
-        " endif
+        if !exists('g:neocomplete#keyword_patterns')
+            let g:neocomplete#keyword_patterns = {}
+        endif
         " completar palabras en español por default
-        " let g:neocomplete#keyword_patterns._ = '[A-Za-zá-úÁ-ÚüñÑ_][0-9A-Za-zá-úÁ-ÚüñÑ_]*'
+        let g:neocomplete#keyword_patterns._ = '[A-Za-zá-úÁ-ÚüñÑ_][0-9A-Za-zá-úÁ-ÚüñÑ_]*'
         " tab
         " Plugin key-mappings.
         inoremap <expr><C-g> neocomplete#undo_completion()
@@ -1165,12 +1163,22 @@ endif "}}}
 if count(s:settings.plugin_groups, 'grammar-checker') "{{{
     " Corrector Ortografico y gramatical - Grammar checker
     NeoBundle 'vim-scripts/LanguageTool'
+    " Configuración LanguageTool {
+        if s:is_windows 
+            let g:languagetool_jar='/opt/languagetool/LanguageTool-2.8/languagetool-commandline.jar'
+        else
+            let g:languagetool_jar='/opt/languagetool/LanguageTool-2.8/languagetool-commandline.jar'
+        endif
+        let g:languagetool_win_height=14
+
+    " }
     " Corrector ortografico, tiene un plugin para vim.
     " http://www.afterthedeadline.com/
     " vim integracion.
     " https://github.com/lpenz/atdtool
     " Online, falta hacer algun plugin
     " http://www.mystilus.com/Interactive_check
+    " TODO: Buscar la forma de corregir mas rapido con el set spell z=
 endif "}}}
 if count(s:settings.plugin_groups, 'language-tools') "{{{
     " Sinonimos y Antonimos. Online - Thesauru online

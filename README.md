@@ -39,6 +39,7 @@ Libre de distracciones realice:
 **Recomendado**
 
 - Ruby
+- [LanguageTool](https://languagetool.org/)
 
 ### GNU/Linux
 
