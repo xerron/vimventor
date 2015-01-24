@@ -1001,9 +1001,13 @@ if count(s:settings.plugin_groups, 'unite') "{{{
     " }}}
     " unite.vim session source
     NeoBundleLazy 'Shougo/unite-session', {'autoload':{'unite_sources': 'session'}}
-    " {{{
+    " Configuración de unite-session {
         nnoremap <silent> [unite]x :<C-u>Unite -auto-resize session<cr>
-    " }}}
+    " }
+    NeoBundleLazy 'kopischke/unite-spell-suggest', {'autoload':{'unite_sources': 'spell_suggest'}}
+    " Configuracion de unite-spell-suggest {
+        nnoremap <silent> [unite]z :<C-u>Unite -auto-resize spell_suggest<cr>
+    " }
 endif "}}}
 if count(s:settings.plugin_groups, 'indents') "{{{
     NeoBundle 'nathanaelkane/vim-indent-guides'
