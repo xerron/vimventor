@@ -1185,9 +1185,13 @@ if count(s:settings.plugin_groups, 'language-tools') "{{{
     " NeoBundle 'idbrii/vim-online-thesaurus'
     " NeoBundle 'beloglazov/vim-online-thesaurus'
     " NeoBundle 'szw/vim-dict'
-    " Configuracion de vim-dict {
-    "
-    " }
+    " Configuracion de vim-dict 
+    " palabra por palabra ui-interface
+    NeoBundle 'xerron/wordbyword.vim'
+    " Acceso rapido a diccionarios stardict 2.4.2 por sdcv
+    NeoBundle 'xerron/stardict.vim'
+    " Acceso rapido al popup de goldendict
+    NeoBundle 'xerron/goldendict.vim'
     " dependencia de cursoroverdictionary
     NeoBundle 'kana/vim-operator-user'
     " Habre un diccionario bajo el cursor
@@ -1289,6 +1293,10 @@ function! ChangeCurrentDirectory() "{{{
     if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
 endfunction
 " }}}
+function! FixLastSpellingError() "{{{
+    normal! mm[s1z=`m"
+endfunction
+" }}}
 "
 " Asignaciones (Mappings)
 "
@@ -1368,7 +1376,9 @@ endfunction
     nnoremap <leader>fw :execute "vimgrep ".expand("<cword>")." %"<cr>:copen<cr>
     " find last search in quickfix
     nnoremap <leader>ff :execute 'vimgrep /'.@/.'/g %'<cr>:copen<cr>
-
+" }
+" Corrector Ortográfico {
+    nnoremap <leader>sp :call FixLastSpellingError()<cr>
 " }
 " Identación {
     " reselect visual block after indent
@@ -1520,8 +1530,8 @@ endfunction
   autocmd FileType css,scss setlocal foldmethod=marker foldmarker={,}
   autocmd FileType css,scss nnoremap <silent> <leader>S vi{:sort<CR>
   autocmd FileType python setlocal foldmethod=indent tabstop=4 shiftwidth=4
+  autocmd FileType vim setlocal foldmethod=indent tabstop=2 shiftwidth=2 keywordprg=:help
   autocmd FileType markdown setlocal nolist
-  autocmd FileType vim setlocal fdm=indent keywordprg=:help
 
   " Syntax of these languages is fussy over tabs Vs spaces
   " autocmd FileType make setlocal ts=8 sts=8 sw=8 noexpandtab
