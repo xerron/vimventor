@@ -50,6 +50,7 @@
     call add(s:settings.plugin_groups, 'latex')
     call add(s:settings.plugin_groups, 'restructuretex')
     call add(s:settings.plugin_groups, 'web')
+    call add(s:settings.plugin_groups, 'task-management')
     "call add(s:settings.plugin_groups, 'dev-tools')
     "call add(s:settings.plugin_groups, 'javascript')
     "call add(s:settings.plugin_groups, 'python')
@@ -516,14 +517,9 @@ if count(s:settings.plugin_groups, 'php') "{{{
 endif "}}}
 if count(s:settings.plugin_groups, 'latex') "{{{
     " A simple and lightweight vim-plugin for editing LaTeX files.
-    NeoBundle 'lervag/vim-latex'
+    NeoBundle 'xerron/vim-latex'
     " Configuración vim-latex{{{
-        let g:latex_fold_enabled = 1
-        let g:tex_flavor = "latex"
-        let g:latex_latexmk_output = 'pdf'
-        " let g:latex_complete_close_braces = 0
-        let g:latex_quickfix_mode = 2
-        " let g:latex_latexmk_autojump = 0
+        " $pdflatex = 'pdflatex -synctex=1 %O %S';   > ~/.latexmkrc
         let g:latex_toc_enabled = 1
         if s:is_windows
             " Configuracion Sumatra:  gvim --remote-silent +%l "%f"
@@ -531,7 +527,7 @@ if count(s:settings.plugin_groups, 'latex') "{{{
             " general , sumatrapdf, mupdf
             let g:latex_view_method = 'general'
             let g:latex_view_general_viewer = 'SumatraPDF'
-            let g:latex_view_genreal_options = '-reuse-instance -inverse-search '.
+            let g:latex_view_general_options = '-reuse-instance -inverse-search '.
                 \ '"gvim --servername '.v:servername.' --remote-send \"^<C-\^>^<C-n^>'.
                 \ ':execute ''drop ''.fnameescape(''\%f'')^<CR^>:\%l^<CR^>:normal\! zzzv^<CR^>'.
                 \ ':call remote_foreground('''.v:servername.''')^<CR^>\""'
@@ -545,13 +541,22 @@ if count(s:settings.plugin_groups, 'latex') "{{{
                 \ . shellescape(g:latex#data[b:latex.id].out()) . '<CR><CR>'
             " nnoremap <expr><silent> gt  ':wall<bar>VimLatexView '.'-forward-search "'.shellescape(expand('%:p')).'" '.line(".").' '.shellescape(g:latex#data[b:latex.id].out()).'<CR>'
         else
-            let g:latex_viewer = 'evince'
-            function! SyncTexForward()
-                call latex#view('--unique '
-                \ . g:latex#data[b:latex.id].out()
-                \ . '\#src:' . line(".") . expand('%:p'))
+            let g:latex_view_method = 'general'
+            let g:latex_view_general_viewer = 'okular'
+            let g:latex_view_general_options = '--unique'
+            " let g:latex_view_general_viewer = 'zathura'
+            " let g:latex_view_general_options = '-s -x "gvim +%l %f"'
+            function! SyncTexForward(focus)
+                if a:focus == 1 
+                    let cmd = 'okular --unique '.g:latex#data[b:latex.id].out()."\\#src:".line(".").expand("%\:p").' &'
+                    execute 'Start! ' . cmd
+                else
+                    call latex#view#view('--unique '
+                                \ . g:latex#data[b:latex.id].out()
+                                \ . '\#src:' . line(".") . expand('%:p'))
+                endif
             endfunction
-            nmap gb :call SyncTexForward()<cr>
+            nmap gb :call SyncTexForward(0)<cr>
         endif
     " }}} 
 endif "}}}
@@ -595,13 +600,11 @@ if count(s:settings.plugin_groups, 'scm') "{{{
     "}}}
     " Soporte para otros SVC | Nota: Aun no lo he probado
     " NeoBundle 'git://repo.or.cz/vcscommand'
-endif "}}}
-if count(s:settings.plugin_groups, 'gist') "{{{
     " Plugin para crear Gist
      NeoBundleLazy 'mattn/gist-vim', { 'depends': 'mattn/webapi-vim', 'autoload': { 'commands': 'Gist' } }
-     "{{{
-      let g:gist_post_private=1
-      let g:gist_show_privates=1
+     " Configuración gist-vim {{{
+        let g:gist_post_private=1
+        let g:gist_show_privates=1
     "}}}
 endif "}}}
 if count(s:settings.plugin_groups, 'syntax') "{{{
@@ -1001,9 +1004,18 @@ if count(s:settings.plugin_groups, 'unite') "{{{
     " }}}
     " unite.vim session source
     NeoBundleLazy 'Shougo/unite-session', {'autoload':{'unite_sources': 'session'}}
-    " {{{
+    " Configuración de unite-session {
+        let g:unite_source_session_default_session_name = 'xerron'
         nnoremap <silent> [unite]x :<C-u>Unite -auto-resize session<cr>
-    " }}}
+    " }
+    NeoBundleLazy 'kopischke/unite-spell-suggest', {'autoload':{'unite_sources': 'spell_suggest'}}
+    " Configuracion de unite-spell-suggest {
+        nnoremap <silent> [unite]z :<C-u>Unite -auto-resize spell_suggest<cr>
+    " }
+    " unite quickfix
+    " NeoBundle 'osyo-manga/unite-quickfix'
+    " git unite
+    " NeoBundle 'kmnk/vim-unite-giti'
 endif "}}}
 if count(s:settings.plugin_groups, 'indents') "{{{
     NeoBundle 'nathanaelkane/vim-indent-guides'
@@ -1184,30 +1196,29 @@ if count(s:settings.plugin_groups, 'language-tools') "{{{
     " Sinonimos y Antonimos. Online - Thesauru online
     " NeoBundle 'idbrii/vim-online-thesaurus'
     " NeoBundle 'beloglazov/vim-online-thesaurus'
-    " NeoBundle 'szw/vim-dict'
-    " Configuracion de vim-dict 
     " palabra por palabra ui-interface
     NeoBundle 'xerron/wordbyword.vim'
     " Acceso rapido a diccionarios stardict 2.4.2 por sdcv
     NeoBundle 'xerron/stardict.vim'
-    " Acceso rapido al popup de goldendict
-    NeoBundle 'xerron/goldendict.vim'
-    " dependencia de cursoroverdictionary
-    NeoBundle 'kana/vim-operator-user'
-    " Habre un diccionario bajo el cursor
-    NeoBundle 'vim-scripts/cursoroverdictionary'
     " Google Translator
     NeoBundle 'maksimr/vim-translator'
     " :Translate Hello Word
     " Configuracion de vim-translator {
         let g:goog_user_conf = {'langpair': 'en|es','cmd': 'ruby','v_key': 'T'}
     " }
+    " Diccionario de Rimas
+    NeoBundle 'xerron/rimas.vim'
+    " Connfiguración de rimas.vim {
+        let g:rimas_merimas_path='/home/xerron/Documentos/Diccionarios/MERimas/' 
+    " }
 endif "}}}
 if count(s:settings.plugin_groups, 'task-management') "{{{
-    " Administrador de tareas
-    " NeoBlunde 'farseer90718/vim-taskwarrior'
+    if !s:is_windows
+        " Administrador de tareas
+        NeoBundle 'farseer90718/vim-taskwarrior'
+    endif
     " Task manager
-    NeoBundle 'freitass/todo.txt-vim'
+    " NeoBundle 'freitass/todo.txt-vim'
 endif "}}}
 if count(s:settings.plugin_groups, 'vim') "{{{
     " Testing framework for Vim script
