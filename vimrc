@@ -52,7 +52,7 @@
     call add(s:settings.plugin_groups, 'web')
     call add(s:settings.plugin_groups, 'task-management')
     "call add(s:settings.plugin_groups, 'dev-tools')
-    "call add(s:settings.plugin_groups, 'javascript')
+    call add(s:settings.plugin_groups, 'javascript')
     "call add(s:settings.plugin_groups, 'python')
     "call add(s:settings.plugin_groups, 'php')
     "call add(s:settings.plugin_groups, 'ruby')
@@ -451,18 +451,18 @@ if count(s:settings.plugin_groups, 'javascript') "{{{
       \ 'autoload': { 'filetypes': ['javascript'] },
       \ 'build': {
         \ 'mac': 'npm install',
-        \ 'unix': 'npm install',''
+        \ 'unix': 'npm install',
         \ 'cygwin': 'npm install',
-        \ 'windows': 'npm install',
+        \ 'windows': 'npm install'
       \ },
     \ }
     NeoBundleLazy 'pangloss/vim-javascript', {'autoload':{'filetypes':['javascript']}}
     NeoBundleLazy 'maksimr/vim-jsbeautify', {'autoload':{'filetypes':['javascript']}} "{{{
       nnoremap <leader>fjs :call JsBeautify()<cr>
 "}}}
-    NeoBundleLazy 'leafgarland/typescript-vim', {'autoload':{'filetypes':['typescript']}}
-    NeoBundleLazy 'kchmck/vim-coffee-script', {'autoload':{'filetypes':['coffee']}}
-    NeoBundleLazy 'mmalecki/vim-node.js', {'autoload':{'filetypes':['javascript']}}
+    " NeoBundleLazy 'leafgarland/typescript-vim', {'autoload':{'filetypes':['typescript']}}
+    " NeoBundleLazy 'kchmck/vim-coffee-script', {'autoload':{'filetypes':['coffee']}}
+    " NeoBundleLazy 'mmalecki/vim-node.js', {'autoload':{'filetypes':['javascript']}}
     NeoBundleLazy 'leshill/vim-json', {'autoload':{'filetypes':['javascript','json']}}
     NeoBundleLazy 'othree/javascript-libraries-syntax.vim', {'autoload':{'filetypes':['javascript','coffee','ls','typescript']}}
 endif "}}}
@@ -960,7 +960,7 @@ if count(s:settings.plugin_groups, 'unite') "{{{
         if s:is_windows
             let g:junkfile#directory=expand("$VIM/.cache/junk")
         else
-            let g:junkfile#directory=expand("~/.vim/.cache/junk")
+            let g:junkfile#directory=expand("~/Dropbox/Notas")
         endif
         nnoremap <silent> [unite]j :<C-u>Unite -auto-resize -buffer-name=junk junkfile junkfile/new<cr>
     "}}}
@@ -1215,7 +1215,11 @@ endif "}}}
 if count(s:settings.plugin_groups, 'task-management') "{{{
     if !s:is_windows
         " Administrador de tareas
-        NeoBundle 'farseer90718/vim-taskwarrior'
+        NeoBundleLazy 'farseer90718/vim-taskwarrior', {'autoload':{'commands':'TW'}}
+
+        " Configuracion vim-taskwarrior {
+            let g:task_rc_override = 'defaultwidth=999'
+        " }
     endif
     " Task manager
     " NeoBundle 'freitass/todo.txt-vim'
