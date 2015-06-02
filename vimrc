@@ -30,6 +30,22 @@
     let s:settings.guifont_linux_goyo = 'Cousine\ 13'
     let s:settings.guifont_mac_goyo = 'Cousine:h13'
 
+    let s:settings.gui_minimal = 'on'
+    let s:settings.terminal = 'terminator'
+
+    iabbrev myN E. Manuel Cerrón Angeles
+    iabbrev myE xerron.angels@gmail.com
+    iabbrev myGit http://github.com/xerron
+    iabbrev myT http://twitter.com/x3rron
+    iabbrev myGo http://google.com/+xerron
+    iabbrev myF http://facebook.com/xangel00
+
+    iabbrev myData myN<cr>myE<cr>myGit<cr>
+
+    " command line
+    cabbrev csn Colorscheme desert
+    " source $VIM/abbreviations.vim
+
     " ---------------------------------------------------------
     " Comenta/descomenta el grupo de plugins que vas a utilizar
     " ---------------------------------------------------------
@@ -185,7 +201,10 @@
     set background=dark
     " Colorsheme
     exec 'colorscheme '.s:settings.colorscheme
-    set cursorline                    " Resaltar linea actual
+    " Resaltar linea actual solo en insert mode
+    " set cursorline                    
+    autocmd InsertEnter * set cul
+    autocmd InsertLeave * set cul!
     " highlight clear SignColumn      " SignColumn con el mismo fondo
     " highlight clear LineNr          " Mismo color de fondo para la actual en relative mode
     " highlight clear CursorLineNr    " Quitar el resaltado de numero de linea.
@@ -230,6 +249,7 @@
     " set listchars+=trail:•
     " set listchars+=extends:>
     " set listchars+=precedes:<
+    " visualizacion de la linea en insert mode
     if has('gui_running')
         if s:is_windows
             exec 'set guifont='.s:settings.guifont_win 
@@ -240,20 +260,47 @@
         endif
     else
         set t_Co=256
+        " sirve para indicar que se salio del insert mode
         if &term =~ "xterm\\|rxvt"
             " use an orange cursor in insert mode
             let &t_SI = "\<Esc>]12;orange\x7"
             " use a red cursor otherwise
-            let &t_EI = "\<Esc>]12;red\x7"
+            let &t_EI = "\<Esc>]12;grey\x7"
+            " let &t_SR = "\<Esc>]12;red\x7"
             " silent !echo -ne "\033]12;red\007"
             " reset cursor when vim exits
             " autocmd VimLeave * silent !echo -ne "\033]112\007"
             " use \003]12;gray\007 for gnome-terminal
         endif
+        if &term == 'iterm'
+            if exists('$TMUX')
+                let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+                let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+            endif
+        endif
+        if s:settings.terminal == 'xterm'
+            " solid underscore
+            let &t_SI .= "\<Esc>[6 q"
+            " solid block
+            let &t_EI .= "\<Esc>[2 q"
+            " 1 or 0 -> blinking block
+            " 3 -> blinking underscore
+            " Recent versions of xterm (282 or above) also support
+            " 5 -> blinking vertical bar
+            " 6 -> solid vertical bar
+        endif
+        if s:settings.terminal == 'konsole'
+            let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+            let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+        endif
     endif
     " Toggle Menu and Toolbar
-    " set guioptions-=m
-    " set guioptions-=T
+    if s:settings.gui_minimal == 'on'
+        set guioptions-=m  "remove menu bar
+        set guioptions-=T  "remove toolbar
+        set guioptions-=r  "remove right-hand scroll bar
+        set guioptions-=L  "remove left-hand scroll bar
+    endif
 " }
 " Formating {
     set autoindent                  " identado Automático.
@@ -996,7 +1043,16 @@ if count(s:settings.plugin_groups, 'unite') "{{{
             let g:vimfiler_marked_file_icon = '*'
         endif
         " let g:vimfiler_time_format = '%d-%m-%Y %H:%M:%S'
-        nnoremap <M-1> :VimFilerExplorer -toggle<CR>
+       if has('gui_running')
+        " the following two lines do not work in vim, but work in Gvim
+        nnoremap <A-1> :VimFilerExplorer -toggle<CR>
+    else
+        " these two work in vim
+        " shrtcut with alt key: press Ctrl-v then Alt-k
+        " ATTENTION: the following two lines should not be 
+        " edited under other editors like gedit. ^[k and ^[j will be broken! 
+        nnoremap 1  :VimFilerExplorer -toggle<CR>
+    endif
         nnoremap <silent> [unite]p :VimFilerExplorer -buffer-name=proyecto -toggle -project<cr>
         " nnoremap <silent> [unite]p :VimFiler -buffer-name=proyecto -split -simple -winwidth=35 -toggle -project -quit<cr>
         autocmd FileType vimfiler
@@ -1126,12 +1182,11 @@ if count(s:settings.plugin_groups, 'distraction-free-mode') "{{{
             set background=dark
             exec 'colorscheme '.s:settings.colorscheme
             set linespace=0
-            set guioptions+=m  "add menu bar
-            set guioptions+=T  "add toolbar
-            set guioptions+=r  "add right-hand scroll bar
-            set guioptions+=L  "add left-hand scroll bar
-            if !has("gui_running")
-                return
+            if s:settings.gui_minimal != 'on'
+                set guioptions+=m  "add menu bar
+                set guioptions+=T  "add toolbar
+                set guioptions+=r  "add right-hand scroll bar
+                set guioptions+=L  "add left-hand scroll bar
             endif
             if has('gui_running')
                 if s:is_windows
@@ -1141,6 +1196,9 @@ if count(s:settings.plugin_groups, 'distraction-free-mode') "{{{
                 else
                     exec 'set guifont='.s:settings.guifont_linux 
                 endif
+            endif
+            if !has("gui_running")
+                return
             endif
             " Asegura salir con :q
             if b:quitting && len(filter(range(1, bufnr('$')), 'buflisted(v:val)')) == 1
@@ -1218,7 +1276,7 @@ if count(s:settings.plugin_groups, 'task-management') "{{{
         NeoBundleLazy 'farseer90718/vim-taskwarrior', {'autoload':{'commands':'TW'}}
 
         " Configuracion vim-taskwarrior {
-            let g:task_rc_override = 'defaultwidth=999'
+            " let g:task_rc_override = 'defaultwidth=999'
         " }
     endif
     " Task manager
