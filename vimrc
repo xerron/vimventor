@@ -60,7 +60,7 @@
     call add(s:settings.plugin_groups, 'editing')
     "call add(s:settings.plugin_groups, 'indents')
     "call add(s:settings.plugin_groups, 'textobj')
-    "call add(s:settings.plugin_groups, 'syntax')
+    " call add(s:settings.plugin_groups, 'syntax')
     call add(s:settings.plugin_groups, 'scm')
     call add(s:settings.plugin_groups, 'markdown')
     call add(s:settings.plugin_groups, 'latex')
@@ -77,6 +77,7 @@
     "call add(s:settings.plugin_groups, 'go')
     "call add(s:settings.plugin_groups, 'vim')
     "call add(s:settings.plugin_groups, 'misc')
+    call add(s:settings.plugin_groups, 'tmux')
     if s:is_windows
        " call add(s:settings.plugin_groups, 'windows')
     endif
@@ -272,27 +273,17 @@
             " autocmd VimLeave * silent !echo -ne "\033]112\007"
             " use \003]12;gray\007 for gnome-terminal
         endif
-        if &term == 'iterm'
-            if exists('$TMUX')
-                let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-                let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-            endif
-        endif
-        if s:settings.terminal == 'xterm'
+        " if &term == 'uxterm'
             " solid underscore
-            let &t_SI .= "\<Esc>[6 q"
+            " let &t_SI .= "\<Esc>[6 q"
             " solid block
-            let &t_EI .= "\<Esc>[2 q"
+            " let &t_EI .= "\<Esc>[2 q"
             " 1 or 0 -> blinking block
             " 3 -> blinking underscore
             " Recent versions of xterm (282 or above) also support
             " 5 -> blinking vertical bar
             " 6 -> solid vertical bar
-        endif
-        if s:settings.terminal == 'konsole'
-            let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-            let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-        endif
+        " endif
     endif
     " Toggle Menu and Toolbar
     if s:settings.gui_minimal == 'on'
@@ -416,9 +407,9 @@ if count(s:settings.plugin_groups, 'core') "{{{
     NeoBundle 'xerron/vim-doc-es'
     " /szw/vim-ctrlspace
     " Add a buffer close to vim that doesn't close the window
-    NeoBundle 'rgarver/Kwbd.vim'
+    " NeoBundle 'rgarver/Kwbd.vim'
     """ Configuración Kwbd {{{
-        nmap <C-W>! <Plug>Kwbd
+        " nmap <C-W>! <Plug>Kwbd
     """}}}
     " Zoom in/out of windows (toggle between one window and multi-window)
    NeoBundle 'regedarek/ZoomWin'
@@ -507,7 +498,7 @@ if count(s:settings.plugin_groups, 'javascript') "{{{
     NeoBundleLazy 'maksimr/vim-jsbeautify', {'autoload':{'filetypes':['javascript']}} "{{{
       nnoremap <leader>fjs :call JsBeautify()<cr>
 "}}}
-    " NeoBundleLazy 'leafgarland/typescript-vim', {'autoload':{'filetypes':['typescript']}}
+    NeoBundleLazy 'leafgarland/typescript-vim', {'autoload':{'filetypes':['typescript']}}
     " NeoBundleLazy 'kchmck/vim-coffee-script', {'autoload':{'filetypes':['coffee']}}
     " NeoBundleLazy 'mmalecki/vim-node.js', {'autoload':{'filetypes':['javascript']}}
     NeoBundleLazy 'leshill/vim-json', {'autoload':{'filetypes':['javascript','json']}}
@@ -1297,11 +1288,14 @@ if count(s:settings.plugin_groups, 'utilities') "{{{
     " bronson/vim-trailing-whitespace
     "
 endif "}}}
-if count(s:settings.plugin_groups, 'misc') "{{{
+if count(s:settings.plugin_groups, 'tmux') "{{{
     if exists('$TMUX')
         " Seamless navigation between tmux panes and vim splits
         NeoBundle 'christoomey/vim-tmux-navigator'
+        NeoBundle 'edkolev/tmuxline.vim'
     endif
+endif "}}}
+if count(s:settings.plugin_groups, 'misc') "{{{
     " Personal Wiki for Vim
     NeoBundle 'vimwiki'
     " A fancy start screen for Vim.
