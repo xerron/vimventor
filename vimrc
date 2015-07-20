@@ -94,14 +94,14 @@
 " }
 " Neobundle {
     if s:is_windows
-        set rtp+=$VIM/plugins/neobundle.vim
+        set rtp+=$VIM/bundles/neobundle.vim
         set rtp+=$VIM/vimfiles
         set rtp+=$VIM
-        call neobundle#begin(expand('$VIM/plugins/'))
+        call neobundle#begin(expand('$VIM/bundles/'))
     else
-        set rtp+=~/.vim/plugins/neobundle.vim
+        set rtp+=~/.vim/bundles/neobundle.vim
         set rtp+=~/.vim/vimfiles
-        call neobundle#begin(expand('~/.vim/plugins/'))
+        call neobundle#begin(expand('~/.vim/bundles/'))
     endif
     NeoBundleFetch 'Shougo/neobundle.vim'
 " }
