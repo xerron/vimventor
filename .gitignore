@@ -1,12 +1,14 @@
+# cahe
 .cache/
+# directories
 lua/
 plugins/
 origdoc/
 patch/
 vim74/
 vim73/
+# exes
 ag.exe
-_vimrc
 sdcv.exe
 gvim.exe
 iconv.dll
@@ -18,4 +20,7 @@ tag
 vim.exe
 vimrun.exe
 xxd.exe
+# bundles
 .netrwhist
+# vimrc windows
+_vimrc
