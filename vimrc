@@ -1,6 +1,6 @@
 " vim: set sw=4 ts=4 sts=4 et tw=78 foldmarker={,} foldlevel=0 foldmethod=marker :
 "
-" Configuración personal .vimrc de E. Manuel Cerrón Ángeles
+" .vimrc de E. Manuel Cerrón Ángeles
 "
 "    ___  __
 "   |   ||  |
@@ -21,17 +21,17 @@
 " Personalización
 "
 " Init {
-    let s:settings = {}
-    let s:settings.colorscheme = 'hybrid'
-    let s:settings.guifont_win = 'Sauce_Code_Powerline:h11'
-    let s:settings.guifont_linux = 'Source\ Code\ Pro\ for\ Powerline\ Medium\ 11'
-    let s:settings.guifont_mac = 'Source_Code_Pro_for_Powerline:h10'
-    let s:settings.guifont_win_goyo = 'Cousine:h13'
-    let s:settings.guifont_linux_goyo = 'Cousine\ 13'
-    let s:settings.guifont_mac_goyo = 'Cousine:h13'
+    let g:settings = {}
+    let g:settings.colorscheme = 'hybrid'
+    let g:settings.guifont_win = 'Sauce_Code_Powerline:h11'
+    let g:settings.guifont_linux = 'Source\ Code\ Pro\ for\ Powerline\ Medium\ 11'
+    let g:settings.guifont_mac = 'Source_Code_Pro_for_Powerline:h10'
+    let g:settings.guifont_win_goyo = 'Cousine:h13'
+    let g:settings.guifont_linux_goyo = 'Cousine\ 13'
+    let g:settings.guifont_mac_goyo = 'Cousine:h13'
 
-    let s:settings.gui_minimal = 'on'
-    let s:settings.terminal = 'terminator'
+    let g:settings.gui_minimal = 'on'
+    let g:settings.terminal = 'terminator'
 
     iabbrev myN E. Manuel Cerrón Angeles
     iabbrev myE xerron.angels@gmail.com
@@ -49,42 +49,40 @@
     " ---------------------------------------------------------
     " Comenta/descomenta el grupo de plugins que vas a utilizar
     " ---------------------------------------------------------
-    let s:settings.plugin_groups = []
-    call add(s:settings.plugin_groups, 'core')
-    call add(s:settings.plugin_groups, 'distraction-free-mode')
-    call add(s:settings.plugin_groups, 'autocomplete')
-    call add(s:settings.plugin_groups, 'unite')
-    call add(s:settings.plugin_groups, 'language-tools')
-    call add(s:settings.plugin_groups, 'grammar-checker')
-    call add(s:settings.plugin_groups, 'navigation')
-    call add(s:settings.plugin_groups, 'editing')
-    "call add(s:settings.plugin_groups, 'indents')
-    "call add(s:settings.plugin_groups, 'textobj')
-    " call add(s:settings.plugin_groups, 'syntax')
-    call add(s:settings.plugin_groups, 'scm')
-    call add(s:settings.plugin_groups, 'markdown')
-    call add(s:settings.plugin_groups, 'latex')
-    call add(s:settings.plugin_groups, 'restructuretex')
-    call add(s:settings.plugin_groups, 'web')
-    call add(s:settings.plugin_groups, 'task-management')
-    "call add(s:settings.plugin_groups, 'dev-tools')
-    call add(s:settings.plugin_groups, 'javascript')
-    "call add(s:settings.plugin_groups, 'python')
-    "call add(s:settings.plugin_groups, 'php')
-    "call add(s:settings.plugin_groups, 'ruby')
-    "call add(s:settings.plugin_groups, 'csv')
-    "call add(s:settings.plugin_groups, 'scala')
-    "call add(s:settings.plugin_groups, 'go')
-    "call add(s:settings.plugin_groups, 'vim')
-    "call add(s:settings.plugin_groups, 'misc')
-    call add(s:settings.plugin_groups, 'tmux')
-    if s:is_windows
-       " call add(s:settings.plugin_groups, 'windows')
-    endif
+    let g:settings.plugin_groups = []
+    call add(g:settings.plugin_groups, 'core')
+    call add(g:settings.plugin_groups, 'distraction-free-mode')
+    call add(g:settings.plugin_groups, 'autocomplete')
+    call add(g:settings.plugin_groups, 'unite')
+    call add(g:settings.plugin_groups, 'language-tools')
+    call add(g:settings.plugin_groups, 'grammar-checker')
+    call add(g:settings.plugin_groups, 'navigation')
+    call add(g:settings.plugin_groups, 'editing')
+    "call add(g:settings.plugin_groups, 'indents')
+    "call add(g:settings.plugin_groups, 'textobj')
+    " call add(g:settings.plugin_groups, 'syntax')
+    call add(g:settings.plugin_groups, 'scm')
+    call add(g:settings.plugin_groups, 'markdown')
+    call add(g:settings.plugin_groups, 'latex')
+    call add(g:settings.plugin_groups, 'restructuretex')
+    call add(g:settings.plugin_groups, 'web')
+    call add(g:settings.plugin_groups, 'task-management')
+    "call add(g:settings.plugin_groups, 'dev-tools')
+    call add(g:settings.plugin_groups, 'javascript')
+    "call add(g:settings.plugin_groups, 'python')
+    "call add(g:settings.plugin_groups, 'php')
+    "call add(g:settings.plugin_groups, 'ruby')
+    "call add(g:settings.plugin_groups, 'csv')
+    "call add(g:settings.plugin_groups, 'scala')
+    "call add(g:settings.plugin_groups, 'go')
+    "call add(g:settings.plugin_groups, 'vim')
+    "call add(g:settings.plugin_groups, 'misc')
+    call add(g:settings.plugin_groups, 'tmux')
+       " call add(g:settings.plugin_groups, 'windows')
     " ---------------------------------------------------
     " Deshabilita los plugins que no vas a usar
     " ---------------------------------------------------
-    let s:settings.disabled_plugins=['vim.fo', 'vim.bar']
+    let g:settings.disabled_plugins=['vim.fo', 'vim.bar']
 " }
 "
 " Configuraciones
@@ -201,7 +199,7 @@
 " Vim UI {
     set background=dark
     " Colorsheme
-    exec 'colorscheme '.s:settings.colorscheme
+    exec 'colorscheme '.g:settings.colorscheme
     " Resaltar linea actual solo en insert mode
     " set cursorline                    
     autocmd InsertEnter * set cul
@@ -253,11 +251,11 @@
     " visualizacion de la linea en insert mode
     if has('gui_running')
         if s:is_windows
-            exec 'set guifont='.s:settings.guifont_win 
+            exec 'set guifont='.g:settings.guifont_win 
         elseif s:is_macvim
-            exec 'set guifont='.s:settings.guifont_mac 
+            exec 'set guifont='.g:settings.guifont_mac 
         else
-            exec 'set guifont='.s:settings.guifont_linux 
+            exec 'set guifont='.g:settings.guifont_linux 
         endif
     else
         set t_Co=256
@@ -286,7 +284,7 @@
         " endif
     endif
     " Toggle Menu and Toolbar
-    if s:settings.gui_minimal == 'on'
+    if g:settings.gui_minimal == 'on'
         set guioptions-=m  "remove menu bar
         set guioptions-=T  "remove toolbar
         set guioptions-=r  "remove right-hand scroll bar
@@ -362,7 +360,7 @@
 "
 " Configuración de Plugins
 "
-if count(s:settings.plugin_groups, 'core') "{{{
+if count(g:settings.plugin_groups, 'core') "{{{
     " Mejora %
     NeoBundle 'matchit.zip'
     " Mejora la apariencia, statusbar
@@ -418,11 +416,11 @@ if count(s:settings.plugin_groups, 'core') "{{{
     " vim interface to Web API
     NeoBundle 'mattn/webapi-vim'
 endif "}}}
-if count(s:settings.plugin_groups, 'markdown') "{{{
+if count(g:settings.plugin_groups, 'markdown') "{{{
     NeoBundleLazy 'tpope/vim-markdown', {'autoload':{'filetypes':['markdown']}}
     au BufNewFile,BufRead *.markdown,*.mdown,*.mkd,*.mkdn,*.md  setf markdown
 endif "}}}
-if count(s:settings.plugin_groups, 'restructuretex') "{{{
+if count(g:settings.plugin_groups, 'restructuretex') "{{{
     NeoBundleLazy 'Rykka/riv.vim', {'autoload':{'filetypes':['rst']}}
     " Configuracion riv.vim {{{
         let proj1 = { 'path': '~/Dropbox/Notas',}
@@ -430,11 +428,11 @@ if count(s:settings.plugin_groups, 'restructuretex') "{{{
     " }}}
     "au BufNewFile,BufRead *.markdown,*.mdown,*.mkd,*.mkdn,*.md  setf markdown
 endif "}}}
-if count(s:settings.plugin_groups, 'csv') "{{{
+if count(g:settings.plugin_groups, 'csv') "{{{
     NeoBundleLazy 'chrisbra/csv.vim', {'autoload':{'filetypes':['csv']}}
     au BufNewFile,BufRead *.csv,*.xls setf csv
 endif "}}}
-if count(s:settings.plugin_groups, 'web') "{{{
+if count(g:settings.plugin_groups, 'web') "{{{
     " vim syntax for LESS (dynamic CSS) 
     "NeoBundleLazy 'groenewege/vim-less', {'autoload':{'filetypes':['less']}}
     " Configuracion para vim-less {
@@ -483,7 +481,7 @@ if count(s:settings.plugin_groups, 'web') "{{{
     " NeoBundleLazy 'mattn/livestyle-vim', {'autoload':{'commands':'LiveStyle'}}
     " }
 endif "}}}
-if count(s:settings.plugin_groups, 'javascript') "{{{
+if count(g:settings.plugin_groups, 'javascript') "{{{
     NeoBundleLazy 'marijnh/tern_for_vim', {
       \ 'autoload': { 'filetypes': ['javascript'] },
       \ 'build': {
@@ -503,13 +501,13 @@ if count(s:settings.plugin_groups, 'javascript') "{{{
     NeoBundleLazy 'leshill/vim-json', {'autoload':{'filetypes':['javascript','json']}}
     NeoBundleLazy 'othree/javascript-libraries-syntax.vim', {'autoload':{'filetypes':['javascript','coffee','ls','typescript']}}
 endif "}}}
-if count(s:settings.plugin_groups, 'ruby') "{{{
+if count(g:settings.plugin_groups, 'ruby') "{{{
     " 
     NeoBundle 'tpope/vim-rails'
     "
     NeoBundle 'tpope/vim-bundler'
 endif "}}}
-if count(s:settings.plugin_groups, 'dev-tools') "{{{
+if count(g:settings.plugin_groups, 'dev-tools') "{{{
     " Run commands quickly.
     " NeoBundle 'thinca/vim-quickrun'
     " Integrated reference viewer.  
@@ -538,7 +536,7 @@ if count(s:settings.plugin_groups, 'dev-tools') "{{{
       " nnoremap <leader>cp :VimShellInteractive python<cr>
     "}}}
 endif "}}}
-if count(s:settings.plugin_groups, 'python') "{{{
+if count(g:settings.plugin_groups, 'python') "{{{
     NeoBundleLazy 'klen/python-mode', {'autoload':{'filetypes':['python']}} "{{{
       let g:pymode_rope=0
 "}}}
@@ -546,13 +544,13 @@ if count(s:settings.plugin_groups, 'python') "{{{
       let g:jedi#popup_on_dot=0
 "}}}
 endif "}}}
-if count(s:settings.plugin_groups, 'php') "{{{
+if count(g:settings.plugin_groups, 'php') "{{{
     " Autocompleccion mejorada para php
     NeoBundle 'violetyk/neocomplete-php.vim'
     " :PhpMakeDict ja
     "
 endif "}}}
-if count(s:settings.plugin_groups, 'latex') "{{{
+if count(g:settings.plugin_groups, 'latex') "{{{
     " A simple and lightweight vim-plugin for editing LaTeX files.
     NeoBundle 'xerron/vim-latex'
     " Configuración vim-latex{{{
@@ -597,15 +595,15 @@ if count(s:settings.plugin_groups, 'latex') "{{{
         endif
     " }}} 
 endif "}}}
-if count(s:settings.plugin_groups, 'scala') "{{{
+if count(g:settings.plugin_groups, 'scala') "{{{
     NeoBundle 'derekwyatt/vim-scala'
     NeoBundle 'megaannum/vimside'
   endif "}}}
-  if count(s:settings.plugin_groups, 'go') "{{{
+  if count(g:settings.plugin_groups, 'go') "{{{
     NeoBundleLazy 'jnwhiteh/vim-golang', {'autoload':{'filetypes':['go']}}
     NeoBundleLazy 'nsf/gocode', {'autoload': {'filetypes':['go']}, 'rtp': 'vim'}
   endif "}}}
-if count(s:settings.plugin_groups, 'scm') "{{{
+if count(g:settings.plugin_groups, 'scm') "{{{
     " barra lateral muestra diferencias
     NeoBundle 'mhinz/vim-signify'
     " Configuración de vim-signify {{{
@@ -644,7 +642,7 @@ if count(s:settings.plugin_groups, 'scm') "{{{
         let g:gist_show_privates=1
     "}}}
 endif "}}}
-if count(s:settings.plugin_groups, 'syntax') "{{{
+if count(g:settings.plugin_groups, 'syntax') "{{{
     " Syntax checking
     NeoBundle 'scrooloose/syntastic'
     " Configuración de syntastic {{{
@@ -658,7 +656,7 @@ if count(s:settings.plugin_groups, 'syntax') "{{{
         let g:syntastic_style_warning_symbol = '≈'
     "}}}
 endif "}}}
-if count(s:settings.plugin_groups, 'autocomplete') "{{{
+if count(g:settings.plugin_groups, 'autocomplete') "{{{
     " Next generation completion framework after neocomplcache
     NeoBundleLazy 'Shougo/neocomplete.vim', {'autoload':{'insert':1}, 'vim_version':'7.3.885'}
     " Configuración de neocomplete {{{
@@ -741,7 +739,7 @@ if count(s:settings.plugin_groups, 'autocomplete') "{{{
     " adds snippet support to Vim
     " NeoBundle 'Shougo/neosnippet.vim'
 endif "}}}
-if count(s:settings.plugin_groups, 'editing') "{{{
+if count(g:settings.plugin_groups, 'editing') "{{{
     " EditorConfig plugin for Vim, modificar .editorconfig
     NeoBundleLazy 'editorconfig/editorconfig-vim', {'autoload':{'insert':1}}
     " Agrega end in ruby, endfunction/endif/more in vim script, etc
@@ -810,7 +808,7 @@ if count(s:settings.plugin_groups, 'editing') "{{{
     " reedes/vim-litecorrect
     " reedes/vim-lexical
 endif "}}}
-if count(s:settings.plugin_groups, 'ctrlp') "{{{
+if count(g:settings.plugin_groups, 'ctrlp') "{{{
     " Fuzzy file, buffer, mru, tag, etc finder.
     NeoBundle 'kien/ctrlp.vim', { 'depends': 'tacahiroy/ctrlp-funky' }
     " Configuración de ctrlp.vim {{{
@@ -841,7 +839,7 @@ if count(s:settings.plugin_groups, 'ctrlp') "{{{
     "}}}
 
 endif "}}}
-if count(s:settings.plugin_groups, 'navigation') "{{{
+if count(g:settings.plugin_groups, 'navigation') "{{{
     " Soporte para ack perl module
     NeoBundle 'mileszs/ack.vim'
     " Configuarción de ack.vim {{{
@@ -897,7 +895,7 @@ if count(s:settings.plugin_groups, 'navigation') "{{{
       " let g:sneak#streak = 1
     "}}}
 endif "}}}
-if count(s:settings.plugin_groups, 'unite') "{{{
+if count(g:settings.plugin_groups, 'unite') "{{{
     " Unir y crear interfaces de usuario
     NeoBundle 'Shougo/unite.vim'
     " Configuracion de unite.vim {{{
@@ -1063,7 +1061,7 @@ if count(s:settings.plugin_groups, 'unite') "{{{
     " git unite
     " NeoBundle 'kmnk/vim-unite-giti'
 endif "}}}
-if count(s:settings.plugin_groups, 'indents') "{{{
+if count(g:settings.plugin_groups, 'indents') "{{{
     NeoBundle 'nathanaelkane/vim-indent-guides'
     " Configuración vim-indent-guides {{{
         let g:indent_guides_start_level=1
@@ -1080,7 +1078,7 @@ if count(s:settings.plugin_groups, 'indents') "{{{
         endif
     "}}}
 endif "}}}
-if count(s:settings.plugin_groups, 'textobj') "{{{
+if count(g:settings.plugin_groups, 'textobj') "{{{
     " Create your own text objects
     NeoBundle 'kana/vim-textobj-user'
     " Configuracion vim-textobj-user {{{
@@ -1112,7 +1110,7 @@ if count(s:settings.plugin_groups, 'textobj') "{{{
     " }}}
     " HAY UN MONTON DE TEXT OBJECTS en el github de kana
 endif "}}}
-if count(s:settings.plugin_groups, 'distraction-free-mode') "{{{
+if count(g:settings.plugin_groups, 'distraction-free-mode') "{{{
     " Hyperfocus-writing
     NeoBundle 'junegunn/limelight.vim'
     " Configuración de limelight.vim {{{
@@ -1135,11 +1133,11 @@ if count(s:settings.plugin_groups, 'distraction-free-mode') "{{{
                 set linespace=5
                 if has('gui_running')
                     if s:is_windows
-                        exec 'set guifont='.s:settings.guifont_win_goyo 
+                        exec 'set guifont='.g:settings.guifont_win_goyo 
                     elseif s:is_macvim
-                        exec 'set guifont='.s:settings.guifont_mac_goyo 
+                        exec 'set guifont='.g:settings.guifont_mac_goyo 
                     else
-                        exec 'set guifont='.s:settings.guifont_linux_goyo 
+                        exec 'set guifont='.g:settings.guifont_linux_goyo 
                     endif
                 endif
                 colorscheme hybrid-light
@@ -1170,9 +1168,9 @@ if count(s:settings.plugin_groups, 'distraction-free-mode') "{{{
         function! s:goyo_leave()
             Limelight!
             set background=dark
-            exec 'colorscheme '.s:settings.colorscheme
+            exec 'colorscheme '.g:settings.colorscheme
             set linespace=0
-            if s:settings.gui_minimal != 'on'
+            if g:settings.gui_minimal != 'on'
                 set guioptions+=m  "add menu bar
                 set guioptions+=T  "add toolbar
                 set guioptions+=r  "add right-hand scroll bar
@@ -1180,11 +1178,11 @@ if count(s:settings.plugin_groups, 'distraction-free-mode') "{{{
             endif
             if has('gui_running')
                 if s:is_windows
-                    exec 'set guifont='.s:settings.guifont_win 
+                    exec 'set guifont='.g:settings.guifont_win 
                 elseif s:is_macvim
-                    exec 'set guifont='.s:settings.guifont_mac 
+                    exec 'set guifont='.g:settings.guifont_mac 
                 else
-                    exec 'set guifont='.s:settings.guifont_linux 
+                    exec 'set guifont='.g:settings.guifont_linux 
                 endif
             endif
             if !has("gui_running")
@@ -1220,7 +1218,7 @@ if count(s:settings.plugin_groups, 'distraction-free-mode') "{{{
         ""b:shell_fullscreen_items
     "}}}
 endif "}}}
-if count(s:settings.plugin_groups, 'grammar-checker') "{{{
+if count(g:settings.plugin_groups, 'grammar-checker') "{{{
     " Corrector Ortografico y gramatical - Grammar checker
     NeoBundle 'vim-scripts/LanguageTool'
     " Configuración LanguageTool {
@@ -1240,7 +1238,7 @@ if count(s:settings.plugin_groups, 'grammar-checker') "{{{
     " http://www.mystilus.com/Interactive_check
     " TODO: Buscar la forma de corregir mas rapido con el set spell z=
 endif "}}}
-if count(s:settings.plugin_groups, 'language-tools') "{{{
+if count(g:settings.plugin_groups, 'language-tools') "{{{
     " Sinonimos y Antonimos. Online - Thesauru online
     " NeoBundle 'idbrii/vim-online-thesaurus'
     " NeoBundle 'beloglazov/vim-online-thesaurus'
@@ -1260,7 +1258,7 @@ if count(s:settings.plugin_groups, 'language-tools') "{{{
         let g:rimas_merimas_path='/home/xerron/Documentos/Diccionarios/MERimas/' 
     " }
 endif "}}}
-if count(s:settings.plugin_groups, 'task-management') "{{{
+if count(g:settings.plugin_groups, 'task-management') "{{{
     if !s:is_windows
         " Administrador de tareas
         NeoBundleLazy 'farseer90718/vim-taskwarrior', {'autoload':{'commands':'TW'}}
@@ -1272,7 +1270,7 @@ if count(s:settings.plugin_groups, 'task-management') "{{{
     " Task manager
     " NeoBundle 'freitass/todo.txt-vim'
 endif "}}}
-if count(s:settings.plugin_groups, 'vim') "{{{
+if count(g:settings.plugin_groups, 'vim') "{{{
     " Testing framework for Vim script
     NeoBundle 'kana/vim-vspec'
     " A Vim plugin for Vim plugins
@@ -1282,19 +1280,19 @@ if count(s:settings.plugin_groups, 'vim') "{{{
     " The Vim FAQ from http://vimdoc.sourceforge.net/ http://vimdoc.sourceforge.net/
     "NeoBundle 'chrisbra/vim_faq'
 endif "}}}
-if count(s:settings.plugin_groups, 'utilities') "{{{
+if count(g:settings.plugin_groups, 'utilities') "{{{
     " Limpiar espacios en blanco finales
     " bronson/vim-trailing-whitespace
     "
 endif "}}}
-if count(s:settings.plugin_groups, 'tmux') "{{{
+if count(g:settings.plugin_groups, 'tmux') "{{{
     if exists('$TMUX')
         " Seamless navigation between tmux panes and vim splits
         NeoBundle 'christoomey/vim-tmux-navigator'
         NeoBundle 'edkolev/tmuxline.vim'
     endif
 endif "}}}
-if count(s:settings.plugin_groups, 'misc') "{{{
+if count(g:settings.plugin_groups, 'misc') "{{{
     " Personal Wiki for Vim
     NeoBundle 'vimwiki'
     " A fancy start screen for Vim.
@@ -1311,12 +1309,14 @@ if count(s:settings.plugin_groups, 'misc') "{{{
       nmap <F4> <Plug>ToggleGoldenViewAutoResize
     "}}}
 endif "}}}
-if count(s:settings.plugin_groups, 'windows') "{{{
-    NeoBundleLazy 'PProvost/vim-ps1', {'autoload':{'filetypes':['ps1']}}
-    "{{{
+if count(g:settings.plugin_groups, 'windows') "{{{
+    if s:is_windows
+        NeoBundleLazy 'PProvost/vim-ps1', {'autoload':{'filetypes':['ps1']}}
+        "{{{
         autocmd BufNewFile,BufRead *.ps1,*.psd1,*.psm1 setlocal ft=ps1
-    "}}}
-    NeoBundleLazy 'nosami/Omnisharp', {'autoload':{'filetypes':['cs']}}
+        "}}}
+        NeoBundleLazy 'nosami/Omnisharp', {'autoload':{'filetypes':['cs']}}
+    endif
 endif "}}}
 "
 " Funciones 
@@ -1613,8 +1613,8 @@ endfunction
 " }}
 
 " Terminar de cargar, desabilitar plugins {
-  if exists('s:settings.disabled_plugins')
-    for plugin in s:settings.disabled_plugins
+  if exists('g:settings.disabled_plugins')
+    for plugin in g:settings.disabled_plugins
       exec 'NeoBundleDisable '.plugin
     endfor
   endif
