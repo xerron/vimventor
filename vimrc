@@ -373,7 +373,6 @@ if count(s:settings.plugin_groups, 'core') "{{{
         let g:airline#extensions#tabline#left_alt_sep='¦'
         "let g:airline_symbols.space = "\ua0"
         let g:airline_powerline_fonts = 1
-        let g:airline_detect_whitespace=0
         "Declarado arriba -> set guifont=Inconsolata_for_Powerline:h10
         " Themes disponibles 'badwolf', 'bubblegum', 'base16', 'murmur', 'tomorrow',
         " 'sol', 'ubaryd', 'laederon', 'jellybeans', 'molokai', 'luna', 'solarized',
