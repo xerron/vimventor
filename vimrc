@@ -77,6 +77,8 @@
     "call add(g:settings.plugin_groups, 'go')
     "call add(g:settings.plugin_groups, 'vim')
     "call add(g:settings.plugin_groups, 'misc')
+    call add(g:settings.plugin_groups, 'ditaa')
+    call add(g:settings.plugin_groups, 'plantuml')
     call add(g:settings.plugin_groups, 'tmux')
        " call add(g:settings.plugin_groups, 'windows')
     " ---------------------------------------------------
@@ -1291,6 +1293,13 @@ if count(g:settings.plugin_groups, 'tmux') "{{{
         NeoBundle 'christoomey/vim-tmux-navigator'
         NeoBundle 'edkolev/tmuxline.vim'
     endif
+endif "}}}
+if count(g:settings.plugin_groups, 'ditaa') "{{{
+endif "}}}
+if count(g:settings.plugin_groups, 'plantuml') "{{{
+    " plantuml syntax - init file with @staruml
+    NeoBundleLazy 'aklt/plantuml-syntax', {'autoload':{'filetypes':['plantuml', 'uml', 'pu']}}
+    au BufNewFile,BufRead *.plantuml,*.uml,*.pu setf plantuml
 endif "}}}
 if count(g:settings.plugin_groups, 'misc') "{{{
     " Personal Wiki for Vim
