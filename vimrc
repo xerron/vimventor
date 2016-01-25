@@ -78,6 +78,7 @@
     "call add(g:settings.plugin_groups, 'vim')
     "call add(g:settings.plugin_groups, 'misc')
     call add(g:settings.plugin_groups, 'ditaa')
+    call add(g:settings.plugin_groups, 'ledger')
     call add(g:settings.plugin_groups, 'plantuml')
     call add(g:settings.plugin_groups, 'tmux')
        " call add(g:settings.plugin_groups, 'windows')
@@ -1295,6 +1296,12 @@ if count(g:settings.plugin_groups, 'tmux') "{{{
     endif
 endif "}}}
 if count(g:settings.plugin_groups, 'ditaa') "{{{
+    " Ditaa syntax
+    NeoBundle 'vim-scripts/ditaa'
+endif "}}}
+if count(g:settings.plugin_groups, 'ledger') "{{{
+    " Ditaa syntax
+    NeoBundle 'ledger/vim-ledger'
 endif "}}}
 if count(g:settings.plugin_groups, 'plantuml') "{{{
     " plantuml syntax - init file with @staruml
