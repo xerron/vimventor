@@ -76,11 +76,12 @@
     "call add(g:settings.plugin_groups, 'scala')
     "call add(g:settings.plugin_groups, 'go')
     "call add(g:settings.plugin_groups, 'vim')
-    "call add(g:settings.plugin_groups, 'misc')
+    "call add(g:settings.plugin_groups, 'icons')
     call add(g:settings.plugin_groups, 'ditaa')
     call add(g:settings.plugin_groups, 'ledger')
     call add(g:settings.plugin_groups, 'plantuml')
     call add(g:settings.plugin_groups, 'tmux')
+    "call add(g:settings.plugin_groups, 'misc')
        " call add(g:settings.plugin_groups, 'windows')
     " ---------------------------------------------------
     " Deshabilita los plugins que no vas a usar
@@ -555,7 +556,7 @@ if count(g:settings.plugin_groups, 'php') "{{{
 endif "}}}
 if count(g:settings.plugin_groups, 'latex') "{{{
     " A simple and lightweight vim-plugin for editing LaTeX files.
-    NeoBundle 'xerron/vim-latex'
+    NeoBundle 'lervag/vimtex'
     " Configuración vim-latex{{{
         " $pdflatex = 'pdflatex -synctex=1 %O %S';   > ~/.latexmkrc
         let g:latex_toc_enabled = 1
@@ -660,17 +661,127 @@ if count(g:settings.plugin_groups, 'syntax') "{{{
     "}}}
 endif "}}}
 if count(g:settings.plugin_groups, 'autocomplete') "{{{
+    " YouCompleteMe gives you dumb sublime-text like completion and intelligent
+    " language-aware completions. YouCompleteMe requires separate compilation:
+    "   cd ~/.vim/bundles/YouCompleteMe
+    "   ./install.sh --clang-completer
+    " NeoBundle 'Valloric/YouCompleteMe'
+    "     \ ,{
+    "         \ 'build': {
+    "             \ 'mac': './install.py --clang-completer --tern-completer --gocode-completer',
+    "             \ 'unix': './install.py --clang-completer --tern-completer --gocode-completer',
+    "             \ 'cygwin': './install.py --clang-completer --tern-completer --gocode-completer',
+    "             \ 'windows': './install.py --clang-completer --tern-completer --gocode-completer',
+    "         \ },
+    "     \ }
+    "function! g:UltiSnips_Complete()
+    "     call UltiSnips#ExpandSnippet()
+    "     if g:ulti_expand_res == 0
+    "         if pumvisible()
+    "             return "\<C-n>"
+    "         else
+    "             call UltiSnips#JumpForwards()
+    "             if g:ulti_jump_forwards_res == 0
+    "                return "\<Tab>"
+    "             endif
+    "         endif
+    "     endif
+    "     return ""
+    " endfunction
+    "
+    " " Intercepts YMC mappings so Ultisnips and YMC can work with the above function.
+    " au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
+    "
+    " " UltiSnips Options
+    " let g:UltiSnipsExpandTrigger="<Tab>"
+    " let g:UltiSnipsJumpForwardTrigger="<Tab>"
+    " let g:UltiSnipsJumpBackwardTrigger="<S-Tab>"
+    " " let g:UltiSnipsListSnippets="<C-e>"
+    " let g:UltiSnipsEditSplit="horizontal"
+    " 
+    " The ultimate snippet solution for Vim
+    NeoBundle 'SirVer/ultisnips'
+    " Configuración ultisnips {{{
+        let g:UltiSnipsUsePythonVersion = 2
+        " let g:UltiSnipsExpandTrigger="<c-b>"
+        " let g:UltiSnipsJumpForwardTrigger="<c-b>"  "<c-b>
+        " let g:UltiSnipsJumpBackwardTrigger="<s-tab>" "<c-z>
+        " if s:is_windows
+            " Es necesario añadir el rtp+='$VIM'
+            " let g:UltiSnipsSnippetsDir=$VIM.'/ultisnips'
+        " else
+            " let g:UltiSnipsSnippetsDir='~/.vim/ultisnips'
+        " endif
+        " let g:UltiSnipsSnippetDirectories=["ultisnips", "UltiSnips"]
+        " let g:UltiSnipsEditSplit="vertical"
+    "}}}
     " Next generation completion framework after neocomplcache
     NeoBundleLazy 'Shougo/neocomplete.vim', {'autoload':{'insert':1}, 'vim_version':'7.3.885'}
     " Configuración de neocomplete {{{
-        let g:neocomplete#enable_at_startup=1
+        let g:acp_enableAtStartup = 0
+        let g:neocomplete#enable_at_startup = 1
+        let g:neocomplete#enable_smart_case = 1
+        "let g:neocomplete#enable_auto_select = 0
+        let g:neocomplete#sources#syntax#min_keyword_length = 4
+
+        let g:UltiSnipsJumpForwardTrigger="<NOP>"
+        let g:ulti_expand_or_jump_res = 0
+        function! ExpandSnippetOrJumpForwardOrReturnTab()
+            let snippet = UltiSnips#ExpandSnippetOrJump()
+            if g:ulti_expand_or_jump_res > 0
+                return snippet
+            else
+                return "\<TAB>"
+            endif
+        endfunction
+        inoremap <expr> <TAB>
+            \ pumvisible() ? "\<C-n>" :
+            \ "<C-R>=ExpandSnippetOrJumpForwardOrReturnTab()<CR>"
+        " snoremap <TAB> {{{1
+        " jump to next placeholder otherwise do nothing
+        snoremap <buffer> <silent> <TAB>
+            \ <ESC>:call UltiSnips#JumpForwards()<CR>
+
+        " inoremap <S-TAB> {{{1
+        " previous menu item, jump to previous placeholder or do nothing
+        let g:UltiSnipsJumpBackwordTrigger = "<NOP>"
+        inoremap <expr> <S-TAB>
+            \ pumvisible() ? "\<C-p>" :
+            \ "<C-R>=UltiSnips#JumpBackwards()<CR>"
+
+        " snoremap <S-TAB> {{{1
+        " jump to previous placeholder otherwise do nothing
+        snoremap <buffer> <silent> <S-TAB>
+            \ <ESC>:call UltiSnips#JumpBackwards()<CR>
+
+        " inoremap <CR> {{{1
+        " expand snippet, close menu or insert newline
+        let g:UltiSnipsExpandTrigger = "<NOP>"
+        let g:ulti_expand_or_jump_res = 0
+        inoremap <silent> <CR> <C-r>=<SID>ExpandSnippetOrReturnEmptyString()<CR>
+        function! s:ExpandSnippetOrReturnEmptyString()
+            if pumvisible()
+            let snippet = UltiSnips#ExpandSnippetOrJump()
+            if g:ulti_expand_or_jump_res > 0
+                return snippet
+            else
+                return "\<C-y>\<CR>"
+            endif
+            else
+                return "\<CR>"
+        endfunction
+
+        " inoremap <C-h> {{{1
+        inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+
+        " inoremap <BS> {{{1
+        inoremap <expr><BS>  neocomplete#smart_close_popup()."\<C-h>"
+
         if s:is_windows
             let g:neocomplete#data_directory=$VIM.'/.cache/neocomplete'
         else
             let g:neocomplete#data_directory='~/.vim/.cache/neocomplete'
         endif
-        let g:neocomplete#enable_auto_select=0
-        let g:neocomplete#sources#syntax#min_keyword_length = 3
         "let g:neocomplete#sources#dictionary#dictionaries = {
          "   \ 'default' : '',
           "  \ 'vimshell' : $HOME.'/.vimshell_hist',
@@ -688,17 +799,6 @@ if count(g:settings.plugin_groups, 'autocomplete') "{{{
         inoremap <expr><C-l> neocomplete#complete_common_string()
         inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
         inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-        " Recommended key-mappings.
-        " <CR>: close popup and save indent.
-        inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-        function! s:my_cr_function()
-            " return neocomplete#close_popup() . "\<CR>"
-            " For no inserting <CR> key.
-            return pumvisible() ? "\<C-n>" : "\<CR>"
-        endfunction
-        " inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-        " imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-        "     \ "\<Plug>(neosnippet_expand_or_jump)" : pumvisible ? "\<C-n>" : "\<TAB>"
         " Enable omni completion.
         autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
         autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
@@ -718,22 +818,6 @@ if count(g:settings.plugin_groups, 'autocomplete') "{{{
         " https://github.com/c9s/perlomni.vim
         " let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
     "}}}
-    " The ultimate snippet solution for Vim
-    NeoBundle 'SirVer/ultisnips'
-    " Configuración ultisnips {{{
-        let g:UltiSnipsUsePythonVersion = 2
-        let g:UltiSnipsExpandTrigger="<tab>"
-        let g:UltiSnipsJumpForwardTrigger="<tab>"  "<c-b>
-        let g:UltiSnipsJumpBackwardTrigger="<s-tab>" "<c-z>
-        " if s:is_windows
-            " Es necesario añadir el rtp+='$VIM'
-            " let g:UltiSnipsSnippetsDir=$VIM.'/ultisnips'
-        " else
-            " let g:UltiSnipsSnippetsDir='~/.vim/ultisnips'
-        " endif
-        " let g:UltiSnipsSnippetDirectories=["ultisnips", "UltiSnips"]
-        " let g:UltiSnipsEditSplit="vertical"
-    "}}}
     " snipMate & UltiSnip Snippets
     NeoBundle 'honza/vim-snippets'
     " rbonvall/snipmate-snippets-bib
@@ -741,6 +825,8 @@ if count(g:settings.plugin_groups, 'autocomplete') "{{{
     " NeoBundle 'Shougo/neosnippet-snippets'
     " adds snippet support to Vim
     " NeoBundle 'Shougo/neosnippet.vim'
+    "    imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+    " \ "\<Plug>(neosnippet_expand_or_jump)" : pumvisible ? "\<C-n>" : "\<TAB>"
 endif "}}}
 if count(g:settings.plugin_groups, 'editing') "{{{
     " EditorConfig plugin for Vim, modificar .editorconfig
@@ -1324,6 +1410,10 @@ if count(g:settings.plugin_groups, 'misc') "{{{
       let g:goldenview__enable_default_mapping=0
       nmap <F4> <Plug>ToggleGoldenViewAutoResize
     "}}}
+endif "}}}
+if count(g:settings.plugin_groups, 'icons') "{{{
+    " icons for vim-airline vimfiler 
+    NeoBundle 'ryanoasis/vim-devicons'
 endif "}}}
 if count(g:settings.plugin_groups, 'windows') "{{{
     if s:is_windows
