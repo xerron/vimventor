@@ -1350,8 +1350,7 @@ endif "}}}
 if count(g:settings.plugin_groups, 'task-management') "{{{
     if !s:is_windows
         " Administrador de tareas
-        NeoBundleLazy 'farseer90718/vim-taskwarrior', {'autoload':{'commands':'TW'}}
-
+        NeoBundleLazy 'blindFS/vim-taskwarrior', {'autoload':{'commands':'TW'}}
         " Configuracion vim-taskwarrior {
             " let g:task_rc_override = 'defaultwidth=999'
         " }
