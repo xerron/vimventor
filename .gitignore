@@ -3,10 +3,12 @@
 # directories
 lua/
 plugins/
+bundles/
 origdoc/
 patch/
 vim74/
 vim73/
+view/
 # exes
 ag.exe
 sdcv.exe
