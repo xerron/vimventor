@@ -68,7 +68,7 @@
     call add(g:settings.plugin_groups, 'web')
     call add(g:settings.plugin_groups, 'task-management')
     "call add(g:settings.plugin_groups, 'dev-tools')
-    call add(g:settings.plugin_groups, 'javascript')
+    "call add(g:settings.plugin_groups, 'javascript')
     "call add(g:settings.plugin_groups, 'python')
     "call add(g:settings.plugin_groups, 'php')
     "call add(g:settings.plugin_groups, 'ruby')
@@ -382,6 +382,7 @@ if count(g:settings.plugin_groups, 'core') "{{{
 
         let g:airline_theme='base16'
     "}}}
+    NeoBundle 'vim-airline/vim-airline-themes' 
     " Surround parentesis, llaves, comillas, xml tags, ...
     NeoBundle 'tpope/vim-surround'
     " Repetir comandos con .
@@ -394,16 +395,6 @@ if count(g:settings.plugin_groups, 'core') "{{{
     NeoBundle 'tpope/vim-unimpaired'
     " Configuración de vim-unimpaired {{{
     "}}}
-    " Interactive command execution
-    NeoBundle 'Shougo/vimproc.vim'
-        \ ,{
-            \ 'build': {
-                \ 'mac': 'make -f make_mac.mak',
-                \ 'unix': 'make -f make_unix.mak',
-                \ 'cygwin': 'make -f make_cygwin.mak',
-                \ 'windows': '"C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\nmake.exe" make_msvc32.mak',
-            \ },
-        \ }
     " :help ayuda
     NeoBundle 'xerron/vim-doc-es'
     " /szw/vim-ctrlspace
@@ -702,7 +693,7 @@ if count(g:settings.plugin_groups, 'autocomplete') "{{{
     " The ultimate snippet solution for Vim
     NeoBundle 'SirVer/ultisnips'
     " Configuración ultisnips {{{
-        let g:UltiSnipsUsePythonVersion = 2
+        let g:UltiSnipsUsePythonVersion = 3
         " let g:UltiSnipsExpandTrigger="<c-b>"
         " let g:UltiSnipsJumpForwardTrigger="<c-b>"  "<c-b>
         " let g:UltiSnipsJumpBackwardTrigger="<s-tab>" "<c-z>
@@ -1681,7 +1672,11 @@ endfunction
                 \set guioptions+=T <Bar>
                 \set guioptions+=m <Bar>
                 \endif<CR>
+    "vim over ssh
+    vmap "+y :!xclip -f -sel clip
+    map "+p :r!xclip -o -sel clip
 " }
+"
 "
 " Autocomandos
 "
