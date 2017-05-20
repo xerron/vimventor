@@ -41,6 +41,10 @@ Libre de distracciones realice:
 - Ruby
 - [LanguageTool](https://languagetool.org/)
 
+**Depedencias para tasks manager**
+- taskslib 
+    sudo pip install --upgrade git+git://github.com/tbabej/tasklib@develop
+
 ### GNU/Linux
 
 1. clone este repositorio en el directorio ~/.vim

@@ -33,11 +33,13 @@
     let g:settings.gui_minimal = 'on'
     let g:settings.terminal = 'terminator'
 
+    let g:settings.latex_pdf_viewer = 'zathura'
+
     iabbrev myN E. Manuel Cerrón Angeles
     iabbrev myE xerron.angels@gmail.com
     iabbrev myGit http://github.com/xerron
     iabbrev myT http://twitter.com/x3rron
-    iabbrev myGo http://google.com/+xerron
+    iabbrev myGo http://google.com/+xerron00
     iabbrev myF http://facebook.com/xangel00
 
     iabbrev myData myN<cr>myE<cr>myGit<cr>
@@ -67,10 +69,11 @@
     call add(g:settings.plugin_groups, 'restructuretex')
     call add(g:settings.plugin_groups, 'web')
     call add(g:settings.plugin_groups, 'task-management')
+    call add(g:settings.plugin_groups, 'wiki')
     "call add(g:settings.plugin_groups, 'dev-tools')
     call add(g:settings.plugin_groups, 'javascript')
-    "call add(g:settings.plugin_groups, 'python')
-    "call add(g:settings.plugin_groups, 'php')
+    call add(g:settings.plugin_groups, 'python')
+    call add(g:settings.plugin_groups, 'php')
     "call add(g:settings.plugin_groups, 'ruby')
     "call add(g:settings.plugin_groups, 'csv')
     "call add(g:settings.plugin_groups, 'scala')
@@ -360,6 +363,7 @@
 " }
 " Mapping {
     let mapleader = ','        " Configuación Esencial
+    "let maplocalleader = '\'        " Configuación Esencial
 " }
 "
 " Configuración de Plugins
@@ -423,6 +427,8 @@ endif "}}}
 if count(g:settings.plugin_groups, 'markdown') "{{{
     NeoBundleLazy 'tpope/vim-markdown', {'autoload':{'filetypes':['markdown']}}
     au BufNewFile,BufRead *.markdown,*.mdown,*.mkd,*.mkdn,*.md  setf markdown
+
+    NeoBundleLazy 'dzeban/vim-log-syntax', {'autoload':{'filetypes':['log']}}
 endif "}}}
 if count(g:settings.plugin_groups, 'restructuretex') "{{{
     NeoBundleLazy 'Rykka/riv.vim', {'autoload':{'filetypes':['rst']}}
@@ -484,6 +490,7 @@ if count(g:settings.plugin_groups, 'web') "{{{
     " Emmet LiveStyle for Vim http://mattn.kaoriya.net/
     " NeoBundleLazy 'mattn/livestyle-vim', {'autoload':{'commands':'LiveStyle'}}
     " }
+    NeoBundleLazy 'mustache/vim-mustache-handlebars', {'autoload': {'filetypes':['html']}}
 endif "}}}
 if count(g:settings.plugin_groups, 'javascript') "{{{
     NeoBundleLazy 'marijnh/tern_for_vim', {
@@ -504,6 +511,7 @@ if count(g:settings.plugin_groups, 'javascript') "{{{
     " NeoBundleLazy 'mmalecki/vim-node.js', {'autoload':{'filetypes':['javascript']}}
     NeoBundleLazy 'leshill/vim-json', {'autoload':{'filetypes':['javascript','json']}}
     NeoBundleLazy 'othree/javascript-libraries-syntax.vim', {'autoload':{'filetypes':['javascript','coffee','ls','typescript']}}
+
 endif "}}}
 if count(g:settings.plugin_groups, 'ruby') "{{{
     " 
@@ -547,26 +555,53 @@ if count(g:settings.plugin_groups, 'python') "{{{
     NeoBundleLazy 'davidhalter/jedi-vim', {'autoload':{'filetypes':['python']}} "{{{
       let g:jedi#popup_on_dot=0
 "}}}
+    NeoBundle 'Glench/Vim-Jinja2-Syntax', {'autoload':{'filetypes':['jinja']}}
 endif "}}}
 if count(g:settings.plugin_groups, 'php') "{{{
     " Autocompleccion mejorada para php
     NeoBundle 'violetyk/neocomplete-php.vim'
     " :PhpMakeDict ja
     "
+    NeoBundleLazy 'nelsyeung/twig.vim', {'autoload':{'filetypes':['twig']}} 
+
+    NeoBundleLazy 'etaoins/vim-volt-syntax', {'autoload':{'filetypes':['volt']}}
 endif "}}}
 if count(g:settings.plugin_groups, 'latex') "{{{
     " A simple and lightweight vim-plugin for editing LaTeX files.
     NeoBundle 'lervag/vimtex'
     " Configuración vim-latex{{{
         " $pdflatex = 'pdflatex -synctex=1 %O %S';   > ~/.latexmkrc
-        let g:latex_toc_enabled = 1
-        if s:is_windows
+        let g:tex_flavor = 'latex'
+
+        if g:settings.latex_pdf_viewer == 'zathura'
+            let g:vimtex_view_enabled = 1
+            let g:vimtex_view_method = 'zathura'
+            " let g:vimtex_view_zathura_options = 1
+            "let g:vimtex_view_zathura_options = ''
+            let g:vimtex_complete_close_braces = 1
+            let g:vimtex_complete_recursive_bib = 1
+            let g:vimtex_complete_img_use_tail = 1
+            let g:vimtex_quickfix_autojump = 1
+        elseif g:settings.latex_pdf_viewer == 'okular'
+            let g:vimtex_view_method = 'general'
+            let g:vimtex_view_general_viewer = 'okular'
+            let g:vimtex_view_general_options = '--unique'
+            function! SyncTexForward(focus)
+                if a:focus == 1 
+                    let cmd = 'okular --unique '.g:latex#data[b:latex.id].out()."\\#src:".line(".").expand("%\:p").' &'
+                    execute 'Start! ' . cmd
+                else
+                    call latex#view#view('--unique '
+                                \ . g:latex#data[b:latex.id].out()
+                                \ . '\#src:' . line(".") . expand('%:p'))
+                endif
+            endfunction
+            nmap gb :call SyncTexForward(0)<cr>
+        elseif g:settings.latex_pdf_viewer == 'SumatraPDF'
             " Configuracion Sumatra:  gvim --remote-silent +%l "%f"
-            " let g:latex_viewer='SumatraPDF'
-            " general , sumatrapdf, mupdf
-            let g:latex_view_method = 'general'
-            let g:latex_view_general_viewer = 'SumatraPDF'
-            let g:latex_view_general_options = '-reuse-instance -inverse-search '.
+            let g:vimtex_view_method = 'general'
+            let g:vimtex_view_general_viewer = 'SumatraPDF'
+            let g:vimtex_view_general_options = '-reuse-instance -inverse-search '.
                 \ '"gvim --servername '.v:servername.' --remote-send \"^<C-\^>^<C-n^>'.
                 \ ':execute ''drop ''.fnameescape(''\%f'')^<CR^>:\%l^<CR^>:normal\! zzzv^<CR^>'.
                 \ ':call remote_foreground('''.v:servername.''')^<CR^>\""'
@@ -579,23 +614,6 @@ if count(g:settings.plugin_groups, 'latex') "{{{
                 \ . line(".") . ' '
                 \ . shellescape(g:latex#data[b:latex.id].out()) . '<CR><CR>'
             " nnoremap <expr><silent> gt  ':wall<bar>VimLatexView '.'-forward-search "'.shellescape(expand('%:p')).'" '.line(".").' '.shellescape(g:latex#data[b:latex.id].out()).'<CR>'
-        else
-            let g:latex_view_method = 'general'
-            let g:latex_view_general_viewer = 'okular'
-            let g:latex_view_general_options = '--unique'
-            " let g:latex_view_general_viewer = 'zathura'
-            " let g:latex_view_general_options = '-s -x "gvim +%l %f"'
-            function! SyncTexForward(focus)
-                if a:focus == 1 
-                    let cmd = 'okular --unique '.g:latex#data[b:latex.id].out()."\\#src:".line(".").expand("%\:p").' &'
-                    execute 'Start! ' . cmd
-                else
-                    call latex#view#view('--unique '
-                                \ . g:latex#data[b:latex.id].out()
-                                \ . '\#src:' . line(".") . expand('%:p'))
-                endif
-            endfunction
-            nmap gb :call SyncTexForward(0)<cr>
         endif
     " }}} 
 endif "}}}
@@ -661,44 +679,6 @@ if count(g:settings.plugin_groups, 'syntax') "{{{
     "}}}
 endif "}}}
 if count(g:settings.plugin_groups, 'autocomplete') "{{{
-    " YouCompleteMe gives you dumb sublime-text like completion and intelligent
-    " language-aware completions. YouCompleteMe requires separate compilation:
-    "   cd ~/.vim/bundles/YouCompleteMe
-    "   ./install.sh --clang-completer
-    " NeoBundle 'Valloric/YouCompleteMe'
-    "     \ ,{
-    "         \ 'build': {
-    "             \ 'mac': './install.py --clang-completer --tern-completer --gocode-completer',
-    "             \ 'unix': './install.py --clang-completer --tern-completer --gocode-completer',
-    "             \ 'cygwin': './install.py --clang-completer --tern-completer --gocode-completer',
-    "             \ 'windows': './install.py --clang-completer --tern-completer --gocode-completer',
-    "         \ },
-    "     \ }
-    "function! g:UltiSnips_Complete()
-    "     call UltiSnips#ExpandSnippet()
-    "     if g:ulti_expand_res == 0
-    "         if pumvisible()
-    "             return "\<C-n>"
-    "         else
-    "             call UltiSnips#JumpForwards()
-    "             if g:ulti_jump_forwards_res == 0
-    "                return "\<Tab>"
-    "             endif
-    "         endif
-    "     endif
-    "     return ""
-    " endfunction
-    "
-    " " Intercepts YMC mappings so Ultisnips and YMC can work with the above function.
-    " au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
-    "
-    " " UltiSnips Options
-    " let g:UltiSnipsExpandTrigger="<Tab>"
-    " let g:UltiSnipsJumpForwardTrigger="<Tab>"
-    " let g:UltiSnipsJumpBackwardTrigger="<S-Tab>"
-    " " let g:UltiSnipsListSnippets="<C-e>"
-    " let g:UltiSnipsEditSplit="horizontal"
-    " 
     " The ultimate snippet solution for Vim
     NeoBundle 'SirVer/ultisnips'
     " Configuración ultisnips {{{
@@ -737,24 +717,24 @@ if count(g:settings.plugin_groups, 'autocomplete') "{{{
         inoremap <expr> <TAB>
             \ pumvisible() ? "\<C-n>" :
             \ "<C-R>=ExpandSnippetOrJumpForwardOrReturnTab()<CR>"
-        " snoremap <TAB> {{{1
+        " snoremap <TAB> 
         " jump to next placeholder otherwise do nothing
         snoremap <buffer> <silent> <TAB>
             \ <ESC>:call UltiSnips#JumpForwards()<CR>
 
-        " inoremap <S-TAB> {{{1
+        " inoremap <S-TAB>
         " previous menu item, jump to previous placeholder or do nothing
         let g:UltiSnipsJumpBackwordTrigger = "<NOP>"
         inoremap <expr> <S-TAB>
             \ pumvisible() ? "\<C-p>" :
             \ "<C-R>=UltiSnips#JumpBackwards()<CR>"
 
-        " snoremap <S-TAB> {{{1
+        " snoremap <S-TAB>
         " jump to previous placeholder otherwise do nothing
         snoremap <buffer> <silent> <S-TAB>
             \ <ESC>:call UltiSnips#JumpBackwards()<CR>
 
-        " inoremap <CR> {{{1
+        " inoremap <CR>
         " expand snippet, close menu or insert newline
         let g:UltiSnipsExpandTrigger = "<NOP>"
         let g:ulti_expand_or_jump_res = 0
@@ -771,10 +751,10 @@ if count(g:settings.plugin_groups, 'autocomplete') "{{{
                 return "\<CR>"
         endfunction
 
-        " inoremap <C-h> {{{1
+        " inoremap <C-h>
         inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
 
-        " inoremap <BS> {{{1
+        " inoremap <BS>
         inoremap <expr><BS>  neocomplete#smart_close_popup()."\<C-h>"
 
         if s:is_windows
@@ -896,6 +876,8 @@ if count(g:settings.plugin_groups, 'editing') "{{{
     " reedes/vim-wordy
     " reedes/vim-litecorrect
     " reedes/vim-lexical
+endif "}}}
+if count(g:settings.plugin_groups, 'audionote') "{{{
 endif "}}}
 if count(g:settings.plugin_groups, 'ctrlp') "{{{
     " Fuzzy file, buffer, mru, tag, etc finder.
@@ -1149,6 +1131,17 @@ if count(g:settings.plugin_groups, 'unite') "{{{
     " NeoBundle 'osyo-manga/unite-quickfix'
     " git unite
     " NeoBundle 'kmnk/vim-unite-giti'
+    " audio notes
+    "NeoBundleLazy 'xerron/audionote.vim', {'autoload':{'commands':'AudionoteOpen','unite_sources':['audionote','audionote/new']}}
+    NeoBundle 'xerron/audionote.vim'
+    " Configuración de audionote.vim {{{
+        if s:is_windows
+            let g:audionote#directory=expand("$VIM/.cache/junk")
+        else
+            let g:audionote#directory=expand("~/Dropbox/Audios")
+        endif
+        nnoremap <silent> [unite]v :<C-u>Unite -auto-resize -buffer-name=audio audionote audionote/new<cr>
+    "}}}
 endif "}}}
 if count(g:settings.plugin_groups, 'indents') "{{{
     NeoBundle 'nathanaelkane/vim-indent-guides'
@@ -1352,11 +1345,24 @@ if count(g:settings.plugin_groups, 'task-management') "{{{
         " Administrador de tareas
         NeoBundleLazy 'blindFS/vim-taskwarrior', {'autoload':{'commands':'TW'}}
         " Configuracion vim-taskwarrior {
-            " let g:task_rc_override = 'defaultwidth=999'
+            let g:task_default_prompt = ['project', 'description', 'tag']
+            "let g:task_rc_override = 'defaultwidth=999'
+            "let g:task_rc_override = 'rc.defaultheight=0'
         " }
+        "NeoBundle 'powerman/vim-plugin-AnsiEsc'
+        "NeoBundle 'tbabej/taskwiki'
     endif
     " Task manager
     " NeoBundle 'freitass/todo.txt-vim'
+endif "}}}
+if count(g:settings.plugin_groups, 'wiki') "{{{
+    NeoBundle 'vimwiki/vimwiki', {'rev': 'dev'}
+    " Configuracion vimwiki {
+    let g:vimwiki_list = [{'path': '~/Dropbox/Wiki/Conocimientos'},
+                \ {'path': '~/Dropbox/Wiki/Articulos', 'path_html': '~/Dropbox/Publicaciones/Articulos', 'nested_syntaxes': {'php': 'php', 'c++': 'cpp', 'java': 'java', 'vim': 'vim', 'html': 'html', 'css': 'css', 'twig': 'twig', 'js': 'js', 'scss': 'scss', 'python': 'python', 'swift': 'swift', 'go': 'go', 'yaml': 'yaml', 'sh': 'sh'}},
+                \ {'path': '~/Dropbox/Wiki/Proyectos', 'path_html': '~/Dropbox/Publicaciones/Proyectos', 'nested_syntaxes': {'php': 'php', 'c++': 'cpp'}},
+                \ {'path': '~/Dropbox/Wiki/Poesia', 'path_html': '~/Dropbox/Publicaciones/Poesia'}]
+    " }
 endif "}}}
 if count(g:settings.plugin_groups, 'vim') "{{{
     " Testing framework for Vim script
@@ -1394,8 +1400,6 @@ if count(g:settings.plugin_groups, 'plantuml') "{{{
     au BufNewFile,BufRead *.plantuml,*.uml,*.pu setf plantuml
 endif "}}}
 if count(g:settings.plugin_groups, 'misc') "{{{
-    " Personal Wiki for Vim
-    NeoBundle 'vimwiki'
     " A fancy start screen for Vim.
     NeoBundle 'mhinz/vim-startify'
     "{{{
@@ -1709,7 +1713,7 @@ endfunction
   " autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 
   " Customisations based on house-style (arbitrary)
-  " autocmd FileType html setlocal ts=2 sts=2 sw=2 expandtab
+  autocmd FileType html setlocal ts=2 sts=2 sw=2 expandtab
   " autocmd FileType css setlocal ts=2 sts=2 sw=2 expandtab
   " autocmd FileType javascript setlocal ts=4 sts=4 sw=4 noexpandtab
 
