@@ -17,80 +17,7 @@
     let s:is_cygwin = has('win32unix')
     let s:is_macvim = has('gui_macvim')
 " }
-"
-" Personalización
-"
-" Init {
-    let g:settings = {}
-    let g:settings.colorscheme = 'hybrid'
-    let g:settings.guifont_win = 'Sauce_Code_Powerline:h11'
-    let g:settings.guifont_linux = 'Source\ Code\ Pro\ for\ Powerline\ Medium\ 11'
-    let g:settings.guifont_mac = 'Source_Code_Pro_for_Powerline:h10'
-    let g:settings.guifont_win_goyo = 'Cousine:h13'
-    let g:settings.guifont_linux_goyo = 'Cousine\ 13'
-    let g:settings.guifont_mac_goyo = 'Cousine:h13'
 
-    let g:settings.gui_minimal = 'on'
-    let g:settings.terminal = 'terminator'
-
-    let g:settings.latex_pdf_viewer = 'zathura'
-
-    iabbrev myN E. Manuel Cerrón Angeles
-    iabbrev myE xerron.angels@gmail.com
-    iabbrev myGit http://github.com/xerron
-    iabbrev myT http://twitter.com/x3rron
-    iabbrev myGo http://google.com/+xerron00
-    iabbrev myF http://facebook.com/xangel00
-
-    iabbrev myData myN<cr>myE<cr>myGit<cr>
-
-    " command line
-    cabbrev csn Colorscheme desert
-    " source $VIM/abbreviations.vim
-
-    " ---------------------------------------------------------
-    " Comenta/descomenta el grupo de plugins que vas a utilizar
-    " ---------------------------------------------------------
-    let g:settings.plugin_groups = []
-    call add(g:settings.plugin_groups, 'core')
-    call add(g:settings.plugin_groups, 'distraction-free-mode')
-    call add(g:settings.plugin_groups, 'autocomplete')
-    call add(g:settings.plugin_groups, 'unite')
-    call add(g:settings.plugin_groups, 'language-tools')
-    call add(g:settings.plugin_groups, 'grammar-checker')
-    call add(g:settings.plugin_groups, 'navigation')
-    call add(g:settings.plugin_groups, 'editing')
-    "call add(g:settings.plugin_groups, 'indents')
-    "call add(g:settings.plugin_groups, 'textobj')
-    " call add(g:settings.plugin_groups, 'syntax')
-    call add(g:settings.plugin_groups, 'scm')
-    call add(g:settings.plugin_groups, 'markdown')
-    call add(g:settings.plugin_groups, 'latex')
-    call add(g:settings.plugin_groups, 'restructuretex')
-    call add(g:settings.plugin_groups, 'web')
-    call add(g:settings.plugin_groups, 'task-management')
-    call add(g:settings.plugin_groups, 'wiki')
-    "call add(g:settings.plugin_groups, 'dev-tools')
-    call add(g:settings.plugin_groups, 'javascript')
-    call add(g:settings.plugin_groups, 'python')
-    call add(g:settings.plugin_groups, 'php')
-    "call add(g:settings.plugin_groups, 'ruby')
-    "call add(g:settings.plugin_groups, 'csv')
-    "call add(g:settings.plugin_groups, 'scala')
-    "call add(g:settings.plugin_groups, 'go')
-    "call add(g:settings.plugin_groups, 'vim')
-    "call add(g:settings.plugin_groups, 'icons')
-    call add(g:settings.plugin_groups, 'ditaa')
-    call add(g:settings.plugin_groups, 'ledger')
-    call add(g:settings.plugin_groups, 'plantuml')
-    call add(g:settings.plugin_groups, 'tmux')
-    "call add(g:settings.plugin_groups, 'misc')
-       " call add(g:settings.plugin_groups, 'windows')
-    " ---------------------------------------------------
-    " Deshabilita los plugins que no vas a usar
-    " ---------------------------------------------------
-    let g:settings.disabled_plugins=['vim.fo', 'vim.bar']
-" }
 "
 " Configuraciones
 "
@@ -129,42 +56,12 @@
         set fileformats=unix,dos,mac
     endif
 " }
-" Idioma {
-    " Depende de la configuración del sistema
-    set langmenu=es.UTF-8      " GUI gvim en español
-    " language messages es       " Mensajes en español
-" }
-" Corrector Ortografico (Spelling) {
-    set spelllang=es
-    "set spell                   " Activar cuando sea necesario
-    if s:is_windows
-        set spellfile+=$VIM/spell/es.utf-8.add
-    else
-        set spellfile+=~/.vim/spell/es.utf-8.add
-    endif
-" }
 " Archivos de respaldo {
     set nobackup                 " No crear archivo de respaldo
     set nowritebackup            " No escrbir en el archivo de respaldo
     set noswapfile               " Buffer no guardado en memoria
 " }
-" Autocompletado {
-    set completeopt=menuone,longest,preview
-    " Thesaurus - Sinónimos y antónimos <c-x><c-t>
-    if s:is_windows
-        set thesaurus+=$VIM/dictionaries/Thesaurus_es_ES.txt
-        set dictionary+=$VIM/dictionaries/es_ES.dic
-    else
-        set thesaurus+=~/.vim/dictionaries/Thesaurus_es_ES.txt
-        set dictionary+=~/.vim/dictionaries/es_ES.dic
-    endif
-    set complete+=kspell          " completar desde el diccionario cuando el corrector esta encendido
-    set complete+=k               " completar desde el diccionario también.
-" }
 " General {
-    " tiempo de respuesta
-    set ttimeout                 " keycode timeout
-    set timeout timeoutlen=1000 ttimeoutlen=50
     " raton
     if has('mouse')
          set mouse=a                " Habilitar el uso del ratón automáticamente.
@@ -318,7 +215,7 @@
     " Tamaño prederteminado de ventana al iniciar
     if has("gui_running")
         " Esto es cuando incia Vim con un GUI
-        set lines=80 columns=120
+        "set lines=60 columns=60
     else
         " Esto para la consola de Vim.
         if exists("+lines")
@@ -673,7 +570,7 @@ if count(g:settings.plugin_groups, 'autocomplete') "{{{
     " The ultimate snippet solution for Vim
     NeoBundle 'SirVer/ultisnips'
     " Configuración ultisnips {{{
-        let g:UltiSnipsUsePythonVersion = 3
+        let g:UltiSnipsUsePythonVersion = 2
         " let g:UltiSnipsExpandTrigger="<c-b>"
         " let g:UltiSnipsJumpForwardTrigger="<c-b>"  "<c-b>
         " let g:UltiSnipsJumpBackwardTrigger="<s-tab>" "<c-z>
