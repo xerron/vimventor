@@ -1262,6 +1262,10 @@ if count(g:settings.plugin_groups, 'vim') "{{{
     " The Vim FAQ from http://vimdoc.sourceforge.net/ http://vimdoc.sourceforge.net/
     "NeoBundle 'chrisbra/vim_faq'
 endif "}}}
+if count(g:settings.plugin_groups, 'org') "{{{
+    " org mode
+    NeoBundleLazy 'jceb/vim-orgmode', {'autoload':{'filetypes':['org']}}
+endif "}}}
 if count(g:settings.plugin_groups, 'utilities') "{{{
     " Limpiar espacios en blanco finales
     " bronson/vim-trailing-whitespace
