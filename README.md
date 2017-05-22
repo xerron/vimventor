@@ -63,11 +63,8 @@ Libre de distracciones realice:
 
         mv ~/.vimrc ~/.vimrc.backup
 
-5. Cree un .vimrc nuevo con este contenido
+5. Cree un .vimrc a partir de .vimrc.dist
     
-        " Estas usando Vimventor by XERRON©
-        source ~/.vim/vimrc
-
 6. Ingrese a vim e instale los plugin por NeoBundle
 
         :NeoBundleInstall
@@ -92,11 +89,8 @@ Instalar [gVim](http://www.kaoriya.net/software/vim/) (32bits) especificando que
 
 4. Haga un Backup de su antiguo _vimrc
 
-5. Cree un _vimrc nuevo con este contenido
+5. Cree un _vimrc nuevo apartir de .vimrc.dist
     
-        " Estas usando Vimventor by XERRON©
-        source $VIM/vimrc
-
 6. Ingrese a vim e instale los plugin por NeoBundle
 
         :NeoBundleInstall
