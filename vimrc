@@ -101,8 +101,15 @@
     "set autowrite                       " Graba automáticamente un archivo al salir de un buffer modificado
 " }
 " Vim UI {
-    set background=dark
     " Colorsheme
+    if g:settings.change_based_time_of_day == 1
+      if strftime("%H") >= g:settings.day_start && strftime("%H") < g:settings.day_end
+        let g:settings.colorscheme = g:settings.colorscheme_light
+      else
+        let g:settings.colorscheme = g:settings.colorscheme
+      endif
+    endif
+
     exec 'colorscheme '.g:settings.colorscheme
     " Resaltar linea actual solo en insert mode
     " set cursorline                    
@@ -154,13 +161,7 @@
     " set listchars+=precedes:<
     " visualizacion de la linea en insert mode
     if has('gui_running')
-        if s:is_windows
-            exec 'set guifont='.g:settings.guifont_win 
-        elseif s:is_macvim
-            exec 'set guifont='.g:settings.guifont_mac 
-        else
-            exec 'set guifont='.g:settings.guifont_linux 
-        endif
+            exec 'set guifont='.g:settings.guifont
     else
         set t_Co=256
         " sirve para indicar que se salio del insert mode
@@ -281,7 +282,7 @@ if count(g:settings.plugin_groups, 'core') "{{{
         " 'sol', 'ubaryd', 'laederon', 'jellybeans', 'molokai', 'luna', 'solarized',
         " 'powerlineish', 'dark', 'simple', 'light',
 
-        let g:airline_theme='base16'
+        let g:airline_theme='hybrid'
     "}}}
     NeoBundle 'vim-airline/vim-airline-themes' 
     " Surround parentesis, llaves, comillas, xml tags, ...
@@ -311,6 +312,10 @@ if count(g:settings.plugin_groups, 'core') "{{{
     " }}}
     " vim interface to Web API
     NeoBundle 'mattn/webapi-vim'
+endif "}}}
+if count(g:settings.plugin_groups, 'mnemonic') "{{{
+    " org mode
+    NeoBundle 'hecal3/vim-leader-guide'
 endif "}}}
 if count(g:settings.plugin_groups, 'markdown') "{{{
     NeoBundleLazy 'tpope/vim-markdown', {'autoload':{'filetypes':['markdown']}}
@@ -1099,18 +1104,11 @@ if count(g:settings.plugin_groups, 'distraction-free-mode') "{{{
     " Configuración de goyo.vim {{{
         " Markdown Goyo {
             function! s:markdown_room()
-                " set background=light
                 set linespace=5
                 if has('gui_running')
-                    if s:is_windows
-                        exec 'set guifont='.g:settings.guifont_win_goyo 
-                    elseif s:is_macvim
-                        exec 'set guifont='.g:settings.guifont_mac_goyo 
-                    else
-                        exec 'set guifont='.g:settings.guifont_linux_goyo 
-                    endif
+                        exec 'set guifont='.g:settings.guifont_goyo 
                 endif
-                colorscheme hybrid-light
+                exec 'colorscheme '.g:settings.colorscheme_light
             endfunction
         " }
         function! s:goyo_enter()
@@ -1137,7 +1135,6 @@ if count(g:settings.plugin_groups, 'distraction-free-mode') "{{{
         endfunction
         function! s:goyo_leave()
             Limelight!
-            set background=dark
             exec 'colorscheme '.g:settings.colorscheme
             set linespace=0
             if g:settings.gui_minimal != 'on'
@@ -1147,13 +1144,7 @@ if count(g:settings.plugin_groups, 'distraction-free-mode') "{{{
                 set guioptions+=L  "add left-hand scroll bar
             endif
             if has('gui_running')
-                if s:is_windows
-                    exec 'set guifont='.g:settings.guifont_win 
-                elseif s:is_macvim
-                    exec 'set guifont='.g:settings.guifont_mac 
-                else
-                    exec 'set guifont='.g:settings.guifont_linux 
-                endif
+                exec 'set guifont='.g:settings.guifont 
             endif
             if !has("gui_running")
                 return
