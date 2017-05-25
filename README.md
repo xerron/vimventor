@@ -144,6 +144,22 @@ La configuración es muy facil y todo se realiza en el archivo vimrc y esta pens
 
 Las otras configuraciones propias de vim, estan bien documentadas con comentarios en **español** (como te gusta :3 ), y las configuraciones de los plugin en el mismo grupo donde corresponde.
 
+## Plugins
+
+### Core
+
+- [matchit.zip](http://www.vim.org/scripts/script.php?script_id=39)
+- [vim-airline](https://www.github.com/bling/vim-airline)
+- [vim-airline-themes](https://www.github.com/vim-airline/vim-airline-themes)
+
+- [vim-airline-themes](https://www.github.com/vim-airline/vim-airline-themes)
+- [vim-airline-themes](https://www.github.com/vim-airline/vim-airline-themes)
+- [vim-airline-themes](https://www.github.com/vim-airline/vim-airline-themes)
+
+### Surround
+
+- [vim-surround](https://www.github.com/tpope/vim-surround)
+
 ## Inspiracion
 
 - [ommwriter](http://www.ommwriter.com/)

@@ -286,6 +286,16 @@ if count(g:settings.plugin_groups, 'core') "{{{
     NeoBundle 'tpope/vim-unimpaired'
     " :help ayuda
     NeoBundle 'xerron/vim-doc-es'
+    " Interactive command execution in Vim.
+    NeoBundle 'Shougo/vimproc.vim', {
+                \ 'build' : {
+                \     'windows' : 'tools\\update-dll-mingw',
+                \     'cygwin' : 'make -f make_cygwin.mak',
+                \     'mac' : 'make',
+                \     'linux' : 'make',
+                \     'unix' : 'gmake',
+                \    },
+                \ }
 endif "}}}
 if count(g:settings.plugin_groups, 'unix') "{{{
     " Helpers for UNIX | Note: ver comandos nativos
@@ -315,7 +325,8 @@ if count(g:settings.plugin_groups, 'zoom') "{{{
     " }}}
 endif "}}}
 if count(g:settings.plugin_groups, 'markdown') "{{{
-    NeoBundleLazy 'tpope/vim-markdown', {'autoload':{'filetypes':['markdown']}}
+    NeoBundleLazy 'plasticboy/vim-markdown', {'autoload':{'filetypes':['markdown']}}
+    "NeoBundleLazy 'tpope/vim-markdown', {'autoload':{'filetypes':['markdown']}}
     au BufNewFile,BufRead *.markdown,*.mdown,*.mkd,*.mkdn,*.md  setf markdown
 endif "}}}
 if count(g:settings.plugin_groups, 'log') "{{{
@@ -398,7 +409,7 @@ if count(g:settings.plugin_groups, 'handlebars') "{{{
     NeoBundleLazy 'mustache/vim-mustache-handlebars', {'autoload': {'filetypes':['html']}}
 endif "}}}
 if count(g:settings.plugin_groups, 'javascript') "{{{
-    NeoBundleLazy 'marijnh/tern_for_vim', {
+    NeoBundleLazy 'ternjs/tern_for_vim', {
       \ 'autoload': { 'filetypes': ['javascript'] },
       \ 'build': {
         \ 'mac': 'npm install',
@@ -411,12 +422,20 @@ if count(g:settings.plugin_groups, 'javascript') "{{{
     NeoBundleLazy 'maksimr/vim-jsbeautify', {'autoload':{'filetypes':['javascript']}} "{{{
       nnoremap <leader>fjs :call JsBeautify()<cr>
 "}}}
-    NeoBundleLazy 'leafgarland/typescript-vim', {'autoload':{'filetypes':['typescript']}}
-    " NeoBundleLazy 'kchmck/vim-coffee-script', {'autoload':{'filetypes':['coffee']}}
-    " NeoBundleLazy 'mmalecki/vim-node.js', {'autoload':{'filetypes':['javascript']}}
-    NeoBundleLazy 'leshill/vim-json', {'autoload':{'filetypes':['javascript','json']}}
     NeoBundleLazy 'othree/javascript-libraries-syntax.vim', {'autoload':{'filetypes':['javascript','coffee','ls','typescript']}}
 
+endif "}}}
+if count(g:settings.plugin_groups, 'node') "{{{
+    NeoBundleLazy 'mmalecki/vim-node.js', {'autoload':{'filetypes':['javascript']}}
+endif "}}}
+if count(g:settings.plugin_groups, 'coffee') "{{{
+    NeoBundleLazy 'kchmck/vim-coffee-script', {'autoload':{'filetypes':['coffee']}}
+endif "}}}
+if count(g:settings.plugin_groups, 'typescript') "{{{
+    NeoBundleLazy 'leafgarland/typescript-vim', {'autoload':{'filetypes':['typescript']}}
+endif "}}}
+if count(g:settings.plugin_groups, 'json') "{{{
+    NeoBundleLazy 'elzr/vim-json', {'autoload':{'filetypes':['javascript','json']}}
 endif "}}}
 if count(g:settings.plugin_groups, 'ruby') "{{{
     "
@@ -463,12 +482,29 @@ if count(g:settings.plugin_groups, 'python') "{{{
     NeoBundle 'Glench/Vim-Jinja2-Syntax', {'autoload':{'filetypes':['jinja']}}
 endif "}}}
 if count(g:settings.plugin_groups, 'php') "{{{
-    " Autocompleccion mejorada para php
-    NeoBundle 'violetyk/neocomplete-php.vim'
-    " :PhpMakeDict ja
-    "
-    NeoBundleLazy 'nelsyeung/twig.vim', {'autoload':{'filetypes':['twig']}}
+    " Syntax 5.3 - 7.1
+    NeoBundleLazy 'StanAngeloff/php.vim', {'autoload':{'filetypes':['php']}}
+    " Configuración vim-latex{{{
+    function! PhpSyntaxOverride()
+        hi! def link phpDocTags  phpDefine
+        hi! def link phpDocParam phpType
+    endfunction
 
+    augroup phpSyntaxOverride
+        autocmd!
+        autocmd FileType php call PhpSyntaxOverride()
+    augroup END
+    " }}}
+    " Improved PHP omnicomplete
+    NeoBundleLazy 'shawncplus/phpcomplete.vim', {'autoload':{'filetypes':['php']}}
+    " Types "use" statements for you
+    NeoBundleLazy 'arnaud-lb/vim-php-namespace', {'autoload':{'filetypes':['php']}}
+    NeoBundleLazy 'hlidotbe/vim-phpcbf', {'autoload':{'filetypes':['php']}}
+endif "}}}
+if count(g:settings.plugin_groups, 'twig') "{{{
+    NeoBundleLazy 'nelsyeung/twig.vim', {'autoload':{'filetypes':['twig']}}
+endif "}}}
+if count(g:settings.plugin_groups, 'volt') "{{{
     NeoBundleLazy 'etaoins/vim-volt-syntax', {'autoload':{'filetypes':['volt']}}
 endif "}}}
 if count(g:settings.plugin_groups, 'latex') "{{{
@@ -527,7 +563,7 @@ if count(g:settings.plugin_groups, 'scala') "{{{
     NeoBundle 'megaannum/vimside'
   endif "}}}
   if count(g:settings.plugin_groups, 'go') "{{{
-    NeoBundleLazy 'jnwhiteh/vim-golang', {'autoload':{'filetypes':['go']}}
+    NeoBundleLazy 'fatih/vim-go', {'autoload':{'filetypes':['go']}}
     NeoBundleLazy 'nsf/gocode', {'autoload': {'filetypes':['go']}, 'rtp': 'vim'}
   endif "}}}
 if count(g:settings.plugin_groups, 'scm') "{{{
@@ -569,7 +605,7 @@ if count(g:settings.plugin_groups, 'scm') "{{{
         let g:gist_show_privates=1
     "}}}
 endif "}}}
-if count(g:settings.plugin_groups, 'syntax') "{{{
+if count(g:settings.plugin_groups, 'linter') "{{{
     " Syntax checking
     NeoBundle 'scrooloose/syntastic'
     " Configuración de syntastic {{{

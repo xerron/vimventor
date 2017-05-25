@@ -1,4 +1,3 @@
-
 "
 " Personal settings
 "
@@ -9,30 +8,54 @@
 " }
 " Init {
     let g:settings = {}
+    " colorscheme
     let g:settings.colorscheme = 'hybrid'
-    let g:settings.guifont_win = 'Sauce_Code_Powerline:h12'
-    let g:settings.guifont_linux = 'Source\ Code\ Pro\ for\ Powerline\ Medium\ 12'
-    let g:settings.guifont_mac = 'Source_Code_Pro_for_Powerline:h10'
-    let g:settings.guifont_win_goyo = 'Cousine:h13'
-    let g:settings.guifont_linux_goyo = 'Cousine\ 13'
-    let g:settings.guifont_mac_goyo = 'Cousine:h13'
+    let g:settings.colorscheme_light = 'hybrid-light'
+    let g:settings.airline_theme = 'hybrid'
+
+    let g:settings.change_based_time_of_day = 1
+    let g:settings.day_start = 8
+    let g:settings.day_end = 20
+    
+    " font
+    if s:is_windows
+      let g:settings.guifont = 'Sauce_Code_Powerline:h12'
+    elseif s:is_macvim
+      let g:settings.guifont = 'Source_Code_Pro_for_Powerline:h12'
+    else
+      let g:settings.guifont = 'Source\ Code\ Pro\ for\ Powerline\ Medium\ 12'
+    endif
+
+    " font goyo
+    if s:is_windows
+      let g:settings.guifont_goyo = 'Cousine:h13'
+    elseif s:is_macvim
+      let g:settings.guifont_goyo = 'Cousine:h13'
+    else
+      let g:settings.guifont_goyo = 'Cousine\ 13'
+    endif
 
     let g:settings.gui_minimal = 'on'
     let g:settings.terminal = 'terminator'
 
     let g:settings.latex_pdf_viewer = 'zathura'
 
-    iabbrev myData myN<cr>myE<cr>myGit<cr>
-
-    " command line
-    cabbrev csn Colorscheme desert
-    " source $VIM/abbreviations.vim
+    if filereadable("~/abbreviations.vim")
+      source ~/abbreviations.vim
+    endif
 
     " ---------------------------------------------------------
     " Comenta/descomenta el grupo de plugins que vas a utilizar
     " ---------------------------------------------------------
     let g:settings.plugin_groups = []
     call add(g:settings.plugin_groups, 'core')
+    call add(g:settings.plugin_groups, 'surround')
+    "call add(g:settings.plugin_groups, 'startify')
+    "call add(g:settings.plugin_groups, 'mnemonic')
+    "call add(g:settings.plugin_groups, 'webapi')
+    "call add(g:settings.plugin_groups, 'zoom')
+    "call add(g:settings.plugin_groups, 'unix')
+    call add(g:settings.plugin_groups, 'dispatch')
     call add(g:settings.plugin_groups, 'distraction-free-mode')
     call add(g:settings.plugin_groups, 'autocomplete')
     call add(g:settings.plugin_groups, 'unite')
@@ -42,30 +65,43 @@
     call add(g:settings.plugin_groups, 'editing')
     "call add(g:settings.plugin_groups, 'indents')
     "call add(g:settings.plugin_groups, 'textobj')
-    " call add(g:settings.plugin_groups, 'syntax')
-    "call add(g:settings.plugin_groups, 'scm')
-    "call add(g:settings.plugin_groups, 'markdown')
-    "call add(g:settings.plugin_groups, 'latex')
-    "call add(g:settings.plugin_groups, 'restructuretex')
-    "call add(g:settings.plugin_groups, 'web')
+    call add(g:settings.plugin_groups, 'linter')
+    call add(g:settings.plugin_groups, 'scm')
+    call add(g:settings.plugin_groups, 'markdown')
+    call add(g:settings.plugin_groups, 'latex')
+    call add(g:settings.plugin_groups, 'restructuretex')
+    call add(g:settings.plugin_groups, 'html')
+    call add(g:settings.plugin_groups, 'emmet')
+    call add(g:settings.plugin_groups, 'css')
+    call add(g:settings.plugin_groups, 'sass')
+    "call add(g:settings.plugin_groups, 'less')
+    call add(g:settings.plugin_groups, 'handlebars')
+    "call add(g:settings.plugin_groups, 'livestyle')
     "call add(g:settings.plugin_groups, 'task-management')
     "call add(g:settings.plugin_groups, 'wiki')
     "call add(g:settings.plugin_groups, 'dev-tools')
-    "call add(g:settings.plugin_groups, 'javascript')
-    "call add(g:settings.plugin_groups, 'python')
-    "call add(g:settings.plugin_groups, 'php')
-    "call add(g:settings.plugin_groups, 'org')
+    call add(g:settings.plugin_groups, 'javascript')
+    "call add(g:settings.plugin_groups, 'json')
+    call add(g:settings.plugin_groups, 'typescript')
+    "call add(g:settings.plugin_groups, 'coffee')
+    "call add(g:settings.plugin_groups, 'node')
+    call add(g:settings.plugin_groups, 'python')
+    call add(g:settings.plugin_groups, 'php')
+    call add(g:settings.plugin_groups, 'twig')
+    call add(g:settings.plugin_groups, 'volt')
+    call add(g:settings.plugin_groups, 'org')
+    call add(g:settings.plugin_groups, 'log')
     "call add(g:settings.plugin_groups, 'ruby')
     "call add(g:settings.plugin_groups, 'csv')
     "call add(g:settings.plugin_groups, 'scala')
-    "call add(g:settings.plugin_groups, 'go')
+    call add(g:settings.plugin_groups, 'go')
     "call add(g:settings.plugin_groups, 'vim')
     "call add(g:settings.plugin_groups, 'icons')
-    "call add(g:settings.plugin_groups, 'ditaa')
-    "call add(g:settings.plugin_groups, 'ledger')
-    "call add(g:settings.plugin_groups, 'plantuml')
+    call add(g:settings.plugin_groups, 'ditaa')
+    call add(g:settings.plugin_groups, 'ledger')
+    call add(g:settings.plugin_groups, 'plantuml')
     "call add(g:settings.plugin_groups, 'tmux')
-    "call add(g:settings.plugin_groups, 'misc')
+    "call add(g:settings.plugin_groups, 'view')
        " call add(g:settings.plugin_groups, 'windows')
     " ---------------------------------------------------
     " Deshabilita los plugins que no vas a usar
