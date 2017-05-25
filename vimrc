@@ -499,7 +499,6 @@ if count(g:settings.plugin_groups, 'php') "{{{
     NeoBundleLazy 'shawncplus/phpcomplete.vim', {'autoload':{'filetypes':['php']}}
     " Types "use" statements for you
     NeoBundleLazy 'arnaud-lb/vim-php-namespace', {'autoload':{'filetypes':['php']}}
-    NeoBundleLazy 'hlidotbe/vim-phpcbf', {'autoload':{'filetypes':['php']}}
 endif "}}}
 if count(g:settings.plugin_groups, 'twig') "{{{
     NeoBundleLazy 'nelsyeung/twig.vim', {'autoload':{'filetypes':['twig']}}
@@ -606,9 +605,10 @@ if count(g:settings.plugin_groups, 'scm') "{{{
     "}}}
 endif "}}}
 if count(g:settings.plugin_groups, 'linter') "{{{
-    " Syntax checking
-    NeoBundle 'scrooloose/syntastic'
-    " Configuración de syntastic {{{
+    if g:settings.linter == "syntastic"
+        " Syntax checking
+        NeoBundle 'scrooloose/syntastic'
+        " Configuración de syntastic {{{
         " let g:syntastic_enable_signs=1
         " let g:syntastic_quiet_warnings=0
         " let g:syntastic_auto_loc_list=2
@@ -617,13 +617,18 @@ if count(g:settings.plugin_groups, 'linter') "{{{
         let g:syntastic_style_error_symbol = '✠'
         let g:syntastic_warning_symbol = '∆'
         let g:syntastic_style_warning_symbol = '≈'
-    "}}}
+        "}}}
+    endif
+    if g:settings.linter == "ale"
+        "Asynchronous Lint Engine 
+        NeoBundle 'w0rp/ale'
+    endif
 endif "}}}
 if count(g:settings.plugin_groups, 'autocomplete') "{{{
     " The ultimate snippet solution for Vim
     NeoBundle 'SirVer/ultisnips'
     " Configuración ultisnips {{{
-        let g:UltiSnipsUsePythonVersion = 2
+        let g:UltiSnipsUsePythonVersion = 3
         " let g:UltiSnipsExpandTrigger="<c-b>"
         " let g:UltiSnipsJumpForwardTrigger="<c-b>"  "<c-b>
         " let g:UltiSnipsJumpBackwardTrigger="<s-tab>" "<c-z>
