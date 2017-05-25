@@ -284,8 +284,6 @@ if count(g:settings.plugin_groups, 'core') "{{{
     NeoBundle 'tpope/vim-repeat'
     " Provee varios pares de mapas de soporte [q ]q
     NeoBundle 'tpope/vim-unimpaired'
-    " Configuración de vim-unimpaired {{{
-    "}}}
     " :help ayuda
     NeoBundle 'xerron/vim-doc-es'
 endif "}}}
@@ -319,7 +317,9 @@ endif "}}}
 if count(g:settings.plugin_groups, 'markdown') "{{{
     NeoBundleLazy 'tpope/vim-markdown', {'autoload':{'filetypes':['markdown']}}
     au BufNewFile,BufRead *.markdown,*.mdown,*.mkd,*.mkdn,*.md  setf markdown
-
+endif "}}}
+if count(g:settings.plugin_groups, 'log') "{{{
+    " Log
     NeoBundleLazy 'dzeban/vim-log-syntax', {'autoload':{'filetypes':['log']}}
 endif "}}}
 if count(g:settings.plugin_groups, 'restructuretex') "{{{
@@ -334,22 +334,9 @@ if count(g:settings.plugin_groups, 'csv') "{{{
     NeoBundleLazy 'chrisbra/csv.vim', {'autoload':{'filetypes':['csv']}}
     au BufNewFile,BufRead *.csv,*.xls setf csv
 endif "}}}
-if count(g:settings.plugin_groups, 'web') "{{{
-    " vim syntax for LESS (dynamic CSS) 
-    "NeoBundleLazy 'groenewege/vim-less', {'autoload':{'filetypes':['less']}}
-    " Configuracion para vim-less {
-        "nnoremap <Leader>setlocal iskeyword+=-m :w <BAR> !lessc % > %:t:r.css<CR><space>
-    " }
-    " Vim syntax file for scss (Sassy CSS) 
-    NeoBundleLazy 'cakebaker/scss-syntax.vim', {'autoload':{'filetypes':['scss','sass']}}
-    " autocmd FileType scss set iskeyword+=-
-    " Add CSS3 syntax support to vim's built-in `syntax/css.vim`.
-    NeoBundleLazy 'hail2u/vim-css3-syntax', {'autoload':{'filetypes':['css','scss','sass']}}
-    " Vendors Prefixes 
-    " :highlight VendorPrefix guifg=#00ffff gui=bold
-    " :match VendorPrefix /-\(moz\|webkit\|o\|ms\)-[a-zA-Z-]\+/
-    " Highlight colors in css files
-    NeoBundleLazy 'ap/vim-css-color', {'autoload':{'filetypes':['css','scss','sass','less','styl']}}
+if count(g:settings.plugin_groups, 'html') "{{{
+    " Vim's MatchParen for HTML tags
+    NeoBundleLazy 'gregsexton/MatchTag', {'autoload':{'filetypes':['html','xml']}}
     " HTML5 omnicomplete and syntax whit SVG inline
     NeoBundleLazy 'othree/html5.vim', {'autoload':{'filetypes':['html']}}
     " Configuracion de html5.vim {
@@ -358,10 +345,33 @@ if count(g:settings.plugin_groups, 'web') "{{{
         "let g:html5_microdata_attributes_complete = 0
         "let g:html5_aria_attributes_complete = 0
     " }
+endif "}}}
+if count(g:settings.plugin_groups, 'css') "{{{
+    " autocmd FileType scss set iskeyword+=-
+    " Add CSS3 syntax support to vim's built-in `syntax/css.vim`.
+    NeoBundleLazy 'hail2u/vim-css3-syntax', {'autoload':{'filetypes':['css','scss','sass']}}
+    " Vendors Prefixes 
+    " :highlight VendorPrefix guifg=#00ffff gui=bold
+    " :match VendorPrefix /-\(moz\|webkit\|o\|ms\)-[a-zA-Z-]\+/
+    " Highlight colors in css files
+    NeoBundleLazy 'ap/vim-css-color', {'autoload':{'filetypes':['css','scss','sass','less','styl']}}
+endif "}}}
+if count(g:settings.plugin_groups, 'sass') "{{{
+    " Vim syntax file for scss (Sassy CSS) 
+    NeoBundleLazy 'cakebaker/scss-syntax.vim', {'autoload':{'filetypes':['scss','sass']}}
+endif "}}}
+if count(g:settings.plugin_groups, 'less') "{{{
+    " vim syntax for LESS (dynamic CSS) 
+    NeoBundleLazy 'groenewege/vim-less', {'autoload':{'filetypes':['less']}}
+    " Configuracion para vim-less {
+        nnoremap <Leader>setlocal iskeyword+=-m :w <BAR> !lessc % > %:t:r.css<CR><space>
+    " }
+endif "}}}
+if count(g:settings.plugin_groups, 'stylus') "{{{
     " Syntax Highlighting for Stylus
-    "NeoBundleLazy 'wavded/vim-stylus', {'autoload':{'filetypes':['styl']}}
-    " Vim's MatchParen for HTML tags
-    NeoBundleLazy 'gregsexton/MatchTag', {'autoload':{'filetypes':['html','xml']}}
+    NeoBundleLazy 'wavded/vim-stylus', {'autoload':{'filetypes':['styl']}}
+endif "}}}
+if count(g:settings.plugin_groups, 'emmet') "{{{
     " emmet for vim
     NeoBundleLazy 'mattn/emmet-vim', {'autoload':{'filetypes':['html','xml','xsl','xslt','xsd','css','sass','scss','less','mustache']}} 
     " Configuracion e emmet-vim {
@@ -378,10 +388,13 @@ if count(g:settings.plugin_groups, 'web') "{{{
       autocmd FileType xml,xsl,xslt,xsd,css,sass,scss,less,mustache imap <buffer><c-j> <c-y>,
       autocmd FileType html imap <buffer><expr><c-j> <sid>zen_html()
     " }
+endif "}}}
+if count(g:settings.plugin_groups, 'livestyle') "{{{
     " Este plugin es interesante, pero no es necesario. Usa Firefox > Style Editor
     " Emmet LiveStyle for Vim http://mattn.kaoriya.net/
-    " NeoBundleLazy 'mattn/livestyle-vim', {'autoload':{'commands':'LiveStyle'}}
-    " }
+    NeoBundleLazy 'mattn/livestyle-vim', {'autoload':{'commands':'LiveStyle'}}
+endif "}}}
+if count(g:settings.plugin_groups, 'handlebars') "{{{
     NeoBundleLazy 'mustache/vim-mustache-handlebars', {'autoload': {'filetypes':['html']}}
 endif "}}}
 if count(g:settings.plugin_groups, 'javascript') "{{{
