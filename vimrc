@@ -277,45 +277,44 @@ if count(g:settings.plugin_groups, 'core') "{{{
         let g:airline#extensions#tabline#left_alt_sep='¦'
         "let g:airline_symbols.space = "\ua0"
         let g:airline_powerline_fonts = 1
-        "Declarado arriba -> set guifont=Inconsolata_for_Powerline:h10
-        " Themes disponibles 'badwolf', 'bubblegum', 'base16', 'murmur', 'tomorrow',
-        " 'sol', 'ubaryd', 'laederon', 'jellybeans', 'molokai', 'luna', 'solarized',
-        " 'powerlineish', 'dark', 'simple', 'light',
-
         let g:airline_theme='hybrid'
     "}}}
     NeoBundle 'vim-airline/vim-airline-themes' 
-    " Surround parentesis, llaves, comillas, xml tags, ...
-    NeoBundle 'tpope/vim-surround'
     " Repetir comandos con .
     NeoBundle 'tpope/vim-repeat'
-    " Asynchronous build and test dispatcher :Make :Copen
-    NeoBundle 'tpope/vim-dispatch'
-    " Helpers for UNIX | Note: ver comandos nativos
-    "NeoBundle 'tpope/vim-eunuch'
     " Provee varios pares de mapas de soporte [q ]q
     NeoBundle 'tpope/vim-unimpaired'
     " Configuración de vim-unimpaired {{{
     "}}}
     " :help ayuda
     NeoBundle 'xerron/vim-doc-es'
-    " /szw/vim-ctrlspace
-    " Add a buffer close to vim that doesn't close the window
-    " NeoBundle 'rgarver/Kwbd.vim'
-    """ Configuración Kwbd {{{
-        " nmap <C-W>! <Plug>Kwbd
-    """}}}
+endif "}}}
+if count(g:settings.plugin_groups, 'unix') "{{{
+    " Helpers for UNIX | Note: ver comandos nativos
+    NeoBundle 'tpope/vim-eunuch'
+endif "}}}
+if count(g:settings.plugin_groups, 'dispatch') "{{{
+    " Asynchronous build and test dispatcher :Make :Copen
+    NeoBundle 'tpope/vim-dispatch'
+endif "}}}
+if count(g:settings.plugin_groups, 'surround') "{{{
+    " Surround parentesis, llaves, comillas, xml tags, ...
+    NeoBundle 'tpope/vim-surround'
+endif "}}}
+if count(g:settings.plugin_groups, 'mnemonic') "{{{
+    " org mode
+    NeoBundle 'hecal3/vim-leader-guide'
+endif "}}}
+if count(g:settings.plugin_groups, 'webapi') "{{{
+    " vim interface to Web API
+    NeoBundle 'mattn/webapi-vim'
+endif "}}}
+if count(g:settings.plugin_groups, 'zoom') "{{{
     " Zoom in/out of windows (toggle between one window and multi-window)
    NeoBundle 'regedarek/ZoomWin'
     " Configuración ZoomWin {{{
         nmap <leader>zw :ZoomWin<CR>
     " }}}
-    " vim interface to Web API
-    NeoBundle 'mattn/webapi-vim'
-endif "}}}
-if count(g:settings.plugin_groups, 'mnemonic') "{{{
-    " org mode
-    NeoBundle 'hecal3/vim-leader-guide'
 endif "}}}
 if count(g:settings.plugin_groups, 'markdown') "{{{
     NeoBundleLazy 'tpope/vim-markdown', {'autoload':{'filetypes':['markdown']}}
@@ -1014,6 +1013,7 @@ if count(g:settings.plugin_groups, 'unite') "{{{
     NeoBundleLazy 'Shougo/unite-session', {'autoload':{'unite_sources': 'session'}}
     " Configuración de unite-session {
         let g:unite_source_session_default_session_name = 'xerron'
+        let g:unite_source_session_enable_auto_save = 0
         nnoremap <silent> [unite]x :<C-u>Unite -auto-resize session<cr>
     " }
     NeoBundleLazy 'kopischke/unite-spell-suggest', {'autoload':{'unite_sources': 'spell_suggest'}}
@@ -1282,7 +1282,7 @@ if count(g:settings.plugin_groups, 'plantuml') "{{{
     NeoBundleLazy 'aklt/plantuml-syntax', {'autoload':{'filetypes':['plantuml', 'uml', 'pu']}}
     au BufNewFile,BufRead *.plantuml,*.uml,*.pu setf plantuml
 endif "}}}
-if count(g:settings.plugin_groups, 'misc') "{{{
+if count(g:settings.plugin_groups, 'startify') "{{{
     " A fancy start screen for Vim.
     NeoBundle 'mhinz/vim-startify'
     "{{{
@@ -1291,6 +1291,8 @@ if count(g:settings.plugin_groups, 'misc') "{{{
       let g:startify_show_sessions = 1
       nnoremap <F1> :Startify<cr>
     "}}}
+endif "}}}
+if count(g:settings.plugin_groups, 'view') "{{{
     " Always have a nice view for vim split windows!
     NeoBundleLazy 'zhaocai/GoldenView.Vim', {'autoload':{'mappings':['<Plug>ToggleGoldenViewAutoResize']}} "{{{
       let g:goldenview__enable_default_mapping=0
