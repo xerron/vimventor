@@ -112,7 +112,7 @@
 
     exec 'colorscheme '.g:settings.colorscheme
     " Resaltar linea actual solo en insert mode
-    " set cursorline                    
+    " set cursorline
     autocmd InsertEnter * set cul
     autocmd InsertLeave * set cul!
     " highlight clear SignColumn      " SignColumn con el mismo fondo
@@ -279,7 +279,7 @@ if count(g:settings.plugin_groups, 'core') "{{{
         let g:airline_powerline_fonts = 1
         let g:airline_theme='hybrid'
     "}}}
-    NeoBundle 'vim-airline/vim-airline-themes' 
+    NeoBundle 'vim-airline/vim-airline-themes'
     " Repetir comandos con .
     NeoBundle 'tpope/vim-repeat'
     " Provee varios pares de mapas de soporte [q ]q
@@ -350,18 +350,18 @@ if count(g:settings.plugin_groups, 'css') "{{{
     " autocmd FileType scss set iskeyword+=-
     " Add CSS3 syntax support to vim's built-in `syntax/css.vim`.
     NeoBundleLazy 'hail2u/vim-css3-syntax', {'autoload':{'filetypes':['css','scss','sass']}}
-    " Vendors Prefixes 
+    " Vendors Prefixes
     " :highlight VendorPrefix guifg=#00ffff gui=bold
     " :match VendorPrefix /-\(moz\|webkit\|o\|ms\)-[a-zA-Z-]\+/
     " Highlight colors in css files
     NeoBundleLazy 'ap/vim-css-color', {'autoload':{'filetypes':['css','scss','sass','less','styl']}}
 endif "}}}
 if count(g:settings.plugin_groups, 'sass') "{{{
-    " Vim syntax file for scss (Sassy CSS) 
+    " Vim syntax file for scss (Sassy CSS)
     NeoBundleLazy 'cakebaker/scss-syntax.vim', {'autoload':{'filetypes':['scss','sass']}}
 endif "}}}
 if count(g:settings.plugin_groups, 'less') "{{{
-    " vim syntax for LESS (dynamic CSS) 
+    " vim syntax for LESS (dynamic CSS)
     NeoBundleLazy 'groenewege/vim-less', {'autoload':{'filetypes':['less']}}
     " Configuracion para vim-less {
         nnoremap <Leader>setlocal iskeyword+=-m :w <BAR> !lessc % > %:t:r.css<CR><space>
@@ -373,7 +373,7 @@ if count(g:settings.plugin_groups, 'stylus') "{{{
 endif "}}}
 if count(g:settings.plugin_groups, 'emmet') "{{{
     " emmet for vim
-    NeoBundleLazy 'mattn/emmet-vim', {'autoload':{'filetypes':['html','xml','xsl','xslt','xsd','css','sass','scss','less','mustache']}} 
+    NeoBundleLazy 'mattn/emmet-vim', {'autoload':{'filetypes':['html','xml','xsl','xslt','xsd','css','sass','scss','less','mustache']}}
     " Configuracion e emmet-vim {
         function! s:zen_html()
             let line = getline('.')
@@ -419,7 +419,7 @@ if count(g:settings.plugin_groups, 'javascript') "{{{
 
 endif "}}}
 if count(g:settings.plugin_groups, 'ruby') "{{{
-    " 
+    "
     NeoBundle 'tpope/vim-rails'
     "
     NeoBundle 'tpope/vim-bundler'
@@ -427,7 +427,7 @@ endif "}}}
 if count(g:settings.plugin_groups, 'dev-tools') "{{{
     " Run commands quickly.
     " NeoBundle 'thinca/vim-quickrun'
-    " Integrated reference viewer.  
+    " Integrated reference viewer.
     NeoBundle 'thinca/vim-ref'
     "       :Ref phpmanual echo
     " documentacion
@@ -467,7 +467,7 @@ if count(g:settings.plugin_groups, 'php') "{{{
     NeoBundle 'violetyk/neocomplete-php.vim'
     " :PhpMakeDict ja
     "
-    NeoBundleLazy 'nelsyeung/twig.vim', {'autoload':{'filetypes':['twig']}} 
+    NeoBundleLazy 'nelsyeung/twig.vim', {'autoload':{'filetypes':['twig']}}
 
     NeoBundleLazy 'etaoins/vim-volt-syntax', {'autoload':{'filetypes':['volt']}}
 endif "}}}
@@ -492,7 +492,7 @@ if count(g:settings.plugin_groups, 'latex') "{{{
             let g:vimtex_view_general_viewer = 'okular'
             let g:vimtex_view_general_options = '--unique'
             function! SyncTexForward(focus)
-                if a:focus == 1 
+                if a:focus == 1
                     let cmd = 'okular --unique '.g:latex#data[b:latex.id].out()."\\#src:".line(".").expand("%\:p").' &'
                     execute 'Start! ' . cmd
                 else
@@ -520,7 +520,7 @@ if count(g:settings.plugin_groups, 'latex') "{{{
                 \ . shellescape(g:latex#data[b:latex.id].out()) . '<CR><CR>'
             " nnoremap <expr><silent> gt  ':wall<bar>VimLatexView '.'-forward-search "'.shellescape(expand('%:p')).'" '.line(".").' '.shellescape(g:latex#data[b:latex.id].out()).'<CR>'
         endif
-    " }}} 
+    " }}}
 endif "}}}
 if count(g:settings.plugin_groups, 'scala') "{{{
     NeoBundle 'derekwyatt/vim-scala'
@@ -622,7 +622,7 @@ if count(g:settings.plugin_groups, 'autocomplete') "{{{
         inoremap <expr> <TAB>
             \ pumvisible() ? "\<C-n>" :
             \ "<C-R>=ExpandSnippetOrJumpForwardOrReturnTab()<CR>"
-        " snoremap <TAB> 
+        " snoremap <TAB>
         " jump to next placeholder otherwise do nothing
         snoremap <buffer> <silent> <TAB>
             \ <ESC>:call UltiSnips#JumpForwards()<CR>
@@ -858,7 +858,7 @@ if count(g:settings.plugin_groups, 'navigation') "{{{
     " Configuracion de tagbar {{{
         let g:tagbar_autofocus=1
         let g:tagbar_autopreview = 1
-        let g:tagbar_iconchars = ['▶', '▼'] 
+        let g:tagbar_iconchars = ['▶', '▼']
         nnoremap <silent> <F9> :TagbarToggle<CR>
         map <leader>rt :TagbarToggle<CR>
     "}}}
@@ -1013,8 +1013,8 @@ if count(g:settings.plugin_groups, 'unite') "{{{
     else
         " these two work in vim
         " shrtcut with alt key: press Ctrl-v then Alt-k
-        " ATTENTION: the following two lines should not be 
-        " edited under other editors like gedit. ^[k and ^[j will be broken! 
+        " ATTENTION: the following two lines should not be
+        " edited under other editors like gedit. ^[k and ^[j will be broken!
         nnoremap 1  :VimFilerExplorer -toggle<CR>
     endif
         nnoremap <silent> [unite]p :VimFilerExplorer -buffer-name=proyecto -toggle -project<cr>
@@ -1119,7 +1119,7 @@ if count(g:settings.plugin_groups, 'distraction-free-mode') "{{{
             function! s:markdown_room()
                 set linespace=5
                 if has('gui_running')
-                        exec 'set guifont='.g:settings.guifont_goyo 
+                        exec 'set guifont='.g:settings.guifont_goyo
                 endif
                 exec 'colorscheme '.g:settings.colorscheme_light
             endfunction
@@ -1157,7 +1157,7 @@ if count(g:settings.plugin_groups, 'distraction-free-mode') "{{{
                 set guioptions+=L  "add left-hand scroll bar
             endif
             if has('gui_running')
-                exec 'set guifont='.g:settings.guifont 
+                exec 'set guifont='.g:settings.guifont
             endif
             if !has("gui_running")
                 return
@@ -1196,7 +1196,7 @@ if count(g:settings.plugin_groups, 'grammar-checker') "{{{
     " Corrector Ortografico y gramatical - Grammar checker
     NeoBundle 'vim-scripts/LanguageTool'
     " Configuración LanguageTool {
-        if s:is_windows 
+        if s:is_windows
             let g:languagetool_jar='/opt/languagetool/LanguageTool-2.8/languagetool-commandline.jar'
         else
             let g:languagetool_jar='/opt/languagetool/LanguageTool-2.8/languagetool-commandline.jar'
@@ -1229,7 +1229,7 @@ if count(g:settings.plugin_groups, 'language-tools') "{{{
     " Diccionario de Rimas
     NeoBundle 'xerron/rimas.vim'
     " Connfiguración de rimas.vim {
-        let g:rimas_merimas_path='/home/xerron/Documentos/Diccionarios/MERimas/' 
+        let g:rimas_merimas_path='/home/xerron/Documentos/Diccionarios/MERimas/'
     " }
 endif "}}}
 if count(g:settings.plugin_groups, 'task-management') "{{{
@@ -1313,7 +1313,7 @@ if count(g:settings.plugin_groups, 'view') "{{{
     "}}}
 endif "}}}
 if count(g:settings.plugin_groups, 'icons') "{{{
-    " icons for vim-airline vimfiler 
+    " icons for vim-airline vimfiler
     NeoBundle 'ryanoasis/vim-devicons'
 endif "}}}
 if count(g:settings.plugin_groups, 'windows') "{{{
@@ -1326,7 +1326,7 @@ if count(g:settings.plugin_groups, 'windows') "{{{
     endif
 endif "}}}
 "
-" Funciones 
+" Funciones
 "
 function! Preserve(command) "{{{
     " preparation: save last search, and cursor position.
